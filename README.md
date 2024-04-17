@@ -13,7 +13,7 @@ is a monument to how far I've come. For that reason among others, I'd like to se
 
 Currently, I am rewriting the game's scripts and applying new organization to fix old problems. As of 4/17/2024,
 the actual in-game scripts are around 1 and a half years old and no longer function predictably. Hopefully this new
-structure will be installed within the next year.
+structure will be installed within the year.
 
 This is not a small project. Alongside the programming required, this project is intended to contain over 10 finished
 game worlds, with complicated level paths within each. For more details, consult the discord or anyone involved with the project.
