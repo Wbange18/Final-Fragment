@@ -112,7 +112,7 @@ function NotificationFrame:UpdateBars()
 	else
 		self.TopBar:Hide()
 	end
-	--TODO:"^(?:(?:for i).*(pairs).*)$"(?:for i.*)(pairs)(?:.*)
+	
 	if self.ScrollFactor < self.Notifications:GetLength() - 3 then
 		self.BottomBar:Reveal()
 	else

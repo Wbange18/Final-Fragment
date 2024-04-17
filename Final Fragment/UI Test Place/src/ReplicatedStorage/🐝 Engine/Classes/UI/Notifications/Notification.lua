@@ -115,6 +115,13 @@ Destroys the notification object.
 ]]
 function Notification:Destroy(instantly)
 	local instantly = instantly or (instantly == nil and false)
+
+	--[[TODO: Problem: When a notification is destroyed, objects are removed in the transition that
+	breaks cases like the render loop for mouse position. However, if we update the frame to compensate,
+	the frame will remove the notification before it can animate...
+	
+	]]
+
 	self.CancelEvent:Fire()
 	if instantly == false then
 		self:Hide(true)

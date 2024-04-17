@@ -25,7 +25,8 @@ function NotificationService:CreateNotification(
 
 	--Callback for when notification is removed
 	local function destroyed(notification)
-		NotificationService.CurrentFrame:RemoveNotification(notification)
+		NotificationService:RemoveNotification(notification)
+		return
 	end
 
 	local newNotification = Notification.new(
@@ -39,8 +40,14 @@ function NotificationService:CreateNotification(
 end
 
 --[[RemoveNotification
-
+Call related classes to remove the notification following signal of removal
+@method
+@param {object} notification - Notification to remove
 ]]
+function NotificationService:RemoveNotification(notification)
+	NotificationService.CurrentFrame:RemoveNotification(notification)
+	return
+end
 
 --[[ResetFrame
 Reset the notification frame when the player dies.
