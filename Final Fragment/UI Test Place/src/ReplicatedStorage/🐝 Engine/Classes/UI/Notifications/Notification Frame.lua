@@ -13,7 +13,7 @@ local Mouse = Player:GetMouse()
 
 --Get Classes
 local Notification = Engine.Classes.Notification
-local FrameBar = Engine.Classes["Frame Bar"]
+local FrameBar = Engine.Classes["Notification Frame Bar"]
 local OrderedList = Engine.Classes["Ordered List"]
 
 local NotificationFrame = {}
@@ -135,6 +135,8 @@ function NotificationFrame:AddNotification(notification)
 	--Get key from ordered list object
 	local notificationKey = self.Notifications:GetKey(notification)
 	
+
+	--TODO: This line only applies for the notification being added, but the list just updated for every single notification instance. This needs to be fixed.
 	notification.Instance.LayoutOrder = notificationKey
 	
 	self:TopFocus()
