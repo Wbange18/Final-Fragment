@@ -120,6 +120,25 @@ function Notification:Destroy(instantly)
 	breaks cases like the render loop for mouse position. However, if we update the frame to compensate,
 	the frame will remove the notification before it can animate...
 	
+	How can I resolve?
+	Well... what breaks?
+
+	lets think about the sequence:
+	A. Player is hovering over the UI and clicks close
+	UI is looking at mouse position to focus an element.
+	The target element is the dying notification, and thus error
+	Solution: tag notifications if they are dying?
+
+	B. Player is scrolling while the notification times out.
+	Ordered list update occurs, changing layout orders
+	
+
+	TopFocus breaks
+	mouse hover functions break
+	scroll breaks
+
+	why?
+	These three are looking for parts of the notification to verify them. Lets investigate why.
 	]]
 
 	self.CancelEvent:Fire()

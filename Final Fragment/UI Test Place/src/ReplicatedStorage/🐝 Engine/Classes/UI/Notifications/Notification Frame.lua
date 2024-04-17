@@ -46,6 +46,7 @@ function NotificationFrame:Scroll(name, state, magnitude)
 	if self.ScrollFactor + 1 == self.ScrollPosition then
 		return
 	end
+
 	self.ScrollPosition = self.ScrollFactor + 1
 	self:UpdateBars()
 	self:TopFocus()
