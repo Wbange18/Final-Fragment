@@ -14,14 +14,13 @@ Engine = _G.Engine
 The methods here are self explanatory and require no documentation.
 ]]
 
-
 function FrameBar:Reveal()
 	print("Reveal!")
 	--Increase the transparency of the detail bars
 	for i, child in ipairs(self.Instance:GetChildren()) do
 		Engine.Tools:QuickTween(
-			child, 
-			1/4, 
+			child,
+			1/4,
 			{Visible = true, BackgroundTransparency = 0}
 		)
 	end
