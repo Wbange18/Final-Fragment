@@ -18,4 +18,6 @@ structure will be installed within the next year.
 This is not a small project. Alongside the programming required, this project is intended to contain over 10 finished
 game worlds, with complicated level paths within each. For more details, consult the discord or anyone involved with the project.
 
+If you are interested in helping with the project, please message me directly! For now, you'll have to find me on the discord server.
+
 Thank you for your attention! I hope to show more progress here soon.
