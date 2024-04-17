@@ -132,13 +132,7 @@ function NotificationFrame:AddNotification(notification)
 	
 	self.Notifications:AddItem(notification.LayoutPriority, notification)
 	
-	--Get key from ordered list object
-	local notificationKey = self.Notifications:GetKey(notification)
-	
-
-	--TODO: This line only applies for the notification being added, but the list just updated for every single notification instance. This needs to be fixed.
-	notification.Instance.LayoutOrder = notificationKey
-	
+	self:ResetOrder()
 	self:TopFocus()
 	self:UpdateBars()
 	
@@ -163,7 +157,19 @@ function NotificationFrame:RemoveNotification(notification)
 	
 	self.Notifications:RemoveItem(notification)
 	
+	self:ResetOrder()
 	self:UpdateBars()
+	return
+end
+
+--[[ResetOrder
+Reset the order of the notification layout orders, following usage of OrderedList:Sort()
+@method
+]]
+function NotificationFrame:ResetOrder()
+	for _, object in ipairs(self.Notifications.Contents) do
+		object.Instance.LayoutOrder = self.Notifications:GetKey(object)
+	end
 	return
 end
 
