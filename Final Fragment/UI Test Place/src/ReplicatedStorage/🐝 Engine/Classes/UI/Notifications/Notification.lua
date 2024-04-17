@@ -130,8 +130,8 @@ function Notification:Destroy(instantly)
 	Solution: tag notifications if they are dying?
 
 	B. Player is scrolling while the notification times out.
-	Ordered list update occurs, changing layout orders
-	
+	scroll tween occurs AFTER all calculations occur, so the time isnt an issue
+	however, on the impulse
 
 	TopFocus breaks
 	mouse hover functions break
