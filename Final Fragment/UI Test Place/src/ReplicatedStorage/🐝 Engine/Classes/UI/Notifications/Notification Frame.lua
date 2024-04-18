@@ -1,3 +1,5 @@
+local TouchInputService = game:GetService("TouchInputService")
+
 --[[CLASS DESCRIPTION:
 Frame of the notification system. As the parent of all notification classes, the frame must sort
 and initialize all objects assigned to it. It must also handle the user inputs, altering focused
@@ -79,9 +81,14 @@ function NotificationFrame:ChangeFocus(focusNotification)
 	
 	--Resize one, unsize others
 	for _, notification in ipairs(self.Notifications:GetList()) do
+		if notification.Dead == true then
+			continue
+		end
+
 		if notification == focusNotification then
 			continue
 		end
+
 		notification:Resize("Small")
 	end
 end
@@ -96,10 +103,15 @@ function NotificationFrame:TopFocus()
 	end
 	
 	for _, notification in ipairs(self.Notifications:GetList()) do
+		if notification.Dead == true then
+			continue
+		end
+
 		if notification.Instance.LayoutOrder == (self.ScrollFactor + 1) then
 			notification:Resize("Large")
 			continue
 		end
+		
 		notification:Resize("Small")
     end
 end
@@ -218,6 +230,7 @@ function NotificationFrame.new()
 	local runConnection
 	local guisAtPosition
 	local notificationGui
+	local notificationObject
 	
 	local function scrollAction(name, state, input)
 		newNotificationFrame:Scroll(name, state, input.Position.Z)
@@ -239,13 +252,20 @@ function NotificationFrame.new()
 			newNotificationFrame:TopFocus()
 			return
 		end
+
+		--At this point, we have a real notification instance. Lets get the object:
+		notificationObject = newNotificationFrame.Notifications:GetItem(notificationGui.LayoutOrder)
+
+		if notificationObject.Dead == true then
+			return
+		end
 		
 		if notificationGui.Frame.SmallNotification.Transparency < 1 then
 			newNotificationFrame.Focus = "Manual"
 			newNotificationFrame:ChangeFocus(
 				newNotificationFrame.Notifications[notificationGui.LayoutOrder]
 			)
-		end	
+		end
 	end
 	
 	local function mouseEnter()

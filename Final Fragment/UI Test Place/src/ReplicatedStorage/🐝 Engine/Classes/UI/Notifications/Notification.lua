@@ -115,6 +115,7 @@ Destroys the notification object.
 ]]
 function Notification:Destroy(instantly)
 	local instantly = instantly or (instantly == nil and false)
+	self.Dead = true
 
 	--[[TODO: Problem: When a notification is destroyed, objects are removed in the transition that
 	breaks cases like the render loop for mouse position. However, if we update the frame to compensate,
@@ -189,6 +190,7 @@ function Notification.new(
 	newNotification.isDismissable = isDismissable or (isDismissable == nil)
 	newNotification.Content = content or ""
 	newNotification.Priority = priority or "First"
+	newNotification.Dead = false
 	
 	local newTime = time()
 
