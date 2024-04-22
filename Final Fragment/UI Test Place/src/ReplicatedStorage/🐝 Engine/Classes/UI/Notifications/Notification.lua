@@ -146,7 +146,7 @@ function Notification:Destroy(instantly)
 	if instantly == false then
 		self:Hide(true)
 	end
-	
+	Engine.Tools:QuickTween(self.Instance, 0.04, {Size = UDim2.new(0,0,0,0)}, "Linear").Completed:Wait()
 	--Callback parent service
 	self.callback(self)
 	self.Timer:Destroy()

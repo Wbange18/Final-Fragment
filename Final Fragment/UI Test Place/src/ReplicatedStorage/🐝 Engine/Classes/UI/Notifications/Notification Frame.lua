@@ -44,7 +44,7 @@ function NotificationFrame:Scroll(name, state, magnitude)
 			)
 		) * math.abs(magnitude)
 	
-	--TODO: Rework This
+	--TODO: Rework This (why?)
 	if self.ScrollFactor + 1 == self.ScrollPosition then
 		return
 	end
@@ -102,11 +102,12 @@ function NotificationFrame:TopFocus()
 		return
 	end
 	
-	for _, notification in ipairs(self.Notifications:GetList()) do
+	for _, notification in pairs(self.Notifications:GetList()) do
 		if notification.Dead == true then
 			continue
 		end
 
+		print(notification.Instance.LayoutOrder, self.ScrollFactor + 1)
 		if notification.Instance.LayoutOrder == (self.ScrollFactor + 1) then
 			notification:Resize("Large")
 			continue
@@ -162,16 +163,18 @@ Remove a notification to the frame, when passed from the service
 function NotificationFrame:RemoveNotification(notification)
 	notification:Hide()
 	
-	if self.Notifications:GetKey(notification) == (self.ScrollFactor + 1) then
+	if self.Notifications:GetKey(notification) == (self.ScrollFactor + 1) and self.ScrollFactor + 1 ~= 1 then
+		--This is meant to occur when you kill the top element. lets try it!
+		print("Top removed ;3")
 		self:Scroll(nil, nil, -1)
-	else
-		self:TopFocus()
 	end
 	
-	self.Notifications:RemoveItem(notification)
+	self.Notifications:RemoveItem(notification.LayoutPriority)
 	
 	self:ResetOrder()
 	self:UpdateBars()
+	--If this happens earlier, there isn't enough data for this to work
+	self:TopFocus()
 	return
 end
 
@@ -180,7 +183,7 @@ Reset the order of the notification layout orders, following usage of OrderedLis
 @method
 ]]
 function NotificationFrame:ResetOrder()
-	for _, object in ipairs(self.Notifications.Contents) do
+	for _, object in pairs(self.Notifications.Contents) do
 		object.Instance.LayoutOrder = self.Notifications:GetKey(object)
 	end
 	return
@@ -227,10 +230,10 @@ function NotificationFrame.new()
 	newNotificationFrame.BottomBar = FrameBar.new(newNotificationFrame.Instance.Parent["Bottom Indicator"])
 	
 
-	local runConnection
-	local guisAtPosition
-	local notificationGui
-	local notificationObject
+	local runConnection = nil
+	local guisAtPosition = nil
+	local notificationGui = nil
+	local notificationObject = nil
 	
 	local function scrollAction(name, state, input)
 		newNotificationFrame:Scroll(name, state, input.Position.Z)
@@ -255,6 +258,10 @@ function NotificationFrame.new()
 
 		--At this point, we have a real notification instance. Lets get the object:
 		notificationObject = newNotificationFrame.Notifications:GetItem(notificationGui.LayoutOrder)
+
+		if notificationObject == nil then
+			return
+		end
 
 		if notificationObject.Dead == true then
 			return
