@@ -137,7 +137,9 @@ function Notification:Destroy(instantly)
 	TopFocus breaks
 	mouse hover functions break
 	scroll breaks
-
+	IDEA: TWEEN UI TO INFINITELY SMALL SIZE
+	AFTER REMOVAL! THAT WAY, ANIMATED
+	AND SELECTION IS IMPOSSIBLE!
 	why?
 	These three are looking for parts of the notification to verify them. Lets investigate why.
 	]]
