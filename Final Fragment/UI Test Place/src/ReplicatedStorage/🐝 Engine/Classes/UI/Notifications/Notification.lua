@@ -172,12 +172,13 @@ Create a new Notification object and make it appear.
 @param {bool} isDismissable - If the notification can be manually cancelled.
 @param {string} content - The text for the notification.
 @param {string} priority - The priority of the notification (First, Next, or Last)
-@param {string} interfaceLink - The location of the UI to link the notification to.
+@param {Color3} notificationColor - The color of the notification (Thanks, NAR?)
+@param {string} callback - Function to run from parent adressor
 
 @return {string} notification - Resultant notification object.
 ]]
 function Notification.new(
-	subject, iconLink, duration, timerVisible, isDismissable, content, priority, callback
+	subject, iconLink, duration, timerVisible, isDismissable, content, priority, notificationColor, callback
 )
 	local newNotification = {}
 	setmetatable(newNotification, Notification)
@@ -247,6 +248,8 @@ function Notification.new(
 		newNotification:Destroy()
 	end)
 
+	newNotification.Frame.SmallNotification.ImageColor3 = notificationColor or Color3.new(255,255,255)
+	newNotification.Frame.LargeNotification.ImageColor3 = notificationColor or Color3.new(255,255,255)
 	return newNotification
 end
 

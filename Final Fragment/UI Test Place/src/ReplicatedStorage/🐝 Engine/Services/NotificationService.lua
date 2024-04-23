@@ -18,25 +18,30 @@ NotificationService.CurrentFrame = NotificationFrame.new()
 Slight abstraction of Notification.new, but handles some important properties.
 @method
 @param [SEE NOTIFICATION CLASS]
+@param callback - optional function to run when the notification is destroyed or manually cancelled.
 ]]
 function NotificationService:CreateNotification(
-	subject, iconLink, duration, timerVisible, isDismissable, content, priority
+	subject, iconLink, duration, timerVisible, isDismissable, content, priority, notificationColor, callback
 )
 
 	--Callback for when notification is removed
 	local function destroyed(notification)
 		NotificationService:RemoveNotification(notification)
-		return
+
+		--Extra callback for scripts that called this event
+		if callback ~= nil then
+			callback()
+			return
+		end
 	end
 
 	local newNotification = Notification.new(
-		subject, iconLink, duration, timerVisible, isDismissable, content, priority, destroyed
+		subject, iconLink, duration, timerVisible, isDismissable, content, priority, notificationColor, destroyed
 	)
 
 	NotificationService.CurrentFrame:AddNotification(newNotification)
 	
 	return newNotification
-	--Got to here, but I need to work on the creation/destruction of the frame itself
 end
 
 --[[RemoveNotification
@@ -69,7 +74,5 @@ local DeathConnection
 DeathConnection = DeathEvent.Event:Connect(function()
 	NotificationService:ResetFrame()
 end)
-
-print("Successfully initialized!")
 
 return NotificationService

@@ -1,3 +1,5 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 --Get Bumble Engine
 local Bumble = _G.Bumble
 
@@ -55,19 +57,26 @@ function PowerupService:GivePowerup(Powerup, cancellable, duration, timerVisible
 		return
 	end
 	
-	PowerupObject = self.Powerups[Powerup].new()
+	PowerupObject = Engine.Classes[Powerup].new()
 	self.RunningPowerups[Powerup] = PowerupObject
 	
-	local PowerupNotification = NotificationService:CreateNotification(
-		Powerup, "", duration, timerVisible, cancellable, powerupDescription, "First"
-	)
+	--Callback function to pass to the notification service
+	local function powerupDestroyed()
+		self:RemovePowerup(Powerup)
+	end
 	
+
+	local PowerupNotification = NotificationService:CreateNotification(
+		Powerup, "", duration, timerVisible, cancellable, powerupDescription, "First", powerupDestroyed
+	)
+
+
 	PowerupObject:Run()
 	
-	CancelConnection = PowerupNotification.CancelEvent.Event:Connect(function()
-		CancelConnection:Disconnect()
-		self:RemovePowerup(Powerup)
-	end)
+	--CancelConnection = PowerupNotification.CancelEvent.Event:Connect(function()
+	--	CancelConnection:Disconnect()
+	--	self:RemovePowerup(Powerup)
+	--end)
 	
 	return PowerupObject
 end
@@ -81,7 +90,8 @@ function PowerupService:RemovePowerup(Powerup, died)
 	
 	local PowerupObject = self.RunningPowerups[Powerup]
 	
-	PowerupEvent:Fire(Powerup, false)
+	--Should be deprecated because of callbacks to the notification service
+	--PowerupEvent:Fire(Powerup, false)
 	
 	if PowerupObject == nil then
 		return
@@ -91,7 +101,7 @@ function PowerupService:RemovePowerup(Powerup, died)
 	
 	self.RunningPowerups[Powerup] = nil
 	
-	if died == true then 
+	if died == true then
 		return 
 	end
 
@@ -101,10 +111,12 @@ function PowerupService:RemovePowerup(Powerup, died)
 end
 
 --DEFINITION==========================================================
-for _, module in ipairs(Bumble.Classes.Powerups:GetChildren()) do
-	if module:IsA("ModuleScript") then
-		PowerupService.Powerups[module.Name] = require(module)
-	end
-end
+
+--BELOW SHOULD BE DEPRECATED AS OF V3.0
+--for _, module in ipairs(Bumble.Classes.Powerups:GetChildren()) do
+--	if module:IsA("ModuleScript") then
+--		PowerupService.Powerups[module.Name] = require(module)
+--	end
+--end
 
 return PowerupService

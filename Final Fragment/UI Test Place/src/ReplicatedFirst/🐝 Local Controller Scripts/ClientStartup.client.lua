@@ -40,11 +40,11 @@ WeaponService:GiveWeapon(Pickaxe)
 
 
 NotificationService:CreateNotification(
-	"2", "", 12, true, true, "Gung ho", "First"
+	"2", "", 12, true, true, "Gung ho", "First", Color3.new(0.9803921568627451, 0.3058823529411765, 0.3058823529411765)
 )
 
 NotificationService:CreateNotification(
-	"4", "", 9, true, true, "Gung ho", "Next"
+	"4", "", 9, true, true, "Gung ho", "Next", Color3.new(0.3254901960784314, 0.20784313725490197, 0.6549019607843137)
 )
 NotificationService:CreateNotification(
 	"5", "", 16, true, true, "Gung ho", "Next"

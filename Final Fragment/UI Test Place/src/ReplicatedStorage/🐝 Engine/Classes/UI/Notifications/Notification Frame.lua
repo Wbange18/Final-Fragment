@@ -73,10 +73,11 @@ Change the focused notification, and resize others.
 @param {object} notification - Target notification to focus
 ]]
 function NotificationFrame:ChangeFocus(focusNotification)
-	if self.Focus == "Auto" then
+
+	if self.Focus == "Auto" or focusNotification.Instance.Frame.LargeNotification.ImageTransparency < 1 then
 		return
 	end
-	
+
 	focusNotification:Resize("Large")
 	
 	--Resize one, unsize others
@@ -107,7 +108,6 @@ function NotificationFrame:TopFocus()
 			continue
 		end
 
-		print(notification.Instance.LayoutOrder, self.ScrollFactor + 1)
 		if notification.Instance.LayoutOrder == (self.ScrollFactor + 1) then
 			notification:Resize("Large")
 			continue
@@ -168,7 +168,7 @@ function NotificationFrame:RemoveNotification(notification)
 		print("Top removed ;3")
 		self:Scroll(nil, nil, -1)
 	end
-	
+
 	self.Notifications:RemoveItem(notification.LayoutPriority)
 	
 	self:ResetOrder()
@@ -239,6 +239,7 @@ function NotificationFrame.new()
 		newNotificationFrame:Scroll(name, state, input.Position.Z)
 	end
 	
+
 	local function renderCheck()
 		guisAtPosition = PlayerGui:GetGuiObjectsAtPosition(Mouse.X, Mouse.Y)
 
@@ -260,18 +261,15 @@ function NotificationFrame.new()
 		notificationObject = newNotificationFrame.Notifications:GetItem(notificationGui.LayoutOrder)
 
 		if notificationObject == nil then
+			newNotificationFrame.Focus = "Auto"
+			newNotificationFrame:TopFocus()
 			return
 		end
 
-		if notificationObject.Dead == true then
-			return
-		end
-		
-		if notificationGui.Frame.SmallNotification.Transparency < 1 then
+		if notificationObject.Dead == false then
 			newNotificationFrame.Focus = "Manual"
-			newNotificationFrame:ChangeFocus(
-				newNotificationFrame.Notifications[notificationGui.LayoutOrder]
-			)
+			newNotificationFrame:ChangeFocus(notificationObject)
+			return
 		end
 	end
 	
@@ -284,6 +282,8 @@ function NotificationFrame.new()
 	local function mouseLeave()
 		ContextActionService:UnbindAction("Scroll")
 		runConnection:Disconnect()
+		newNotificationFrame.Focus = "Auto"
+		newNotificationFrame:TopFocus()
 	end
 	
 	newNotificationFrame.mouseEnterConnection = 
