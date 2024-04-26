@@ -254,4 +254,3 @@ function Notification.new(
 end
 
 return Notification
-
