@@ -1,8 +1,8 @@
 local MechanicTags = {
-	"Jump Pad",
-	"Kill Brick",
+	"JumpPad",
+	"KillBrick",
 	"Powerup",
-	"Ancient Beamer"
+	"AncientBeamer"
 }
 
 return MechanicTags
