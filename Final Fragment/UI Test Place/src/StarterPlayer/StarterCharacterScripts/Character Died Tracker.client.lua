@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local DeathEvent = Instance.new("BindableEvent")
 DeathEvent.Name = "Character Died"
-DeathEvent.Parent = _G.Engine.Resources
+DeathEvent.Parent = ReplicatedStorage["Bumble Engine"].Resources
 
 script.Parent.Humanoid.Died:Connect(function()
 	DeathEvent:Fire()

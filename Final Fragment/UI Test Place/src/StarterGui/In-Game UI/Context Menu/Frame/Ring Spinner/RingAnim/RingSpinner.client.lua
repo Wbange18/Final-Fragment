@@ -3,7 +3,6 @@ local tweenService = game:GetService("TweenService")
 local Player = game.Players.LocalPlayer
 local ring1 = script.Parent.InnerRing
 local ring2 = script.Parent.OuterRing
-local humanoid = Player.Character:WaitForChild("Humanoid")
 local lastPosition = Player.Character.HumanoidRootPart.Position
 
 local ExtraSpeedValue = script.Parent.AdditionalSpeed
