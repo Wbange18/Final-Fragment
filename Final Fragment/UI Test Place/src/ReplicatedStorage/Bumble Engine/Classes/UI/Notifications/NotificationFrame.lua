@@ -8,11 +8,7 @@ local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.En
 local Notification = require(ReplicatedStorage["Bumble Engine"].Classes.UI.Notifications.Notification)
 local FrameBar = require(ReplicatedStorage["Bumble Engine"].Classes.UI.Notifications.NotificationFrameBar)
 
---[[CLASS DESCRIPTION:
-Frame of the notification system. As the parent of all notification classes, the frame must sort
-and initialize all objects assigned to it. It must also handle the user inputs, altering focused
-elements and scrolling the frame.
-]]
+
 
 local Player = game.Players.LocalPlayer
 

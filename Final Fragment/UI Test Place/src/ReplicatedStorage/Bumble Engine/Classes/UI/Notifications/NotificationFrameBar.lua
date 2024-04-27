@@ -1,11 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
---[[CLASS DESCRIPTION:
-FrameBar objects exist at the top and bottom of the notification scroll frame. They reveal and
-hide themselves to show if notifications are above or below them. Their responsibilities are:
-Revealing themselves and hiding themselves
-]]
 
 local FrameBar = {}
 FrameBar.__index = FrameBar

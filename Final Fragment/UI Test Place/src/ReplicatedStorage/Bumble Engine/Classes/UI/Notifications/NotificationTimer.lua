@@ -1,11 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
---[[CLASS DESCRIPTION:
-Notification Timer is an individual class which handles a notification's responsibility to keep time,
-and eventually will fire a __newindex (event) which allows the parent notification to destroy
-itself.
-]]
+
 local NotificationTimer = {}
 
 NotificationTimer.__index = NotificationTimer

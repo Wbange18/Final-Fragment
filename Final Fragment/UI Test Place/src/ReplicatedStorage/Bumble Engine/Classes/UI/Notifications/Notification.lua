@@ -3,15 +3,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local Timer = require(ReplicatedStorage["Bumble Engine"].Classes.UI.Notifications.NotificationTimer)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
---[[CLASS DESCRIPTION:
-Notifications are UI elements with enormous functionality, parented to a notification frame.
-They have the following responsibilities:
-Resize, Reveal, and Hide
-These responsibilities are used by the notification frame to manage these notifications on the
-player's screen.
-Notifications also have a child class; Notification Timer, which is used to time the notification
-and allow it to be canceled if the time runs out.
-]]
 
 --Get Resources
 local ReferenceNotification = Engine:GetResource("Reference Notification")
@@ -113,33 +104,6 @@ Destroys the notification object.
 function Notification:Destroy(instantly)
 	instantly = instantly or (instantly == nil and false)
 	self.Dead = true
-
-	--[[TODO: Problem: When a notification is destroyed, objects are removed in the transition that
-	breaks cases like the render loop for mouse position. However, if we update the frame to compensate,
-	the frame will remove the notification before it can animate...
-	
-	How can I resolve?
-	Well... what breaks?
-
-	lets think about the sequence:
-	A. Player is hovering over the UI and clicks close
-	UI is looking at mouse position to focus an element.
-	The target element is the dying notification, and thus error
-	Solution: tag notifications if they are dying?
-
-	B. Player is scrolling while the notification times out.
-	scroll tween occurs AFTER all calculations occur, so the time isnt an issue
-	however, on the impulse
-
-	TopFocus breaks
-	mouse hover functions break
-	scroll breaks
-	IDEA: TWEEN UI TO INFINITELY SMALL SIZE
-	AFTER REMOVAL! THAT WAY, ANIMATED
-	AND SELECTION IS IMPOSSIBLE!
-	why?
-	These three are looking for parts of the notification to verify them. Lets investigate why.
-	]]
 
 	self.CancelEvent:Fire()
 	if instantly == false then
