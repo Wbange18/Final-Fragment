@@ -115,11 +115,40 @@ Destroys the notification object.
 ]]
 function Notification:Destroy(instantly)
 	local instantly = instantly or (instantly == nil and false)
+	self.Dead = true
+
+	--[[TODO: Problem: When a notification is destroyed, objects are removed in the transition that
+	breaks cases like the render loop for mouse position. However, if we update the frame to compensate,
+	the frame will remove the notification before it can animate...
+	
+	How can I resolve?
+	Well... what breaks?
+
+	lets think about the sequence:
+	A. Player is hovering over the UI and clicks close
+	UI is looking at mouse position to focus an element.
+	The target element is the dying notification, and thus error
+	Solution: tag notifications if they are dying?
+
+	B. Player is scrolling while the notification times out.
+	scroll tween occurs AFTER all calculations occur, so the time isnt an issue
+	however, on the impulse
+
+	TopFocus breaks
+	mouse hover functions break
+	scroll breaks
+	IDEA: TWEEN UI TO INFINITELY SMALL SIZE
+	AFTER REMOVAL! THAT WAY, ANIMATED
+	AND SELECTION IS IMPOSSIBLE!
+	why?
+	These three are looking for parts of the notification to verify them. Lets investigate why.
+	]]
+
 	self.CancelEvent:Fire()
 	if instantly == false then
 		self:Hide(true)
 	end
-	
+	Engine.Tools:QuickTween(self.Instance, 0.04, {Size = UDim2.new(0,0,0,0)}, "Linear").Completed:Wait()
 	--Callback parent service
 	self.callback(self)
 	self.Timer:Destroy()
@@ -143,12 +172,13 @@ Create a new Notification object and make it appear.
 @param {bool} isDismissable - If the notification can be manually cancelled.
 @param {string} content - The text for the notification.
 @param {string} priority - The priority of the notification (First, Next, or Last)
-@param {string} interfaceLink - The location of the UI to link the notification to.
+@param {Color3} notificationColor - The color of the notification (Thanks, NAR?)
+@param {string} callback - Function to run from parent adressor
 
 @return {string} notification - Resultant notification object.
 ]]
 function Notification.new(
-	subject, iconLink, duration, timerVisible, isDismissable, content, priority, callback
+	subject, iconLink, duration, timerVisible, isDismissable, content, priority, notificationColor, callback
 )
 	local newNotification = {}
 	setmetatable(newNotification, Notification)
@@ -163,6 +193,7 @@ function Notification.new(
 	newNotification.isDismissable = isDismissable or (isDismissable == nil)
 	newNotification.Content = content or ""
 	newNotification.Priority = priority or "First"
+	newNotification.Dead = false
 	
 	local newTime = time()
 
@@ -217,8 +248,9 @@ function Notification.new(
 		newNotification:Destroy()
 	end)
 
+	newNotification.Frame.SmallNotification.ImageColor3 = notificationColor or Color3.new(255,255,255)
+	newNotification.Frame.LargeNotification.ImageColor3 = notificationColor or Color3.new(255,255,255)
 	return newNotification
 end
 
 return Notification
-

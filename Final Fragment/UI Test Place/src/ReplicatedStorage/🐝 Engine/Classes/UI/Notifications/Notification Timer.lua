@@ -85,5 +85,3 @@ function NotificationTimer.new(notification)
 end
 
 return NotificationTimer
-
---Use index to fire code when stopped? idk...

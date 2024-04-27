@@ -60,7 +60,7 @@ function MechanicService:CreateMechanic(Mechanic)
 	
 	--If the mechanic has never been created before, create a new instance. Elsewise, get the mechanic object.
 	if NewMechanic then
-		MechanicObject = WorldMechanicClasses[MechanicName].new(Mechanic)
+		MechanicObject = Engine.Classes[MechanicName].new(Mechanic)
 		MechanicService.Mechanics[ID] = MechanicObject
 	else
 		MechanicObject = MechanicService.Mechanics[ID]
@@ -178,22 +178,25 @@ end
 
 --SERVICE==============================================================
 
+--Each time the data updates, start all mechanics (omits already running mechanics, etc.)
 MechanicService.DataConnection = 
 	FFDataService.DataRemote.OnClientEvent:Connect(function()
 		if workspace.Camera:FindFirstChild("Local Mechanics") == nil then
+			warn("Local Mechanics Folder not found!")
 			return
 		end
 		MechanicService:StartAllMechanics()
 	end)
 
+--BELOW SHOULD BE DEPRECATED AS OF V3.0; LEFT FOR UNCERTAINTY
 --Tabulate child modules. This also requires them, and thus they are initially called
 --and defined here.
-for _, module in ipairs(Bumble.Classes.Mechanics[
-	"World " .. Bumble:GetAttribute("World") .. " Mechanics"
-	]:GetChildren()) do
-	if module:IsA("ModuleScript") and module:GetAttribute("Inactive") == nil then
-		WorldMechanicClasses[module.Name] = require(module)
-	end
-end
+--for _, module in ipairs(Bumble.Classes.Mechanics[
+--	"World " .. Bumble:GetAttribute("World") .. " Mechanics"
+--	]:GetChildren()) do
+--	if module:IsA("ModuleScript") and module:GetAttribute("Inactive") == nil then
+--		WorldMechanicClasses[module.Name] = require(module)
+--	end
+--end
 
 return MechanicService

@@ -9,7 +9,7 @@ OrderedList.__index = OrderedList
 
 --METHODS=====================================================================
 
---[[AddData
+--[[AddItem
 Add data to the list, and sort.
 @method
 @param {string} Key - Key to store data with
@@ -18,21 +18,20 @@ Add data to the list, and sort.
 function OrderedList:AddItem(Key, Value)
 	
 	--Set the actual value to the table
-	--rawset(self.Contents, Key, Value)
-	self.Contents[Key] = Value
+	rawset(self.Contents, Key, Value)
+	--self.Contents[Key] = Value
 	self:Sort()
 	
 	return 
 end
 
---[[RemoveData
+--[[RemoveItem
 Remove data from the list, and sort.
 @method
 ]]
 function OrderedList:RemoveItem(Key)
-	--rawset(self.Contents, Key, nil)
-	self.Contents[Key] = nil
-	print(self.Contents)
+	rawset(self.Contents, Key, nil)
+	--self.Contents[Key] = nil
 	self:Sort()
 	
 	return
@@ -89,7 +88,6 @@ function OrderedList:Sort()
 
 	--Compile the list ordering table using the layout priorities
 	for sortKey, item in pairs(self.Contents) do
-		print(sortKey)
 			table.insert(self.SortOrder, sortKey)
 	end
 	
@@ -106,7 +104,6 @@ function OrderedList:Sort()
 	end)
 
 	for i, value in ipairs(self.SortOrder) do
-		print(i)
 		--Change self.contents to be in terms of the iterator.
 		self.OrderedContents[i] = self.Contents[value]
 	end

@@ -1,3 +1,5 @@
+local TouchInputService = game:GetService("TouchInputService")
+
 --[[CLASS DESCRIPTION:
 Frame of the notification system. As the parent of all notification classes, the frame must sort
 and initialize all objects assigned to it. It must also handle the user inputs, altering focused
@@ -42,10 +44,11 @@ function NotificationFrame:Scroll(name, state, magnitude)
 			)
 		) * math.abs(magnitude)
 	
-	--TODO: Rework This
+	--TODO: Rework This (why?)
 	if self.ScrollFactor + 1 == self.ScrollPosition then
 		return
 	end
+
 	self.ScrollPosition = self.ScrollFactor + 1
 	self:UpdateBars()
 	self:TopFocus()
@@ -70,17 +73,23 @@ Change the focused notification, and resize others.
 @param {object} notification - Target notification to focus
 ]]
 function NotificationFrame:ChangeFocus(focusNotification)
-	if self.Focus == "Auto" then
+
+	if self.Focus == "Auto" or focusNotification.Instance.Frame.LargeNotification.ImageTransparency < 1 then
 		return
 	end
-	
+
 	focusNotification:Resize("Large")
 	
 	--Resize one, unsize others
 	for _, notification in ipairs(self.Notifications:GetList()) do
+		if notification.Dead == true then
+			continue
+		end
+
 		if notification == focusNotification then
 			continue
 		end
+
 		notification:Resize("Small")
 	end
 end
@@ -94,11 +103,16 @@ function NotificationFrame:TopFocus()
 		return
 	end
 	
-	for _, notification in ipairs(self.Notifications:GetList()) do
+	for _, notification in pairs(self.Notifications:GetList()) do
+		if notification.Dead == true then
+			continue
+		end
+
 		if notification.Instance.LayoutOrder == (self.ScrollFactor + 1) then
 			notification:Resize("Large")
 			continue
 		end
+		
 		notification:Resize("Small")
     end
 end
@@ -112,7 +126,7 @@ function NotificationFrame:UpdateBars()
 	else
 		self.TopBar:Hide()
 	end
-	--TODO:"^(?:(?:for i).*(pairs).*)$"(?:for i.*)(pairs)(?:.*)
+	
 	if self.ScrollFactor < self.Notifications:GetLength() - 3 then
 		self.BottomBar:Reveal()
 	else
@@ -132,13 +146,7 @@ function NotificationFrame:AddNotification(notification)
 	
 	self.Notifications:AddItem(notification.LayoutPriority, notification)
 	
-	--Get key from ordered list object
-	local notificationKey = self.Notifications:GetKey(notification)
-	
-
-	--TODO: This line only applies for the notification being added, but the list just updated for every single notification instance. This needs to be fixed.
-	notification.Instance.LayoutOrder = notificationKey
-	
+	self:ResetOrder()
 	self:TopFocus()
 	self:UpdateBars()
 	
@@ -155,15 +163,29 @@ Remove a notification to the frame, when passed from the service
 function NotificationFrame:RemoveNotification(notification)
 	notification:Hide()
 	
-	if self.Notifications:GetKey(notification) == (self.ScrollFactor + 1) then
+	if self.Notifications:GetKey(notification) == (self.ScrollFactor + 1) and self.ScrollFactor + 1 ~= 1 then
+		--This is meant to occur when you kill the top element. lets try it!
+		print("Top removed ;3")
 		self:Scroll(nil, nil, -1)
-	else
-		self:TopFocus()
 	end
+
+	self.Notifications:RemoveItem(notification.LayoutPriority)
 	
-	self.Notifications:RemoveItem(notification)
-	
+	self:ResetOrder()
 	self:UpdateBars()
+	--If this happens earlier, there isn't enough data for this to work
+	self:TopFocus()
+	return
+end
+
+--[[ResetOrder
+Reset the order of the notification layout orders, following usage of OrderedList:Sort()
+@method
+]]
+function NotificationFrame:ResetOrder()
+	for _, object in pairs(self.Notifications.Contents) do
+		object.Instance.LayoutOrder = self.Notifications:GetKey(object)
+	end
 	return
 end
 
@@ -208,14 +230,16 @@ function NotificationFrame.new()
 	newNotificationFrame.BottomBar = FrameBar.new(newNotificationFrame.Instance.Parent["Bottom Indicator"])
 	
 
-	local runConnection
-	local guisAtPosition
-	local notificationGui
+	local runConnection = nil
+	local guisAtPosition = nil
+	local notificationGui = nil
+	local notificationObject = nil
 	
 	local function scrollAction(name, state, input)
 		newNotificationFrame:Scroll(name, state, input.Position.Z)
 	end
 	
+
 	local function renderCheck()
 		guisAtPosition = PlayerGui:GetGuiObjectsAtPosition(Mouse.X, Mouse.Y)
 
@@ -232,13 +256,21 @@ function NotificationFrame.new()
 			newNotificationFrame:TopFocus()
 			return
 		end
-		
-		if notificationGui.Frame.SmallNotification.Transparency < 1 then
+
+		--At this point, we have a real notification instance. Lets get the object:
+		notificationObject = newNotificationFrame.Notifications:GetItem(notificationGui.LayoutOrder)
+
+		if notificationObject == nil then
+			newNotificationFrame.Focus = "Auto"
+			newNotificationFrame:TopFocus()
+			return
+		end
+
+		if notificationObject.Dead == false then
 			newNotificationFrame.Focus = "Manual"
-			newNotificationFrame:ChangeFocus(
-				newNotificationFrame.Notifications[notificationGui.LayoutOrder]
-			)
-		end	
+			newNotificationFrame:ChangeFocus(notificationObject)
+			return
+		end
 	end
 	
 	local function mouseEnter()
@@ -250,6 +282,8 @@ function NotificationFrame.new()
 	local function mouseLeave()
 		ContextActionService:UnbindAction("Scroll")
 		runConnection:Disconnect()
+		newNotificationFrame.Focus = "Auto"
+		newNotificationFrame:TopFocus()
 	end
 	
 	newNotificationFrame.mouseEnterConnection = 

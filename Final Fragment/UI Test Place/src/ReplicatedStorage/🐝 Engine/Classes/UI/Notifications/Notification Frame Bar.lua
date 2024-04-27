@@ -15,7 +15,6 @@ The methods here are self explanatory and require no documentation.
 ]]
 
 function FrameBar:Reveal()
-	print("Reveal!")
 	--Increase the transparency of the detail bars
 	for i, child in ipairs(self.Instance:GetChildren()) do
 		Engine.Tools:QuickTween(
