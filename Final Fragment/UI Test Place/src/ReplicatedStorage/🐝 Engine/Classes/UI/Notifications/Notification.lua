@@ -149,9 +149,14 @@ function Notification:Destroy(instantly)
 		self:Hide(true)
 	end
 	Engine.Tools:QuickTween(self.Instance, 0.04, {Size = UDim2.new(0,0,0,0)}, "Linear").Completed:Wait()
+	
+	if self.Duration ~= 0 then
+		self.Timer:Destroy()
+	end
+	
 	--Callback parent service
 	self.callback(self)
-	self.Timer:Destroy()
+
 	self.Instance:Destroy()
 	
 	--VERY ugly workaround: __newindex won't detect an existing indexed value change, but calling
@@ -234,14 +239,19 @@ function Notification.new(
 	end
 
 	--Callback for the timer
-	local function timeUp()
-		newNotification:Destroy()
-	end
-
-	newNotification.Timer = Timer.new(newNotification)
-	newNotification.Timer:SetTimer(newNotification.Duration)
-	newNotification.Timer:StartTimer(timeUp)
 	
+	if newNotification.Duration ~= 0 then
+		local function timeUp()
+			newNotification:Destroy()
+		end
+	
+		newNotification.Timer = Timer.new(newNotification)
+		newNotification.Timer:SetTimer(newNotification.Duration)
+		newNotification.Timer:StartTimer(timeUp)
+		
+	end
+	
+
 	--Make the cancel button destroy the notification when pressed. 
 	newNotification.ButtonConnection = 
 		newNotification.CancelButton.MouseButton1Click:Connect(function()

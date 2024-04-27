@@ -31,7 +31,7 @@ is manually canceled.
 @param {string} duration - Time the powerup will last.
 @param {bool} timer - Whether or not to show the timer in the notification.
 ]]
-function PowerupService:GivePowerup(Powerup, cancellable, duration, timerVisible)
+function PowerupService:GivePowerup(Powerup, cancellable, duration, timerVisible, callback)
 	local duration = duration or 10
 	local timer = timerVisible or true
 	local NewPowerup = false
@@ -39,6 +39,7 @@ function PowerupService:GivePowerup(Powerup, cancellable, duration, timerVisible
 	local compatiblePowerup = true
 	local powerupDescription = PowerupDescriptions[Powerup]
 	local CancelConnection
+	self.callback = callback
 	
 	if self.RunningPowerups[Powerup] ~= nil then
 		return
@@ -67,7 +68,7 @@ function PowerupService:GivePowerup(Powerup, cancellable, duration, timerVisible
 	
 
 	local PowerupNotification = NotificationService:CreateNotification(
-		Powerup, "", duration, timerVisible, cancellable, powerupDescription, "First", powerupDestroyed
+		Powerup, "", duration, timerVisible, cancellable, powerupDescription, "First", nil, powerupDestroyed
 	)
 
 
@@ -108,6 +109,7 @@ function PowerupService:RemovePowerup(Powerup, died)
 	for _, Accessory in ipairs(PowerupObject.Accessories) do
 		Accessory:Destroy()
 	end
+	self.callback()
 end
 
 --DEFINITION==========================================================

@@ -21,10 +21,14 @@ function Powerup:Run()
 			return
 		end
 		self.Debounce = true
-		PowerupService:GivePowerup(self.Name, self.Cancellable, self.Duration, self.ShowTimer)
-		PowerupEvent.Event:Wait()
-		task.wait(.25)
-		self.Debounce = false
+		
+		local function powerupCallback()
+			task.wait(.25)
+			self.Debounce = false
+		end
+		
+		PowerupService:GivePowerup(self.Name, self.Cancellable, self.Duration, self.ShowTimer, powerupCallback)
+
 	end)
 
 end

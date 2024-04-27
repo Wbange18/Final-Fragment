@@ -53,7 +53,11 @@ function Marble:Yield()
 	self.Player.Character.Humanoid:ChangeState("Running")
 	self.Player.Character.HumanoidRootPart.Running.Volume = 0.65
 	self.Animation:Stop()
-
+	
+	self.Handle.CanCollide = false
+	Engine.Tools:QuickTween(self.Detail, .5, {Size = Vector3.new(.1,.1,.1), Transparency = 0})
+	Engine.Tools:QuickTween(self.Handle, .5, {Size = Vector3.new(.1,.1,.1)}).Completed:Wait()
+	
 	self.Accessory:Destroy()
 	workspace.CurrentCamera.CameraSubject = self.Player.Character.Head
 	self.Player.Character.Humanoid.WalkSpeed = game.StarterPlayer.CharacterWalkSpeed

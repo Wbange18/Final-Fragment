@@ -17,6 +17,7 @@ Sets the time the timer will start at, or is currently running at.
 @param (number) time - The time to set the timer to.
 ]]
 function NotificationTimer:SetTimer(timerTime)
+	
 	self.Instance.Text = timerTime
 end
 
@@ -27,6 +28,7 @@ Starts the timer for the notification.
 @return (number) time - Time the timer has started from.
 ]]
 function NotificationTimer:StartTimer(callOver)
+	
 	coroutine.wrap(function()
 		pcall(function()
 			while self.Instance.Visible == true and tonumber(self.Instance.Text) > 0 do
@@ -65,6 +67,7 @@ object parameter, which is unusual for single parameter constructors.
 @return {object} newTimer - The new timer for the notification.
 ]]
 function NotificationTimer.new(notification)
+	
 	local newTimer = {}
 	setmetatable(newTimer, NotificationTimer)
 	
