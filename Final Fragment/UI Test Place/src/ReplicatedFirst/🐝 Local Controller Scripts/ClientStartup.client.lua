@@ -30,9 +30,9 @@ newMechanicsFolder.Parent = game.Workspace.CurrentCamera
 MechanicService:StartAllMechanics()
 Engine.Tools:UnlockPlayer()
 
---local Pickaxe = Engine.Resources.Weapons:WaitForChild("Pickaxe")
+local Pickaxe = Engine.Resources.Weapons:WaitForChild("Pickaxe")
 
---WeaponService:GiveWeapon(Pickaxe)
+WeaponService:GiveWeapon(Pickaxe)
 
 --script.Parent:WaitForChild("FirstTrack")
 
