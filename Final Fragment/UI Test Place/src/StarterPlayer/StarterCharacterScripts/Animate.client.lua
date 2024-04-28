@@ -4,7 +4,7 @@ local RightShoulder = Torso:WaitForChild("Right Shoulder")
 local LeftShoulder = Torso:WaitForChild("Left Shoulder")
 local RightHip = Torso:WaitForChild("Right Hip")
 local LeftHip = Torso:WaitForChild("Left Hip")
-local Neck = Torso:WaitForChild("Neck")
+--local Neck = Torso:WaitForChild("Neck")
 local Humanoid = Figure:WaitForChild("Humanoid")
 local pose = "Standing"
 
@@ -75,7 +75,7 @@ local animNames = {
 		{ id = "http://www.roblox.com/asset/?id=129423030", weight = 10 } 
 	},
 }
-local dances = {"dance1", "dance2", "dance3"}
+--local dances = {"dance1", "dance2", "dance3"}
 
 -- Existance in this list signifies that it is an emote, the value indicates if it is a looping emote
 local emoteNames = { wave = false, point = false, dance1 = true, dance2 = true, dance3 = true, laugh = false, cheer = false}
@@ -170,7 +170,7 @@ local jumpAnimDuration = 0.3
 
 local toolTransitionTime = 0.1
 local fallTransitionTime = 0.3
-local jumpMaxLimbVelocity = 0.75
+--local jumpMaxLimbVelocity = 0.75
 
 -- functions
 
@@ -222,7 +222,7 @@ end
 function playAnimation(animName, transitionTime, humanoid) 
 
 	local roll = math.random(1, animTable[animName].totalWeight) 
-	local origRoll = roll
+	--local origRoll = roll
 	local idx = 1
 	while (roll > animTable[animName][idx].weight) do
 		roll = roll - animTable[animName][idx].weight
@@ -279,7 +279,7 @@ end
 function playToolAnimation(animName, transitionTime, humanoid, priority)	 
 
 	local roll = math.random(1, animTable[animName].totalWeight) 
-	local origRoll = roll
+	--local origRoll = roll
 	local idx = 1
 	while (roll > animTable[animName][idx].weight) do
 		roll = roll - animTable[animName][idx].weight
@@ -430,14 +430,14 @@ function animateTool()
 	end
 end
 
-function moveSit()
-	RightShoulder.MaxVelocity = 0.15
-	LeftShoulder.MaxVelocity = 0.15
-	RightShoulder:SetDesiredAngle(3.14 /2)
-	LeftShoulder:SetDesiredAngle(-3.14 /2)
-	RightHip:SetDesiredAngle(3.14 /2)
-	LeftHip:SetDesiredAngle(-3.14 /2)
-end
+--function moveSit()
+--	RightShoulder.MaxVelocity = 0.15
+--	LeftShoulder.MaxVelocity = 0.15
+--	RightShoulder:SetDesiredAngle(3.14 /2)
+--	LeftShoulder:SetDesiredAngle(-3.14 /2)
+--	RightHip:SetDesiredAngle(3.14 /2)
+--	LeftHip:SetDesiredAngle(-3.14 /2)
+--end
 
 local lastTick = 0
 

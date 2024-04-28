@@ -56,7 +56,7 @@ function Notification:Resize(size, instant)
 	}
 
 	--Linear easing style preserves UI proportion when switching focus
-	EngineTools:QuickTween(self.Instance, 1/5, goal, "Linear")
+	EngineTools:QuickTween(self.Instance, 1/5, goal, Enum.EasingStyle.Linear)
 end
 
 --[[Reveal
@@ -89,7 +89,7 @@ function Notification:Hide(waitForTween)
 		Position = UDim2.new(-1, 0, 0, 0)
 	}
 
-	local tween = EngineTools:QuickTween(self.Frame, 1/4, goal, nil, "In")
+	local tween = EngineTools:QuickTween(self.Frame, 1/4, goal, nil, Enum.EasingDirection.In)
 	
 	if waitForTween then
 		tween.Completed:Wait()
@@ -109,7 +109,7 @@ function Notification:Destroy(instantly)
 	if instantly == false then
 		self:Hide(true)
 	end
-	EngineTools:QuickTween(self.Instance, 0.04, {Size = UDim2.new(0,0,0,0)}, "Linear").Completed:Wait()
+	EngineTools:QuickTween(self.Instance, 0.04, {Size = UDim2.new(0,0,0,0)}, Enum.EasingStyle.Linear).Completed:Wait()
 	
 	if self.Duration ~= 0 then
 		self.Timer:Destroy()

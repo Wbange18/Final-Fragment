@@ -66,10 +66,10 @@ Fade the music track.
 ]]
 function Music:Fade(direction, fadeTime)
 	if direction == "In" then
-		EngineTools:QuickTween(self.Instance, fadeTime, {Volume = self.Volume}, "Linear")
+		EngineTools:QuickTween(self.Instance, fadeTime, {Volume = self.Volume}, Enum.EasingStyle.Linear)
 	end
 	if direction == "Out" then
-		EngineTools:QuickTween(self.Instance, fadeTime, {Volume = 0}, "Linear")
+		EngineTools:QuickTween(self.Instance, fadeTime, {Volume = 0}, Enum.EasingStyle.Linear)
 	end
 end
 

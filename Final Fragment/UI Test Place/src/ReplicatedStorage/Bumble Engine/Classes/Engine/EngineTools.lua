@@ -50,9 +50,8 @@ function Tools:QuickTween(item, duration, properties, easingStyle, easingDirecti
 	easingDirection = easingDirection or "Out"
 
 	local info = TweenInfo.new(
-		duration,
-		Enum.EasingStyle[easingStyle],
-		Enum.EasingDirection[easingDirection]
+		easingStyle,
+		easingDirection
 	)
 
 	local tween = TweenService:Create(item, info, properties)
@@ -77,9 +76,9 @@ function Tools:FadeTween(
 	--Optional Arguments
 	item1Properties = item1Properties or {ImageTransparency = 0, Visible = true}
 	item2Properties = item2Properties or {ImageTransparency = 1, Visible = false}
-	easingStyle = easingStyle or "Sine"
-	easingDirection1 = easingDirection1 or "Out"
-	easingDirection2 = easingDirection2 or "In"
+	easingStyle = easingStyle or Enum.EasingStyle.Sine
+	easingDirection1 = easingDirection1 or Enum.EasingDirection.Out
+	easingDirection2 = easingDirection2 or Enum.EasingDirection.In
 
 	Tools:QuickTween(item1, duration, {ImageTransparency = 0, Visible = true},easingStyle ,easingDirection1)
 	Tools:QuickTween(item2, duration, {ImageTransparency = 1, Visible = false}, easingStyle, easingDirection2)
