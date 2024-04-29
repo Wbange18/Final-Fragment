@@ -1,6 +1,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.OrderedList)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
+local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
 local MusicService = require(ReplicatedStorage["Bumble Engine"].Services.MusicService)
 local ContextFrame = {}
 
@@ -103,6 +105,15 @@ function ContextFrame.new()
    setmetatable(newContextFrame, ContextFrame)
    
    newContextFrame.CurrentSet = nil
+   
+   newContextFrame.CollectionSets = OrderedList.new("Ascending")
+   
+   --Compile list of CollectionSets available
+   for i, collectionSet in ipairs(newContextFrame.Instance.CollectionSets:GetChildren()) do
+      if FFDataService:MatchFromSet("GameFlags", collectionSet:GetAttribute("GameFlag")) == true then
+         newContextFrame.CollectionSets:AddItem(collectionSet:GetAttribute("WorldID"), collectionSet)
+      end
+   end
    
    --[[TrackChange
    Listen to MusicService's event for track changes
