@@ -33,7 +33,34 @@ end
 Update the set in case anything changed
 ]]
 function CollectionSet:Update()
+      local RelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Relics"))
    
+   for i, relic in ipairs(RelicValues) do
+      
+      --Preliminary check to see if the relic is hidden
+      if string.match(
+         self.Folder.Contents:GetAttribute("HiddenRelics"), relic
+      ) ~= nil then
+         
+         --If it is a hidden relic, check if the player has obtained it
+         if FFDataService:MatchFromSet("Collectibles", relic) ~= true then
+            continue
+         end
+      end
+      
+      --If the relic is already in the UI, ignore
+      if table.find(self.Collectibles, relic) then
+         return
+      end
+      
+      --Create a new Collectible object and parent it to the contents config object in the folder
+      table.insert(self.Relics, Collectible.new(relic, self.Folder.Contents))
+   end
+   
+   --Create an array that stores the shard values
+   self.Shards = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Shards"))
+   
+   self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", self.Folder.Contents:GetAttribute("Shards"))
    return
 end
 
@@ -43,39 +70,22 @@ end
 Create a new collection set from an existing defined folder
 @param{Folder} CollectionSetFolder - Folder of the set
 ]]
-function CollectionSet.new(CollectionSetFolder: Folder)
-   local newCollectionSet = {}
-   setmetatable(newCollectionSet, CollectionSet)
+function CollectionSet.new(CollectionSetFolder)
+   local self = {}
+   setmetatable(self, CollectionSet)
    
-   newCollectionSet.Folder = CollectionSetFolder
-   newCollectionSet.Relics = {}
+   self.Folder = CollectionSetFolder
+   self.Shards = self.Folder.Contents:GetAttribute("Shards")
    
-   newCollectionSet.Collectibles = {}
-   local RelicValues = EngineTools:CSVToArray(newCollectionSet.Folder.Contents:GetAttribute("Relics"))
+   self.Relics = {}
    
-   for i, relic in ipairs(RelicValues) do
-      
-      --Preliminary check to see if the relic is hidden
-      if string.match(
-         newCollectionSet.Folder.Contents:GetAttribute("HiddenRelics"), relic
-      ) ~= nil then
-         
-         --If it is a hidden relic, check if the player has obtained it
-         if FFDataService:MatchFromSet("Relics", relic) ~= true then
-            continue
-         end
-      end
-      
-      table.insert(newCollectionSet.Relics, Collectible.new(relic, CollectionSetFolder))
-   end
+   self.Collectibles = {}
    
-   newCollectionSet.Shards = EngineTools:CSVToArray(newCollectionSet.Folder.Contents:GetAttribute("Shards"))
+
    
-   --[[Stopping here. Current train of thought:
-   I need to instantiate the UI with the information from the collection set. Should the Frame do that...?
-   ]]
    
-   return newCollectionSet
+   
+   return self
 end
 
 return CollectionSet

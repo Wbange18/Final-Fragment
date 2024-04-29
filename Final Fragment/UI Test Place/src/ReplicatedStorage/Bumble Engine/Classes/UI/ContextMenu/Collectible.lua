@@ -101,7 +101,7 @@ end
 --CONSTRUCTORS
 
 --[[new
-Create a new collectible 
+Create a new collectible
 @param {string} Data - The data of the collectible, I.E. "R32"
 @param {Folder} Parent - Parent folder of the collectible
 ]]

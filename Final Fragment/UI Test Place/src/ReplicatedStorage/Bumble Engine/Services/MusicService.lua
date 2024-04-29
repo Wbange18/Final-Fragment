@@ -1,16 +1,19 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local Music = require(ReplicatedStorage["Bumble Engine"].Classes.Sounds.Music)
 local MusicService = {}
 
 MusicService.__index = MusicService
 
 MusicService.PlayingTracks = {}
+MusicService.CurrentTrack = nil
+
+MusicService.TrackChange = EngineTools:CreateRemote("TrackChange")
 
 --METHODS=====================================================================
 
 --[[Play
-
 @param {object} Track - Track to play
 @param {number} fadeTime - Time to fade to track
 ]]
@@ -21,11 +24,12 @@ function MusicService:Play(Track, fadeTime)
 	TrackObject:Fade("In", TrackObject.FadeTime)
 	MusicService:FadeOthers(TrackObject, TrackObject.FadeTime)
 	
+	MusicService.CurrentTrack = TrackObject
+	
 end
 
 --[[FadeOthers
 Fade all other tracks to put in a new one or stop all. 
-
 @param {object} Track - Track to NOT fade
 @param {number} fadeTime - Time to fade all other tracks
 ]]
