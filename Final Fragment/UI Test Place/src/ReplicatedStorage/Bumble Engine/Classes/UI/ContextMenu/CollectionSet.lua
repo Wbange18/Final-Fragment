@@ -13,11 +13,8 @@ CollectionSet.__index = CollectionSet
 Show the collection set
 ]]
 function CollectionSet:Show()
-   for i, relic in ipairs(self.Relics) do
-      if FFDataService:MatchFromSet("Relics", relic.Value) == true then
-         
-      end
-   end
+   --TODO: Find appropriate locations for relics in the set
+   
    return
 end
 
