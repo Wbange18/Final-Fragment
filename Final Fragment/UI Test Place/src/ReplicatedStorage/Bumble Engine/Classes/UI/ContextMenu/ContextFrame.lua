@@ -4,6 +4,9 @@ local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.Orde
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
 local MusicService = require(ReplicatedStorage["Bumble Engine"].Services.MusicService)
+
+--[[ContextFrame: Class for containing all context UI items. Organizes and executes methods of CollectionSet, Collectible and Spinner classes]]
+
 local ContextFrame = {}
 
 ContextFrame.__index = ContextFrame
@@ -15,7 +18,7 @@ Update data in the current set
 ]]
 function ContextFrame:UpdateData()
    
-   self.Instance["Shards Count"].Content.Text = (
+   self.Instance.Frame["Shards Count"].Content.Text = (
       "Shards: " .. 
       #self.CurrentSet.ObtainedShards .. "/" .. 
       #self.CurrentSet.Shards
@@ -90,7 +93,7 @@ function ContextFrame:AssignNowPlaying()
    
    newText = "Now Playing: " .. MusicService.CurrentTrack.Name
    
-   --TODO: Set newtext to the relative frame
+   self.Instance.Frame["Now Playing"].Content.Text = newText
    return
 end
 
@@ -104,7 +107,11 @@ function ContextFrame.new()
    
    setmetatable(newContextFrame, ContextFrame)
    
+   --For executing methods of the current set
    newContextFrame.CurrentSet = nil
+   
+   --For indexing the set relative to the current frame
+   newContextFrame.CurrentSetKey = 0
    
    newContextFrame.CollectionSets = OrderedList.new("Ascending")
    

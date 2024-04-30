@@ -1,3 +1,6 @@
+
+--[[Spinner: Simple class which provides spin animation features for the ContextFrame class.]]
+
 local Spinner = {}
 
 Spinner.__index = Spinner

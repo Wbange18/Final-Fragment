@@ -2,13 +2,16 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
+
+--[[Collectible: Single collectible with functionality parented to a CollectionSet class of the ContextFrame class.]]
+
 local Collectible = {}
 
 Collectible.__index = Collectible
 
 --METHODS
 
---[[Obtain
+--[[Obtain:
 Show the collectible
 ]]
 function Collectible:Obtain()
@@ -17,11 +20,10 @@ function Collectible:Obtain()
       self.Instance.Relic, 0.5, {ImageColor3 = Color3.new(255,255,255)},
       Enum.EasingStyle.Sine, Enum.EasingDirection.Out
    )
-   
    return
 end
 
---[[UnObtain
+--[[UnObtain:
 Hide the collectible
 ]]
 function Collectible:UnObtain()
@@ -34,7 +36,7 @@ function Collectible:UnObtain()
    return
 end
 
---[[Focus
+--[[Focus:
 Focus the collectible
 ]]
 function Collectible:Focus()
@@ -45,7 +47,7 @@ function Collectible:Focus()
    return
 end
 
---[[UnFocus
+--[[UnFocus:
 Unfocus the collectible
 ]]
 function Collectible:UnFocus()
@@ -56,7 +58,7 @@ function Collectible:UnFocus()
    return
 end
 
---[[Fade
+--[[Fade:
 Fade the collectible, when another is hovered
 ]]
 function Collectible:Fade()
@@ -64,7 +66,7 @@ function Collectible:Fade()
    return
 end
 
---[[UnFade
+--[[UnFade:
 Unfade the collectible, when none others are hovered
 ]]
 function Collectible:UnFade()
@@ -72,7 +74,7 @@ function Collectible:UnFade()
    return
 end
 
---[[Hide
+--[[Hide:
 Completely hide the collectible, tweening to UI center
 ]]
 function Collectible:Hide()
@@ -81,7 +83,7 @@ function Collectible:Hide()
    return
 end
 
---[[Show
+--[[Show:
 Completely show the collectible, tweening to designated UI position
 ]]
 function Collectible:Show()
@@ -89,7 +91,7 @@ function Collectible:Show()
    return
 end
 
---[[Move
+--[[Move:
 Move the UI element
 @param {UDim2} Position - Position to move the UI element to
 ]]
@@ -100,7 +102,7 @@ end
 
 --CONSTRUCTORS
 
---[[new
+--[[new:
 Create a new collectible
 @param {string} Data - The data of the collectible, I.E. "R32"
 @param {Folder} Parent - Parent folder of the collectible

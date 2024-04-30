@@ -1,8 +1,12 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.OrderedList)
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local Collectible = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.Collectible)
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
+
+--[[CollectionSet: Set of Collectible classes and data used to organize data for the ContextFrame class.]]
+
 local CollectionSet = {}
 
 CollectionSet.__index = CollectionSet
@@ -13,7 +17,7 @@ CollectionSet.__index = CollectionSet
 Show the collection set
 ]]
 function CollectionSet:Show()
-   --TODO: Find appropriate locations for relics in the set
+   --TODO: Find appropriate locations for relics in the set. Remember: Polar coordinates
    
    return
 end
@@ -22,6 +26,7 @@ end
 Hide the collection set
 ]]
 function CollectionSet:Hide()
+   --TODO: Return all to center
    
    return
 end
@@ -74,14 +79,10 @@ function CollectionSet.new(CollectionSetFolder)
    self.Folder = CollectionSetFolder
    self.Shards = self.Folder.Contents:GetAttribute("Shards")
    
-   self.Relics = {}
+   self.Relics = OrderedList.new("Ascending")
    
    self.Collectibles = {}
-   
 
-   
-   
-   
    return self
 end
 
