@@ -106,7 +106,7 @@ function DataService:HardWipePlayerData(Player)
 	end
 	local result = false
 	for i, setName in ipairs(DataStructureList) do
-		
+			
 		--Fire the function and compare it to existing result
 		result = self.PlayerDataPacks[Player.UserId]:WipeSet(setName) and result
 	end
@@ -116,9 +116,8 @@ function DataService:HardWipePlayerData(Player)
 	return result
 end
 
---[[AddToSet
+--[[AddToSet:
 Add data to a set.
-
 ]]
 function DataService:AddToSet(dataName, dataValue, Player)
 	if RunService:IsClient() then
@@ -126,29 +125,30 @@ function DataService:AddToSet(dataName, dataValue, Player)
 	end
 	local result = self.PlayerDataPacks[Player.UserId]:AddToSet(dataName, dataValue)
 	if result == true then
+		--Fire data remote for significant changes to data
 		self.DataRemote:FireClient(Player)
 	end
 	return result
 end
 
---[[RemoveFromSet
+--[[RemoveFromSet:
 Remove data from a set.
-
 ]]
 function DataService:RemoveFromSet(dataName, dataValue, Player)
 	if RunService:IsClient() then
+
 		return self.RemoteFunction:InvokeServer("RemoveFromSet", dataName, dataValue)
 	end
 	local result = self.PlayerDataPacks[Player.UserId]:RemoveFromSet(dataName, dataValue)
 	if result == true then
+		--Fire data remote for significant changes to data
 		self.DataRemote:FireClient(Player)
 	end
 	return result
 end
 
---[[MatchFromSet
+--[[MatchFromSet:
 Match data from a set.
-
 ]]
 function DataService:MatchFromSet(dataName, dataValue, Player)
 	if RunService:IsClient() then
@@ -174,7 +174,8 @@ if RunService:IsServer() then
 
 	DataService.RemoteFunction = EngineTools:CreateRemoteFunction("DataRemoteFunction")
 
-	--Define a function directory to reduce per-event workload
+	--Define a function directory for functions called by the remove function handler.
+	--Note: parameter order is arbitrary: dataName, dataValue, Player
 	local directory = {
 		["AddToSet"] = function(dataName, dataValue, Player)
 			return DataService:AddToSet(
@@ -191,8 +192,11 @@ if RunService:IsServer() then
 				dataName, dataValue, Player
 			)
 		end,
-		["SoftWipe"] = function(Player)
+		["SoftWipe"] = function(_,_,Player)
 			return DataService:SoftWipePlayerData(Player)
+		end,
+		["HardWipe"] = function(_,_,Player)
+			return DataService:HardWipePlayerData(Player)
 		end
 	}
 
