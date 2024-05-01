@@ -75,6 +75,24 @@ function DataService:RemovePlayerData(PlayerData)
 	PlayerData = nil
 end
 
+--[[SoftWipePlayerData:
+Reset a player's game data, excluding settings.
+@param {object} PlayerData - Playerdata to wipe
+]]
+function DataService:SoftWipePlayerData(PlayerData)
+	--TODO: COMPLETE THIS
+	return
+end
+
+--[[HardWipePlayerData:
+Completely reset a player's data.
+@param {object} PlayerData - Playerdata to wipe
+]]
+function DataService:HardWipePlayerData(PlayerData)
+	--TODO: COMPLETE THIS
+	return
+end
+
 --[[AddToSet
 Add data to a set.
 

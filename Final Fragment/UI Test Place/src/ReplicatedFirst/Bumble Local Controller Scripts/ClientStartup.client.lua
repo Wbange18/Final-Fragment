@@ -61,14 +61,14 @@ FFNotificationService:CreateNotification(
 	"6", "", 5, true, true, "Gung ho", "Last"
 )
 
-FFDataService:AddToSet("Collectibles", "P56")
-FFDataService:AddToSet("Collectibles", "P56")
-FFDataService:AddToSet("Collectibles", "P56")
-FFDataService:AddToSet("Collectibles", "P56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
 
 
-print(FFDataService:MatchFromSet("Collectibles", "P56"))
+print(FFDataService:MatchFromSet("Collectibles", "R56"))
 
-FFDataService:RemoveFromSet("Collectibles", "P56")
+FFDataService:RemoveFromSet("Collectibles", "R56")
 
-print(FFDataService:MatchFromSet("Collectibles", "P56"))
+print(FFDataService:MatchFromSet("Collectibles", "R56"))
