@@ -79,18 +79,41 @@ end
 Reset a player's game data, excluding settings.
 @param {object} PlayerData - Playerdata to wipe
 ]]
-function DataService:SoftWipePlayerData(PlayerData)
+function DataService:SoftWipePlayerData(Player)
 	--TODO: COMPLETE THIS
-	return
+	if RunService:IsClient() then
+		return self.RemoteFunction:InvokeServer("SoftWipe")
+	end
+	local result = (
+		self.PlayerDataPacks[Player.UserId]:WipeSet("Collectibles") and
+		self.PlayerDataPacks[Player.UserId]:WipeSet("GameFlags") and
+		self.PlayerDataPacks[Player.UserId]:WipeSet("Swords")
+	)
+	if result == true then
+		self.DataRemote:FireClient(Player)
+	end
+	return result
 end
 
 --[[HardWipePlayerData:
 Completely reset a player's data.
 @param {object} PlayerData - Playerdata to wipe
 ]]
-function DataService:HardWipePlayerData(PlayerData)
+function DataService:HardWipePlayerData(Player)
 	--TODO: COMPLETE THIS
-	return
+	if RunService:IsClient() then
+		return self.RemoteFunction:InvokeServer("HardWipe")
+	end
+	local result = false
+	for i, setName in ipairs(DataStructureList) do
+		
+		--Fire the function and compare it to existing result
+		result = self.PlayerDataPacks[Player.UserId]:WipeSet(setName) and result
+	end
+	if result == true then
+		self.DataRemote:FireClient(Player)
+	end
+	return result
 end
 
 --[[AddToSet
@@ -167,6 +190,9 @@ if RunService:IsServer() then
 			return DataService:MatchFromSet(
 				dataName, dataValue, Player
 			)
+		end,
+		["SoftWipe"] = function(Player)
+			return DataService:SoftWipePlayerData(Player)
 		end
 	}
 

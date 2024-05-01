@@ -36,6 +36,16 @@ function PlayerData:MatchFromSet(dataName, dataValue)
 	return result
 end
 
+--[[WipeSet:
+Wipe data from a set.
+@param {string} dataName - name of the set to wipe
+]]
+function PlayerData:WipeSet(dataName)
+	local result = self.DataSets[dataName]:WipeSet()
+	return result
+end
+
+
 --CONSTRUCTORS========================================================
 
 --[[new
