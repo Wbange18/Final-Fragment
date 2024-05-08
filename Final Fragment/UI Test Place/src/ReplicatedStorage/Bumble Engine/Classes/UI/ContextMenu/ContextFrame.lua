@@ -1,6 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.OrderedList)
+local Spinner = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.Spinner)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
 local MusicService = require(ReplicatedStorage["Bumble Engine"].Services.MusicService)
@@ -13,7 +14,7 @@ ContextFrame.__index = ContextFrame
 
 --METHODS
 
---[[UpdateData
+--[[UpdateData:
 Update data in the current set
 ]]
 function ContextFrame:UpdateData()
@@ -27,7 +28,7 @@ function ContextFrame:UpdateData()
    return
 end
 
---[[MoveForwards
+--[[MoveForwards:
 Move to the next collection set, if there is one
 @return {bool} Success - If the frame was able to move
 ]]
@@ -43,7 +44,7 @@ function ContextFrame:MoveForwards()
    return success
 end
 
---[[MoveBackwards
+--[[MoveBackwards:
 Move to the previous collection set, if there is one
 @return {bool} Success - If the frame was able to move
 ]]
@@ -60,7 +61,7 @@ function ContextFrame:MoveBackwards()
    return success
 end
 
---[[ChangeSet
+--[[ChangeSet:
 Change the current collection set
 @param {object} newSet - the new collection set
 ]]
@@ -81,7 +82,7 @@ function ContextFrame:ChangeSet(newSet)
 end
 
 
-   --[[AssignNowPlaying
+   --[[AssignNowPlaying:
 Assign the currently playing track
 ]]
 function ContextFrame:AssignNowPlaying()
@@ -99,7 +100,7 @@ end
 
 --CONSTRUCTORS
 
---[[new
+--[[new:
 Create a new context frame. This only happens once, as the context frame is persistent
 ]]
 function ContextFrame.new()
@@ -122,7 +123,9 @@ function ContextFrame.new()
       end
    end
    
-   --[[TrackChange
+   ContextFrame.Spinner = Spinner.new()
+   
+   --[[TrackChange:
    Listen to MusicService's event for track changes
    @listener
    @event TrackChange

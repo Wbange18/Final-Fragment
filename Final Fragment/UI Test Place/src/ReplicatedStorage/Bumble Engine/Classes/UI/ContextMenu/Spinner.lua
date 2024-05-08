@@ -39,8 +39,8 @@ function Spinner.new()
    
    setmetatable(newSpinner, Spinner)
    
-   newSpinner.ring1 = script.Parent.InnerRing
-   newSpinner.ring2 = script.Parent.OuterRing
+   newSpinner.innerRing = Player.PlayerGui["In-Game UI"].ContextMenu.Frame["Ring Spinner"].InnerRing
+   newSpinner.outerRing = Player.PlayerGui["In-Game UI"].ContextMenu.Frame["Ring Spinner"].OuterRing
    
    --Initialize iterative values
    local playerSpeed = nil
@@ -66,8 +66,8 @@ function Spinner.new()
       angleBackwards = (angleBackwards - speedAdditive) % -180
       
       --Assign the rotation values instantaneously
-      newSpinner.Ring1.Rotation = angleForwards
-      newSpinner.Ring2.Rotation = angleBackwards
+      newSpinner.innerRing.Rotation = angleForwards
+      newSpinner.outerRing.Rotation = angleBackwards
    end)
    
    return newSpinner

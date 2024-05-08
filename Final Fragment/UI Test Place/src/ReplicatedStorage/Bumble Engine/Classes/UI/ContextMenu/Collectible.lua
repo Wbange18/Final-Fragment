@@ -79,7 +79,6 @@ Completely hide the collectible, tweening to UI center
 ]]
 function Collectible:Hide()
    EngineTools:QuickTween(self.Instance, .25, {GroupTransparency = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.In)
-   self:Move(self.centerPosition)
    return
 end
 
@@ -93,10 +92,23 @@ end
 
 --[[Move:
 Move the UI element
-@param {UDim2} Position - Position to move the UI element to
+@param {UDim2} PositionGoal - PositionGoal to move the UI element to
 ]]
-function Collectible:Move(Position: UDim2)
-   Position = Position or self.Location
+function Collectible:Move(PositionGoal, easingStyle: UDim2)
+   PositionGoal = PositionGoal or self.CenterPosition
+   style = easingStyle or "Out"
+   EngineTools:QuickTween(self.Instance, .25, {Position = PositionGoal}, "Back", style)
+   return
+end
+
+--[[Destroy:
+Destroy the collectible object
+]]
+function Collectible:Destroy()
+   self.Instance:Destroy()
+	self.Value = nil
+	self.centerPosition = nil
+	self = nil
    return
 end
 
