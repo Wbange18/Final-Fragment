@@ -65,6 +65,15 @@ function CollectionSet:Hide()
       end)()
    end
    
+   
+   
+   --Remove the preview
+   --NO. Set:Hide should do this.
+   
+   --Spin the ring
+   --NO. Set:Hide should do this.
+   
+   
    return
 end
 
