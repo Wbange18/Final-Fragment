@@ -18,7 +18,6 @@ Show the collection set
 ]]
 function CollectionSet:Show()
    
-   
    local angleSubdivision, relicAngle, relicX, relicY, relicPosition
    
    for i, relic in ipairs(self.Relics:GetList()) do
@@ -79,7 +78,6 @@ function CollectionSet:Update()
    local HiddenRelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("HiddenRelics"))
    
    for i, relic in ipairs(RelicValues) do
-      --Is there a relic object yet?
       
       --Check if the relic exists in the ordered list
       if self.Relics:GetItemByValue(tonumber(relic)) == nil then
@@ -127,6 +125,7 @@ function CollectionSet:Update()
    self.Shards = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Shards"))
    
    self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", self.Folder.Contents:GetAttribute("Shards"))
+   
    return
 end
 

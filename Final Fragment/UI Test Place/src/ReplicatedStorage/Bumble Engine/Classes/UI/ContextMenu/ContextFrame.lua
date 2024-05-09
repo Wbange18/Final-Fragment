@@ -1,6 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.OrderedList)
+local CollectionSet = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.CollectionSet)
 local Spinner = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.Spinner)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
@@ -39,6 +40,8 @@ function ContextFrame:MoveForwards()
    
    --TODO: Find next set, return if none exist
    
+   self.CurrentSet
+   
    self:ChangeSet(newSet)
    
    return success
@@ -74,7 +77,8 @@ function ContextFrame:ChangeSet(newSet)
    
    newSet:Show()
    
-   self.CurrentSet = newSet
+   --Get current set key (but what is the value...?)
+   self.CurrentSet.Instance:GetAttribute("World ID")
    
    self:UpdateData()
    
@@ -119,11 +123,54 @@ function ContextFrame.new()
    --Compile list of CollectionSets available
    for i, collectionSet in ipairs(newContextFrame.Instance.CollectionSets:GetChildren()) do
       if FFDataService:MatchFromSet("GameFlags", collectionSet:GetAttribute("GameFlag")) == true then
-         newContextFrame.CollectionSets:AddItem(collectionSet:GetAttribute("WorldID"), collectionSet)
+         newContextFrame.CollectionSets:AddItem(collectionSet:GetAttribute("WorldID"), CollectionSet.new(collectionSet))
       end
    end
    
-   ContextFrame.Spinner = Spinner.new()
+   newContextFrame.Spinner = Spinner.new()
+   
+   --Change to the world default set
+   newContextFrame:ChangeSet(
+      newContextFrame.CollectionSets:GetItemByValue(
+         ReplicatedStorage["Bumble Engine"]:GetAttribute("World")
+      )
+   )
+   
+   --[[OpenButton:
+   Listen to the OpenButton which expands the UI state
+   @listener
+   @button Frame.OpenButton
+   ]]
+   
+   --[[CloseButton:
+   Listen to the CloseButton which shrinks the UI state
+   @listener
+   @button Frame.CloseButton
+   ]]
+   newContextFrame.Instance.CloseButton.MouseButton1Click:Connect(function()
+
+   end)
+   
+   --[[LeftButton:
+   Listen to the LeftButton which moves to the previous collection set
+   @listener
+   @button Frame.LeftButton
+   ]]
+   
+   --[[RightButton:
+   Listen to the RightButton which moves to the next collection set
+   @listener
+   @button Frame.RightButton
+   ]]
+   
+   --[[DataRemoteFunction:
+   Listen to FFDataService's event for data changes
+   @listener
+   @event DataRemoteFunction
+   ]]
+   Engine:GetResource("DataRemoteFunction").Event:Connect(function()
+      newContextFrame.CurrentSet:Update()
+   end)
    
    --[[TrackChange:
    Listen to MusicService's event for track changes
