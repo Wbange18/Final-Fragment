@@ -54,6 +54,8 @@ function ContextFrame:MoveForwards()
    
    newSet = self.CollectionSets:GetItem(currentLocation + 1)
    
+   self.NextLocation = 
+   
    self:ChangeSet(newSet)
    
    success = true
@@ -95,11 +97,6 @@ Change the current collection set, when menu is open
 function ContextFrame:ChangeSet(newSet)
    local oldSet = self.CurrentSet
    
-   --TODO: I need to add more stuff from old SwapPhaseDetails, including:
-   --Fragments
-   --Preview
-   --Hover states
-   
    if oldSet ~= nil then
       oldSet:Hide()
    end
@@ -128,17 +125,17 @@ function ContextFrame:ExpandMenu()
    self.Instance.OpenButton.Active = false
   
    --Fade in the right button
-   EngineTools:QuickTween(self.Instance.RightButton, .25, ButtonGoal, Enum.EasingStyle.Sine, "In")
+   EngineTools:QuickTween(self.Instance.RightButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
    
    --Fade in the left button
-   EngineTools:QuickTween(self.Instance.LeftButton, .25, ButtonGoal, Enum.EasingStyle.Sine, "In")
+   EngineTools:QuickTween(self.Instance.LeftButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
    
    --Add the close button
    self.Instance.CloseButton.Visible = true
    self.Instance.CloseButton.Active = true
    
    --Change the frame size
-   EngineTools:QuickTween(self.Instance, .25, {Size = UDim2.new(uiMaxSize, 0, uiMaxSize, 0)}, Enum.EasingStyle.Sine, "Out")
+   EngineTools:QuickTween(self.Instance, .25, {Size = UDim2.new(uiMaxSize, 0, uiMaxSize, 0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    
    --Tween out nowPlaying
    EngineTools:QuickTween(
@@ -149,7 +146,7 @@ function ContextFrame:ExpandMenu()
          Position = self.Instance["Now Playing"].Position + UDim2.new(.15, 0, 0, 0)
       },
       Enum.EasingStyle.Sine,
-      "Out"
+      Enum.EasingDirection.Out
    )
    
    --Tween in Shard Count
@@ -161,7 +158,7 @@ function ContextFrame:ExpandMenu()
          Position = self.Instance["Shards Count"].Position - UDim2.new(.15, 0, 0, 0)
       },
       Enum.EasingStyle.Sine,
-      "In"
+      Enum.EasingDirection.In
    )
    
    self.CurrentSet:Show()
@@ -185,17 +182,17 @@ function ContextFrame:RetractMenu()
    self.Instance.CloseButton.Active = false
    
    --Fade out the right button
-   EngineTools:QuickTween(self.Instance.RightButton, .25, ButtonGoal, Enum.EasingStyle.Sine, "Out")
+   EngineTools:QuickTween(self.Instance.RightButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    
    --Fade out the left button
-   EngineTools:QuickTween(self.Instance.LeftButton, .25, ButtonGoal, Enum.EasingStyle.Sine, "Out")
+   EngineTools:QuickTween(self.Instance.LeftButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    
    --Add the open button
    self.Instance.OpenButton.Visible = true
    self.Instance.OpenButton.Active = true
    
    --Change the frame size
-   EngineTools:QuickTween(self.Instance, .25, {Size = UDim2.new(uiMinSize, 0, uiMinSize, 0)}, Enum.EasingStyle.Sine, "Out")
+   EngineTools:QuickTween(self.Instance, .25, {Size = UDim2.new(uiMinSize, 0, uiMinSize, 0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    
    --Tween in nowPlaying
    EngineTools:QuickTween(
@@ -206,7 +203,7 @@ function ContextFrame:RetractMenu()
          Position = self.Instance["Now Playing"].Position - UDim2.new(.15, 0, 0, 0)
       },
       Enum.EasingStyle.Sine,
-      "Out"
+      Enum.EasingDirection.Out
    )
    
    --Tween out Shard Count
@@ -218,7 +215,7 @@ function ContextFrame:RetractMenu()
          Position = self.Instance["Shards Count"].Position + UDim2.new(.15, 0, 0, 0)
       },
       Enum.EasingStyle.Sine,
-      "In"
+      Enum.EasingDirection.In
    )
    
    self.CurrentSet:Hide()

@@ -45,7 +45,7 @@ Quickly create a tween.
 function Tools:QuickTween(item, duration, properties, easingStyle, easingDirection)
 	--Optional Arguments
 	easingStyle = easingStyle or Enum.EasingStyle.Sine
-	easingDirection = easingDirection or "Out"
+	easingDirection = easingDirection or Enum.EasingDirection.Out
 
 	local info = TweenInfo.new(
 		duration,
