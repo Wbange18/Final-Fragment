@@ -16,7 +16,7 @@ Change the spinner's speed
 @param {number} speed - Speed to add to the spinner.
 @param {number} smoothing - Time to smooth the speed over.
 ]]
-function Spinner:Change(speed, smoothing)
+function Spinner:ChangeSpeed(speed, smoothing)
    self.extraSpeed = speed
    if smoothing ~= nil and smoothing ~= 0 then
       coroutine.wrap(function()

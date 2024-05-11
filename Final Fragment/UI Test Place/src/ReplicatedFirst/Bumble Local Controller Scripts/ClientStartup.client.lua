@@ -39,9 +39,8 @@ WeaponService:GiveWeapon(Pickaxe)
 
 --MusicService:Play(script.Parent.FirstTrack.Value)
 
-
 FFNotificationService:CreateNotification(
-	"2", "", 12, true, true, "Gung ho", "First", Color3.new(0.9803921568627451, 0.3058823529411765, 0.3058823529411765)
+	"2", "", 12, true, true, "Gung ho", "First", Color3.new(0.807843, 0.384314, 0.384314)
 )
 
 FFNotificationService:CreateNotification(

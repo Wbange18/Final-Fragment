@@ -40,6 +40,9 @@ function CollectionSet:Show()
       relic:UnHide()
    end
    
+   --Add the preview
+   EngineTools:QuickTween(self.Instance.Preview, .25, {ImageTransparency = 0}, nil, Enum.EasingDirection.Out)
+   
    return
 end
 
@@ -68,11 +71,7 @@ function CollectionSet:Hide()
    
    
    --Remove the preview
-   --NO. Set:Hide should do this.
-   
-   --Spin the ring
-   --NO. Set:Hide should do this.
-   
+   EngineTools:QuickTween(self.Instance.Preview, .25, {ImageTransparency = 1}, nil, Enum.EasingDirection.In)
    
    return
 end
@@ -148,7 +147,7 @@ function CollectionSet.new(CollectionSetFolder)
    local newCollectionSet = {}
    setmetatable(newCollectionSet, CollectionSet)
    
-   newCollectionSet.Folder = CollectionSetFolder
+   newCollectionSet.Instance = CollectionSetFolder
    newCollectionSet.Shards = newCollectionSet.Folder.Contents:GetAttribute("Shards")
    
    newCollectionSet.Relics = OrderedList.new("Ascending")

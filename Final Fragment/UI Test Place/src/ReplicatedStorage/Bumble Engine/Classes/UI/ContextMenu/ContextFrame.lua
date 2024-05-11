@@ -5,6 +5,7 @@ local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.En
 local CollectionSet = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.CollectionSet)
 local Spinner = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.Spinner)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
+local CollectibleDataList = require(ReplicatedStorage["Bumble Engine"].Resources.Lists.CollectibleDataList)
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
 local MusicService = require(ReplicatedStorage["Bumble Engine"].Services.MusicService)
 
@@ -31,7 +32,63 @@ function ContextFrame:UpdateData()
       #self.CurrentSet.ObtainedShards .. "/" .. 
       #self.CurrentSet.Shards
    )
+   self.Instance.Frame["Shards Count"].Header.Text = self.CurrentSet.Instance.Name
    
+   if self.CurrentLocation + 1 >= self.CollectionSets:GetLength() then
+      --Fade out the right button
+      EngineTools:QuickTween(
+         self.Instance.RightButton,
+         .25,
+         {
+            ImageTransparency = 1,
+            Visible = false,
+            Active = false
+         }, 
+         Enum.EasingStyle.Sine,
+         Enum.EasingDirection.In
+      )
+   else
+      --Fade in the right button
+      EngineTools:QuickTween(
+         self.Instance.RightButton,
+         .25,
+         {
+            ImageTransparency = 0,
+            Visible = true,
+            Active = true
+         }, 
+         Enum.EasingStyle.Sine,
+         Enum.EasingDirection.Out
+      )      
+   end
+   
+   if self.CurrentLocation - 1 <= 0 then
+      --Fade out the left button
+      EngineTools:QuickTween(
+         self.Instance.LeftButton,
+         .25,
+         {
+            ImageTransparency = 1,
+            Visible = false,
+            Active = false
+         },
+         Enum.EasingStyle.Sine,
+         Enum.EasingDirection.In
+      )
+   else
+      --Fade in the left button
+      EngineTools:QuickTween(
+         self.Instance.LeftButton,
+         .25,
+         {
+            ImageTransparency = 0,
+            Visible = true,
+            Active = true
+         },
+         Enum.EasingStyle.Sine,
+         Enum.EasingDirection.Out
+      )
+   end
    return
 end
 
@@ -44,19 +101,21 @@ function ContextFrame:MoveForwards()
    
    local newSet = nil
    
-   local currentLocation = self.CollectionSets:GetKey(
-      self.CurrentSet.Instance:GetAttribute("World ID")
+   self.CurrentLocation = self.CurrentLocation or self.CollectionSets:GetKey(
+      self.CurrentSet.Instance:GetAttribute("WorldID")
    )
    
-   if currentLocation <= 0 or self.Hidden == true then
+   if self.CurrentLocation <= 0 or self.Hidden == true then
       return success
    end
    
-   newSet = self.CollectionSets:GetItem(currentLocation + 1)
+   newSet = self.CollectionSets:GetItem(self.CurrentLocation + 1)
    
-   self.NextLocation = 
+   self.CurrentLocation += 1
    
    self:ChangeSet(newSet)
+   
+   self.Spinner:ChangeSpeed(self.SpinnerSpeed)
    
    success = true
    
@@ -73,17 +132,21 @@ function ContextFrame:MoveBackwards()
    
    local newSet = nil
    
-   local currentLocation = self.CollectionSets:GetKey(
+   self.CurrentLocation = self.CurrentLocation or self.CollectionSets:GetKey(
       self.CurrentSet.Instance:GetAttribute("World ID")
    )
    
-   if currentLocation >= self.CollectionSets:GetLength() or self.Hidden == true then
+   if self.CurrentLocation >= self.CollectionSets:GetLength() or self.Hidden == true then
       return success
    end
    
-   newSet = self.CollectionSets:GetItem(currentLocation - 1)
+   newSet = self.CollectionSets:GetItem(self.CurrentLocation - 1)
+   
+   self.CurrentLocation -= 1
    
    self:ChangeSet(newSet)
+   
+   self.Spinner:ChangeSpeed(self.SpinnerSpeed)
    
    success = true
    
@@ -161,7 +224,11 @@ function ContextFrame:ExpandMenu()
       Enum.EasingDirection.In
    )
    
+   self.Spinner:ChangeSpeed(self.SpinnerSpeed)
+   
    self.CurrentSet:Show()
+   
+   self:UpdateData()
    
    return
 end
@@ -218,7 +285,11 @@ function ContextFrame:RetractMenu()
       Enum.EasingDirection.In
    )
    
+   self.Spinner:ChangeSpeed(self.SpinnerSpeed)
+   
    self.CurrentSet:Hide()
+   
+   self:UpdateData()
    
    return
 end
@@ -252,10 +323,12 @@ function ContextFrame.new()
    --For executing methods of the current set
    newContextFrame.CurrentSet = nil
    
+   newContextFrame.CurrentLocation = nil
+   
    newContextFrame.Instance = Player.PlayerGui["In-Game UI"].ContextMenu.Frame
    
    --For indexing the set relative to the current frame
-   newContextFrame.CurrentSetKey = 0
+   newContextFrame.CurrentLocation = 0
    
    newContextFrame.CollectionSets = OrderedList.new("Ascending")
    
@@ -270,8 +343,14 @@ function ContextFrame.new()
    
    newContextFrame.Spinner = Spinner.new()
    
+   newContextFrame.SpinnerSpeed = 10
+   
    --Change to the world default set
    newContextFrame.CurrentSet = newContextFrame.CollectionSets:GetItemByValue(
+      ReplicatedStorage["Bumble Engine"]:GetAttribute("World")
+   )
+   
+   newContextFrame.CurrentLocation = newContextFrame.CollectionSets:GetKey(
       ReplicatedStorage["Bumble Engine"]:GetAttribute("World")
    )
    
@@ -313,6 +392,7 @@ function ContextFrame.new()
    ]]
    Engine:GetResource("DataRemoteFunction").Event:Connect(function()
       newContextFrame.CurrentSet:Update()
+      newContextFrame:UpdateData()
    end)
    
    --[[TrackChange:

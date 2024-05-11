@@ -126,7 +126,7 @@ function Collectible.new(Data: string, Parent: Folder)
    newCollectible.Focused = false
    newCollectible.centerPosition = UDim2.new(0.5,0,0.5,0)
    newCollectible.Instance = Engine:GetResource("Reference Relic"):Clone()
-   
+
    newCollectible.Instance.Name = Data
    
    newCollectible.Instance.Parent = Parent
