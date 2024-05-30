@@ -70,11 +70,11 @@ function JumpPad:Jump()
 	
 	--Maybe I could make this height based, so the spring flung the pad at greater height goals
 	coroutine.wrap(function()
-		EngineTools:QuickTween(
+		EngineTools.QuickTween(
 			self.Instance.Top, .25, {Position = NewPosition},
 			Enum.EasingStyle.Quad, Enum.EasingDirection.Out
 		).Completed:Wait()
-		EngineTools:QuickTween(
+		EngineTools.QuickTween(
 			self.Instance.Top, .3, {Position = self.StartPosition},
 			Enum.EasingStyle.Sine, Enum.EasingDirection.In
 		)
@@ -88,7 +88,7 @@ function JumpPad:Jump()
 	
 	coroutine.wrap(function()
 		local Time = 1 * self.Height / 100
-		EngineTools:QuickTween(
+		EngineTools.QuickTween(
 			trail.Handle.Trail, Time, {Lifetime = 0},
 			Enum.EasingStyle.Sine, Enum.EasingDirection.In
 		)

@@ -39,16 +39,16 @@ function Notification:Resize(size, instant)
 		["Large"] = Notification.MaxSize
 	}
 	if size == "Small" then
-		EngineTools:FadeTween(self.Frame.SmallNotification, self.Frame.LargeNotification, tweenTime)
-		EngineTools:QuickTween(self.Frame.MinSubject, tweenTime, {TextTransparency = 0})
-		EngineTools:QuickTween(self.Frame.Content, tweenTime, {TextTransparency = 1})
-		EngineTools:QuickTween(self.Frame.Subject, tweenTime, {TextTransparency = 1})
+		EngineTools.FadeTween(self.Frame.SmallNotification, self.Frame.LargeNotification, tweenTime)
+		EngineTools.QuickTween(self.Frame.MinSubject, tweenTime, {TextTransparency = 0})
+		EngineTools.QuickTween(self.Frame.Content, tweenTime, {TextTransparency = 1})
+		EngineTools.QuickTween(self.Frame.Subject, tweenTime, {TextTransparency = 1})
 
 	elseif size == "Large" then
-		EngineTools:FadeTween(self.Frame.LargeNotification, self.Frame.SmallNotification, tweenTime)
-		EngineTools:QuickTween(self.Frame.MinSubject, tweenTime, {TextTransparency = 1})
-		EngineTools:QuickTween(self.Frame.Content, tweenTime, {TextTransparency = 0})
-		EngineTools:QuickTween(self.Frame.Subject, tweenTime, {TextTransparency = 0})
+		EngineTools.FadeTween(self.Frame.LargeNotification, self.Frame.SmallNotification, tweenTime)
+		EngineTools.QuickTween(self.Frame.MinSubject, tweenTime, {TextTransparency = 1})
+		EngineTools.QuickTween(self.Frame.Content, tweenTime, {TextTransparency = 0})
+		EngineTools.QuickTween(self.Frame.Subject, tweenTime, {TextTransparency = 0})
 	end
 
 	local goal = {
@@ -56,7 +56,7 @@ function Notification:Resize(size, instant)
 	}
 
 	--Linear easing style preserves UI proportion when switching focus
-	EngineTools:QuickTween(self.Instance, 1/5, goal, Enum.EasingStyle.Linear)
+	EngineTools.QuickTween(self.Instance, 1/5, goal, Enum.EasingStyle.Linear)
 end
 
 --[[Reveal
@@ -70,7 +70,7 @@ function Notification:Reveal(waitForTween)
 		Position = UDim2.new(0, 0, 0, 0)
 	}
 
-	local tween = EngineTools:QuickTween(self.Frame, 1/3, goal)
+	local tween = EngineTools.QuickTween(self.Frame, 1/3, goal)
 	
 	if waitForTween then 
 		tween.Completed:Wait()
@@ -89,7 +89,7 @@ function Notification:Hide(waitForTween)
 		Position = UDim2.new(-1, 0, 0, 0)
 	}
 
-	local tween = EngineTools:QuickTween(self.Frame, 1/4, goal, nil, Enum.EasingDirection.In)
+	local tween = EngineTools.QuickTween(self.Frame, 1/4, goal, nil, Enum.EasingDirection.In)
 	
 	if waitForTween then
 		tween.Completed:Wait()
@@ -109,7 +109,7 @@ function Notification:Destroy(instantly)
 	if instantly == false then
 		self:Hide(true)
 	end
-	EngineTools:QuickTween(self.Instance, 0.04, {Size = UDim2.new(0,0,0,0)}, Enum.EasingStyle.Linear).Completed:Wait()
+	EngineTools.QuickTween(self.Instance, 0.04, {Size = UDim2.new(0,0,0,0)}, Enum.EasingStyle.Linear).Completed:Wait()
 	
 	if self.Duration ~= 0 then
 		self.Timer:Destroy()

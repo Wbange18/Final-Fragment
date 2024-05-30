@@ -9,7 +9,7 @@ MusicService.__index = MusicService
 MusicService.PlayingTracks = {}
 MusicService.CurrentTrack = nil
 
-MusicService.TrackChange = EngineTools:CreateRemote("TrackChange")
+MusicService.TrackChange = EngineTools.CreateRemote("TrackChange")
 
 --METHODS=====================================================================
 

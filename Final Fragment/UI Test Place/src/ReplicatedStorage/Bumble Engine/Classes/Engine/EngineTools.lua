@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
---[[EngineTools: Common blocks of code to be quickly accessed by all scripts.]]
+--[[EngineTools. Common blocks of code to be quickly accessed by all scripts.]]
 
 local Tools = {}
 --Tool variables
@@ -161,7 +161,7 @@ Get the character of the local player, or by a userId.
 function Tools:GetCharacter(userId)
 	local Player
 	
-	Player = self:GetPlayer(userId)
+	Player = Tools.GetPlayer(userId)
 
 	return Player.Character or Player.CharacterAdded:Wait()
 end
@@ -265,6 +265,19 @@ to remember.
 function Tools:CSVToArray(stringCSV)
 	local array = string.split(stringCSV, ",")
 	return array
+end
+
+--[[InstanceTableToCSV:
+Return the names of all instances in a table as a comma-separated list.
+@param {table} Table - Table of instances
+@return {string} stringCSV - String of CSV
+]]
+function Tools:InstanceTableToCSV()
+	local stringCSV = ""
+	for i, instance in pairs(table) do
+		stringCSV ..= instance.Name .. ","
+	end
+	return stringCSV
 end
 
 --[[GetCenterOfMass:

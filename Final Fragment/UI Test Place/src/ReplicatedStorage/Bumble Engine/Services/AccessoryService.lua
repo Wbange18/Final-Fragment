@@ -8,7 +8,7 @@ local AccessoryService = {}
 AccessoryService.__index = AccessoryService
 
 if RunService:IsServer() then
-	AccessoryService.RemoteFunction = EngineTools:CreateRemoteFunction("AccessoryRemoteFunction")
+	AccessoryService.RemoteFunction = EngineTools.CreateRemoteFunction("AccessoryRemoteFunction")
 end
 
 if RunService:IsClient() then
@@ -35,7 +35,7 @@ function AccessoryService:AddAccessory(accessory, createM6D, player)
 	player.Character.Humanoid:AddAccessory(newAccessory)
 	
 	if createM6D == true then
-		EngineTools:WeldToM6D(newAccessory.Handle.AccessoryWeld)
+		EngineTools.WeldToM6D(newAccessory.Handle.AccessoryWeld)
 	end
 	
 	return newAccessory

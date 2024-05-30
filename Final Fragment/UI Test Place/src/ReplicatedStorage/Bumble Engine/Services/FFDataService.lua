@@ -166,13 +166,13 @@ Iterate through data sets and determine leader stats.
 --SERVER===============================================================
 
 if RunService:IsServer() then
-	DataService.DataRemote = EngineTools:CreateRemote("DataEvent")
+	DataService.DataRemote = EngineTools.CreateRemote("DataEvent")
 	
 	for _, dataSetName in ipairs(DataStructureList) do
 		DataService.DataStores[dataSetName] = DataStoreService:GetDataStore(dataSetName)
 	end
 
-	DataService.RemoteFunction = EngineTools:CreateRemoteFunction("DataRemoteFunction")
+	DataService.RemoteFunction = EngineTools.CreateRemoteFunction("DataRemoteFunction")
 
 	--Define a function directory for functions called by the remove function handler.
 	--Note: parameter order is arbitrary: dataName, dataValue, Player

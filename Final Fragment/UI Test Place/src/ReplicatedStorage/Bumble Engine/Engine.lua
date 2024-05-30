@@ -35,7 +35,7 @@ Engine.Services = setmetatable({}, {
 	__index = function(tableInput, keyInput)
 		local output
 		local status, message = pcall(function()
-			output = require(EngineTools:Find(Bumble.Services, keyInput))
+			output = require(EngineTools.Find(Bumble.Services, keyInput))
 			tableInput[keyInput] = output
 		end)
 		if status == false then
@@ -50,7 +50,7 @@ Engine.Classes = setmetatable({}, {
 	__index = function(tableInput, keyInput)
 		local output
 		local status, message = pcall(function()
-			output = require(EngineTools:Find(Bumble.Classes, keyInput))
+			output = require(EngineTools.Find(Bumble.Classes, keyInput))
 			tableInput[keyInput] = output
 		end)
 		if status == false then
@@ -75,7 +75,7 @@ Return a resource instance from the Bumble Engine's Resources.
 function Engine:GetResource(resourceName)
 	local Resource
 
-	Resource = EngineTools:Find(Bumble.Resources, resourceName)
+	Resource = EngineTools.Find(Bumble.Resources, resourceName)
 	if not Resource then
 		print ("Resource search failed.")
 	end

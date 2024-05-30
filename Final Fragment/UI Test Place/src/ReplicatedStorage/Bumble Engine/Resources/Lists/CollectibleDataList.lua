@@ -13,7 +13,7 @@ local CollectibleDataList = {}
 --Allow nil requests, throwing a warning when this occurs.
 CollectibleDataList.__index = function(table, key)
    
-   rawset(table, key, )
+   rawset(table, key)
    
    return rawget(table, key)
 end
@@ -43,34 +43,6 @@ CDL.F8.imageAsset = "rbxassetid://6343674539"
 CDL.F9.imageAsset = "rbxassetid://6343674485"
 
 
-
-
-
-
-
-
-
-CDL.F1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 --Note: F10 doesn't need an image, as this won't be revealed.
 
 --RELICS-------------------------------------------------------------
@@ -80,7 +52,7 @@ CDL.R2.levelName = "Sunken Tracks"
 CDL.R3.levelName = "Shattered Settlement"
 CDL.R4.levelName = "Cave In! -Deprecated"
 CDL.R5.levelName = ""
-
+CDL.R1.imageAsset = "http:/whatever.fortnite"
 --SHARDS------------------------------------------------------------
 
 

@@ -1,3 +1,4 @@
+local AnimationFromVideoCreatorService = game:GetService("AnimationFromVideoCreatorService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.OrderedList)
@@ -38,11 +39,28 @@ function CollectionSet:Show()
       
       relic:Move(relicPosition)
       relic:UnHide()
+      
+      --Recursive function which waits for the mouse to leave, then waits for the mouse to enter.
+      local function MouseEnter()
+         
+         relic.Focus()
+         
+         relic.Instance.MouseLeave:Once(function()
+            
+            relic.UnFocus()
+            
+            --Recurse the function, assigning the connection value.
+            relic.connection = relic.Instance.MouseEnter:Once(MouseEnter)
+         end)
+      end
+      
+      --Run MouseEnter once when the mouse enters the frame.
+      relic.EnterConnection = relic.Instance.MouseEnter:Once(MouseEnter)
+      
    end
    
    --Add the preview
-   EngineTools:QuickTween(self.Instance.Preview, .25, {ImageTransparency = 0}, nil, Enum.EasingDirection.Out)
-   
+   EngineTools.QuickTween(self.Instance.Preview, .25, {ImageTransparency = 0}, nil, Enum.EasingDirection.Out)
    return
 end
 
@@ -52,6 +70,10 @@ Hide the collection set
 function CollectionSet:Hide()
    
    for i, relic in ipairs(self.Relics:GetList()) do
+      
+      if relic.connection ~= nil then
+         relic.connection:Disconnect()
+      end
       
       --If first parameter is blank, this uses internal centerposition value
       relic:Move(nil, "In")
@@ -71,7 +93,7 @@ function CollectionSet:Hide()
    
    
    --Remove the preview
-   EngineTools:QuickTween(self.Instance.Preview, .25, {ImageTransparency = 1}, nil, Enum.EasingDirection.In)
+   EngineTools.QuickTween(self.Instance.Preview, .25, {ImageTransparency = 1}, nil, Enum.EasingDirection.In)
    
    return
 end
@@ -81,9 +103,9 @@ Update the set in case anything changed, checking if hidden relics are found, an
 obtained relics.
 ]]
 function CollectionSet:Update()
-   local RelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Relics"))
+   local RelicValues = EngineTools.CSVToArray(self.Folder.Contents:GetAttribute("Relics"))
    
-   local HiddenRelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("HiddenRelics"))
+   local HiddenRelicValues = EngineTools.CSVToArray(self.Folder.Contents:GetAttribute("HiddenRelics"))
    
    for i, relic in ipairs(RelicValues) do
       
@@ -122,6 +144,7 @@ function CollectionSet:Update()
             newHiddenRelic:Obtain()
             continue
       end
+      
       --If exists, destroy and UnObtain
       if hiddenRelicObject ~= nil then
          hiddenRelicObject:UnObtain()
@@ -129,8 +152,39 @@ function CollectionSet:Update()
       end
    end
    
+   if 
+   --Fragment is owned by player
+      FFDataService:MatchFromSet(
+         "Collectibles", self.Folder.Contents:GetAttribute("Fragment")
+      )
+      
+      and
+      --Fragment not visually obtained
+      self.Folder.Fragment.ImageColor == Color3.new(0,0,0)
+      
+   then
+      --Quick tween the fragment in
+      EngineTools.QuickTween(self.Folder.Fragment, 0.2, {ImageColor = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+   end
+   
+   if
+   --Fragment is not owned by player
+      FFDataService:MatchFromSet(
+         "Collectibles", self.Folder.Contents:GetAttribute("Fragment")
+      ) ~= true
+      
+      and
+      --Fragment is visually obtained
+      self.Folder.Fragment.ImageColor == Color3.new(255,255,255)
+      
+   then
+      EngineTools.QuickTween(self.Folder.Fragment, 0.2, {ImageColor = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+   end
+   
+   warn("Don't forget to set the attribute Fragments to Fragment")
+   
    --Create an array that stores the shard values
-   self.Shards = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Shards"))
+   self.Shards = EngineTools.CSVToArray(self.Folder.Contents:GetAttribute("Shards"))
    
    self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", self.Folder.Contents:GetAttribute("Shards"))
    

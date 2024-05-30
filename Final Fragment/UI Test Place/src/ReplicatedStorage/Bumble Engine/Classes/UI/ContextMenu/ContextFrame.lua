@@ -36,7 +36,7 @@ function ContextFrame:UpdateData()
    
    if self.CurrentLocation + 1 >= self.CollectionSets:GetLength() then
       --Fade out the right button
-      EngineTools:QuickTween(
+      EngineTools.QuickTween(
          self.Instance.RightButton,
          .25,
          {
@@ -49,7 +49,7 @@ function ContextFrame:UpdateData()
       )
    else
       --Fade in the right button
-      EngineTools:QuickTween(
+      EngineTools.QuickTween(
          self.Instance.RightButton,
          .25,
          {
@@ -64,7 +64,7 @@ function ContextFrame:UpdateData()
    
    if self.CurrentLocation - 1 <= 0 then
       --Fade out the left button
-      EngineTools:QuickTween(
+      EngineTools.QuickTween(
          self.Instance.LeftButton,
          .25,
          {
@@ -77,7 +77,7 @@ function ContextFrame:UpdateData()
       )
    else
       --Fade in the left button
-      EngineTools:QuickTween(
+      EngineTools.QuickTween(
          self.Instance.LeftButton,
          .25,
          {
@@ -188,20 +188,20 @@ function ContextFrame:ExpandMenu()
    self.Instance.OpenButton.Active = false
   
    --Fade in the right button
-   EngineTools:QuickTween(self.Instance.RightButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
+   EngineTools.QuickTween(self.Instance.RightButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
    
    --Fade in the left button
-   EngineTools:QuickTween(self.Instance.LeftButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
+   EngineTools.QuickTween(self.Instance.LeftButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
    
    --Add the close button
    self.Instance.CloseButton.Visible = true
    self.Instance.CloseButton.Active = true
    
    --Change the frame size
-   EngineTools:QuickTween(self.Instance, .25, {Size = UDim2.new(uiMaxSize, 0, uiMaxSize, 0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+   EngineTools.QuickTween(self.Instance, .25, {Size = UDim2.new(uiMaxSize, 0, uiMaxSize, 0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    
    --Tween out nowPlaying
-   EngineTools:QuickTween(
+   EngineTools.QuickTween(
       self.Instance["Now Playing"], 
       0.25,
       {
@@ -213,7 +213,7 @@ function ContextFrame:ExpandMenu()
    )
    
    --Tween in Shard Count
-   EngineTools:QuickTween(
+   EngineTools.QuickTween(
       self.Instance["Shards Count"],
       0.25,
       {
@@ -249,20 +249,20 @@ function ContextFrame:RetractMenu()
    self.Instance.CloseButton.Active = false
    
    --Fade out the right button
-   EngineTools:QuickTween(self.Instance.RightButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+   EngineTools.QuickTween(self.Instance.RightButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    
    --Fade out the left button
-   EngineTools:QuickTween(self.Instance.LeftButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+   EngineTools.QuickTween(self.Instance.LeftButton, .25, ButtonGoal, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    
    --Add the open button
    self.Instance.OpenButton.Visible = true
    self.Instance.OpenButton.Active = true
    
    --Change the frame size
-   EngineTools:QuickTween(self.Instance, .25, {Size = UDim2.new(uiMinSize, 0, uiMinSize, 0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+   EngineTools.QuickTween(self.Instance, .25, {Size = UDim2.new(uiMinSize, 0, uiMinSize, 0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    
    --Tween in nowPlaying
-   EngineTools:QuickTween(
+   EngineTools.QuickTween(
       self.Instance["Now Playing"], 
       0.25,
       {
@@ -274,7 +274,7 @@ function ContextFrame:RetractMenu()
    )
    
    --Tween out Shard Count
-   EngineTools:QuickTween(
+   EngineTools.QuickTween(
       self.Instance["Shards Count"],
       0.25,
       {

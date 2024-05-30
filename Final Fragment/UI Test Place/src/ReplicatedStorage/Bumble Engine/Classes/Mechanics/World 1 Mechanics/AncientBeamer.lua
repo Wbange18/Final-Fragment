@@ -18,7 +18,7 @@ function Beamer:Run()
 		while self.Running do
 			self.Hinge.TargetAngle = self.StartAngle
 			self.Hinge.AngularSpeed = self.AngularSpeed
-			local BeamTween = EngineTools:QuickTween(
+			local BeamTween = EngineTools.QuickTween(
 				self.BeamAttachment2, .5, {Position = Vector3.new(-self.Length,0,0)}, 
 				Enum.EasingStyle.Quint, Enum.EasingDirection.Out
 			)
@@ -40,7 +40,7 @@ function Beamer:Run()
 			BeamTween.Completed:Wait()
 			self.Hinge.TargetAngle = self.EndAngle
 			task.wait(self.RotateTime)
-			BeamTween = EngineTools:QuickTween(
+			BeamTween = EngineTools.QuickTween(
 				self.BeamAttachment2, .5, {Position = Vector3.new(0,0,0)}, 
 				Enum.EasingStyle.Quint, Enum.EasingDirection.In
 			)

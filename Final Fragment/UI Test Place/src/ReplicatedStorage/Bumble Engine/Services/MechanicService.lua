@@ -128,7 +128,7 @@ function MechanicService:SetID(Mechanic)
 		return ID
 	end
 	
-	Mechanic:SetAttribute("ID", EngineTools:GenerateID(4))
+	Mechanic:SetAttribute("ID", EngineTools.GenerateID(4))
 	
 	ID = Mechanic:GetAttribute("ID")
 	
@@ -146,10 +146,10 @@ function MechanicService:CheckData(Mechanic)
 	local NegativeData = {}
 	
 	if Mechanic:GetAttribute("PositiveData") ~= nil then
-		PositiveData = EngineTools:CSVToArray(Mechanic:GetAttribute("PositiveData"))
+		PositiveData = EngineTools.CSVToArray(Mechanic:GetAttribute("PositiveData"))
 	end
 	if Mechanic:GetAttribute("NegativeData") ~= nil then
-		NegativeData = EngineTools:CSVToArray(Mechanic:GetAttribute("NegativeData"))
+		NegativeData = EngineTools.CSVToArray(Mechanic:GetAttribute("NegativeData"))
 	end
 	
 	if PositiveData[1] ~= "" and PositiveData[1] ~= nil then

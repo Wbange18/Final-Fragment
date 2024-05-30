@@ -8,7 +8,7 @@ local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.En
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 
 
-EngineTools:LockPlayer()
+EngineTools.LockPlayer()
 
 Engine:InitializeClasses("Build Client")
 Engine:InitializeServices("Run Client")
@@ -29,7 +29,7 @@ MechanicsFolder:Destroy()
 newMechanicsFolder.Parent = game.Workspace.CurrentCamera
 
 MechanicService:StartAllMechanics()
-EngineTools:UnlockPlayer()
+EngineTools.UnlockPlayer()
 
 local Pickaxe = Engine.Resources.Weapons:WaitForChild("Pickaxe")
 

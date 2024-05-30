@@ -53,7 +53,7 @@ Fetch an item's key
 ]]
 function OrderedList:GetKey(Value)
 	
-	return EngineTools:GetKey(self.OrderedContents, Value)
+	return EngineTools.GetKey(self.OrderedContents, Value)
 end
 
 --[[GetItemByValue:
@@ -62,7 +62,7 @@ Fetch an item by value instead of key
 @return {object} item - Original item from dictionary
 ]]
 function OrderedList:GetItemByValue(Value)
-	return self:GetItem(EngineTools:GetKey(self.OrderedContents, Value))
+	return self:GetItem(EngineTools.GetKey(self.OrderedContents, Value))
 end
 
 --[[GetLength
@@ -71,7 +71,7 @@ Get the length of the dictionary.
 @return {number} length - Length of the table
 ]]
 function OrderedList:GetLength()
-	return EngineTools:GetDictLength(self.OrderedContents)
+	return EngineTools.GetDictLength(self.OrderedContents)
 end
 
 --[[GetList

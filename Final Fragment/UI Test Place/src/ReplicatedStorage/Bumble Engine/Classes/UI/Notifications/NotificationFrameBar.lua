@@ -13,7 +13,7 @@ The methods here are self explanatory and require no documentation.
 function FrameBar:Reveal()
 	--Increase the transparency of the detail bars
 	for i, child in ipairs(self.Instance:GetChildren()) do
-		EngineTools:QuickTween(
+		EngineTools.QuickTween(
 			child,
 			1/4,
 			{Visible = true, BackgroundTransparency = 0}
@@ -21,7 +21,7 @@ function FrameBar:Reveal()
 	end
 
 	--Tween the entire bar out
-	EngineTools:QuickTween(
+	EngineTools.QuickTween(
 		self.Instance, 1/4, {
 			Position = UDim2.new(
 				0, 0, 
@@ -35,7 +35,7 @@ function FrameBar:Hide()
 	
 	--Reduce transparency of the detail bars
 	for i, child in ipairs(self.Instance:GetChildren()) do
-		EngineTools:QuickTween(
+		EngineTools.QuickTween(
 			child, 
 			1/4, 
 			{Visible = false, BackgroundTransparency = 1}
@@ -43,7 +43,7 @@ function FrameBar:Hide()
 	end
 
 	--Tween the entire bar in
-	EngineTools:QuickTween(
+	EngineTools.QuickTween(
 		self.Instance, 1/4, {
 			Position = UDim2.new(
 				-0.139 * 1, 0, 

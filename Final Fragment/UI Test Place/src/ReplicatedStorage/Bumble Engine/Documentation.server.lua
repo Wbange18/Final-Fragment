@@ -55,7 +55,7 @@ Return either a folder instance or module depending on the input name.
 function Engine:GetClass(ClassName)
 	local Class
 
-	Class = EngineTools:Find(Bumble.Classes, ClassName)
+	Class = EngineTools.Find(Bumble.Classes, ClassName)
 	if not Class then
 		print ("Class search failed.")
 	end
@@ -73,7 +73,7 @@ Return a service instance from the Bumble Engine's Services.
 function Engine:GetService(serviceName)
 	local Service
 
-	Service = EngineTools:Find(Bumble.Services, serviceName)
+	Service = EngineTools.Find(Bumble.Services, serviceName)
 	if not Service then
 		print ("Service search failed.")
 	end

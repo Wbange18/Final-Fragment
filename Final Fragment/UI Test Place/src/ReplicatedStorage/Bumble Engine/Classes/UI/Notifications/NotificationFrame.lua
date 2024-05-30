@@ -50,7 +50,7 @@ function NotificationFrame:Scroll(name, state, magnitude)
 	self:UpdateBars()
 	self:TopFocus()
 	
-	EngineTools:QuickTween(self.Instance, 1/12, 
+	EngineTools.QuickTween(self.Instance, 1/12, 
 		{
 		CanvasPosition = Vector2.new(0,
 			(
