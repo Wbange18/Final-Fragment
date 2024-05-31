@@ -8,7 +8,7 @@ local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.En
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 
 
-EngineTools:LockPlayer()
+EngineTools.LockPlayer()
 
 Engine:InitializeClasses("Build Client")
 Engine:InitializeServices("Run Client")
@@ -29,7 +29,7 @@ MechanicsFolder:Destroy()
 newMechanicsFolder.Parent = game.Workspace.CurrentCamera
 
 MechanicService:StartAllMechanics()
-EngineTools:UnlockPlayer()
+EngineTools.UnlockPlayer()
 
 local Pickaxe = Engine.Resources.Weapons:WaitForChild("Pickaxe")
 
@@ -39,9 +39,8 @@ WeaponService:GiveWeapon(Pickaxe)
 
 --MusicService:Play(script.Parent.FirstTrack.Value)
 
-
 FFNotificationService:CreateNotification(
-	"2", "", 12, true, true, "Gung ho", "First", Color3.new(0.9803921568627451, 0.3058823529411765, 0.3058823529411765)
+	"2", "", 12, true, true, "Gung ho", "First", Color3.new(0.807843, 0.384314, 0.384314)
 )
 
 FFNotificationService:CreateNotification(
@@ -61,14 +60,14 @@ FFNotificationService:CreateNotification(
 	"6", "", 5, true, true, "Gung ho", "Last"
 )
 
-FFDataService:AddToSet("Collectibles", "P56")
-FFDataService:AddToSet("Collectibles", "P56")
-FFDataService:AddToSet("Collectibles", "P56")
-FFDataService:AddToSet("Collectibles", "P56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
 
 
-print(FFDataService:MatchFromSet("Collectibles", "P56"))
+print(FFDataService:MatchFromSet("Collectibles", "R56"))
 
-FFDataService:RemoveFromSet("Collectibles", "P56")
+FFDataService:RemoveFromSet("Collectibles", "R56")
 
-print(FFDataService:MatchFromSet("Collectibles", "P56"))
+print(FFDataService:MatchFromSet("Collectibles", "R56"))

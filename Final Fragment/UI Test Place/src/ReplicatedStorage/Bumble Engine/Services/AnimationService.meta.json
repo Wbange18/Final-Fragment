@@ -1,5 +1,5 @@
 {
    "properties": {
-      "Tags": ["Build Client", "Build Server"]
+      "Tags": ["Run Client", "Run Server"]
    }
 }

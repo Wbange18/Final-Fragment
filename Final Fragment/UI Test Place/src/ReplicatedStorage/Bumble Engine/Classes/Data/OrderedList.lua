@@ -1,16 +1,15 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
---[[CLASS DESCRIPTION:
-Create a self-organizing list that efficiently sorts items by specified order when added and removed.
-]]
+--Self-organizing list that efficiently sorts items by specified order when added and removed.
+
 local OrderedList = {}
 
 OrderedList.__index = OrderedList
 
 --METHODS=====================================================================
 
---[[AddItem
+--[[AddItem:
 Add data to the list, and sort.
 
 @param {string} Key - Key to store data with
@@ -26,7 +25,7 @@ function OrderedList:AddItem(Key, Value)
 	return 
 end
 
---[[RemoveItem
+--[[RemoveItem:
 Remove data from the list, and sort.
 
 ]]
@@ -38,7 +37,7 @@ function OrderedList:RemoveItem(Key)
 	return
 end
 
---[[GetItem
+--[[GetItem:
 Fetch an item from the sorted list
 
 ]]
@@ -46,15 +45,24 @@ function OrderedList:GetItem(Key)
 	return self.OrderedContents[Key]
 end
 
---[[GetKey
+--[[GetKey:
 Fetch an item's key
 
 @param {object} Value - Value to find
-@return {object} item - Original item from dictionary
+@return {object} key - Original key from dictionary
 ]]
 function OrderedList:GetKey(Value)
 	
-	return EngineTools:GetKey(self.OrderedContents, Value)
+	return EngineTools.GetKey(self.OrderedContents, Value)
+end
+
+--[[GetItemByValue:
+Fetch an item by value instead of key
+@param {object} Value - Value to search by
+@return {object} item - Original item from dictionary
+]]
+function OrderedList:GetItemByValue(Value)
+	return self:GetItem(EngineTools.GetKey(self.OrderedContents, Value))
 end
 
 --[[GetLength
@@ -63,7 +71,7 @@ Get the length of the dictionary.
 @return {number} length - Length of the table
 ]]
 function OrderedList:GetLength()
-	return EngineTools:GetDictLength(self.OrderedContents)
+	return EngineTools.GetDictLength(self.OrderedContents)
 end
 
 --[[GetList
@@ -125,20 +133,18 @@ end
 
 --CONSTRUCTOR================================================================
 
---[[new
+--[[new:
 Create a new ordered list.
 
 @param {string} order - Order to sort by ["Ascending", "Descending"]
-@param {string} property - Property to sort by
 ]]
-function OrderedList.new(order, property)
+function OrderedList.new(order)
 	local newOrderedList = {}
 	setmetatable(newOrderedList, OrderedList)
 	newOrderedList.Contents = {}
 	newOrderedList.SortOrder = {}
 	newOrderedList.OrderedContents = {}
 	newOrderedList.Order = order
-	newOrderedList.SortProperty = property
 	
 	return newOrderedList
 end

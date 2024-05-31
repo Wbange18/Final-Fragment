@@ -2,6 +2,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
+--[[EngineTools. Common blocks of code to be quickly accessed by all scripts.]]
+
 local Tools = {}
 --Tool variables
 
@@ -10,12 +12,8 @@ local BoolTable = {
 	[false] = 0
 }
 
---ENGINE TOOLS---------------------------------------------------------
---Common blocks of code to quickly access in scripts.
-
---[[Find
+--[[Find:
 Locate an item in a given directory.
- {Tools}
 @param {instance} Directory - The directory to search.
 @param {string} itemName - The name of the item to search for.
 
@@ -36,7 +34,7 @@ function Tools:Find(Directory, itemName)
 	return item
 end
 
---[[QuickTween
+--[[QuickTween:
 Quickly create a tween.
 @param {instance} object - The object to tween.
 @param {number} duration - The time in seconds for the tween to last.
@@ -46,13 +44,13 @@ Quickly create a tween.
 ]]
 function Tools:QuickTween(item, duration, properties, easingStyle, easingDirection)
 	--Optional Arguments
-	easingStyle = easingStyle or "Sine"
-	easingDirection = easingDirection or "Out"
+	easingStyle = easingStyle or Enum.EasingStyle.Sine
+	easingDirection = easingDirection or Enum.EasingDirection.Out
 
 	local info = TweenInfo.new(
 		duration,
-		Enum.EasingStyle[easingStyle],
-		Enum.EasingDirection[easingDirection]
+		easingStyle,
+		easingDirection
 	)
 
 	local tween = TweenService:Create(item, info, properties)
@@ -60,7 +58,7 @@ function Tools:QuickTween(item, duration, properties, easingStyle, easingDirecti
 	return tween
 end
 
---[[FadeTween
+--[[FadeTween:
 Fade out an element and fade in another.
 @param {instance} item1 - The item to fade in.
 @param {instance} item2 - The item to fade out.
@@ -77,17 +75,16 @@ function Tools:FadeTween(
 	--Optional Arguments
 	item1Properties = item1Properties or {ImageTransparency = 0, Visible = true}
 	item2Properties = item2Properties or {ImageTransparency = 1, Visible = false}
-	easingStyle = easingStyle or "Sine"
-	easingDirection1 = easingDirection1 or "Out"
-	easingDirection2 = easingDirection2 or "In"
+	easingStyle = easingStyle or Enum.EasingStyle.Sine
+	easingDirection1 = easingDirection1 or Enum.EasingDirection.Out
+	easingDirection2 = easingDirection2 or Enum.EasingDirection.In
 
 	Tools:QuickTween(item1, duration, {ImageTransparency = 0, Visible = true},easingStyle ,easingDirection1)
 	Tools:QuickTween(item2, duration, {ImageTransparency = 1, Visible = false}, easingStyle, easingDirection2)
 end
 
---[[QuickAnimation
+--[[QuickAnimation:
 Quickly create and run an animation on the player.
-
 @param {object} Animation - Animation object to run.
 @return {object} AnimationObject - Resulting animation object.
 ]]
@@ -99,9 +96,8 @@ function Tools:QuickAnimation(Animation)
 	return AnimationObject
 end
 
---[[Generate ID
+--[[Generate ID:
 Generate a character ID
- {Tools}
 @param {number} length - The length of the ID
 
 @return {string} ID - The resultant ID
@@ -116,31 +112,26 @@ function Tools:GenerateID(length)
 	return ID
 end
 
---[[BoolToNumber
+--[[BoolToNumber:
 Convert true or false to a number.
-
 @param {boolean} bool - The bool to convert to a number
-
 @return number - The resulting number. (true = 1, false = 0)
 ]]
 function Tools:BoolToNumber(bool)
 	return BoolTable[bool]
 end
 
---[[Flip
+--[[Flip:
 Flips a 1 or 0 to the opposite.
-
 @param {number} bit - Bit to flip
-
 @return {number} bit - Flipped bit
 ]]
 function Tools:Flip(bit)
 	return math.abs(bit - 1)
 end
 
---[[GetPlayer
+--[[GetPlayer:
 Get the local player, or get a player by userId.
-
 @param {string} userId - Optional userId.
 ]]
 function Tools:GetPlayer(userId)
@@ -163,22 +154,20 @@ function Tools:GetPlayer(userId)
 	return Player
 end
 
---[[GetCharacter
+--[[GetCharacter:
 Get the character of the local player, or by a userId.
-
 @param {string} userId - Optional userId.
 ]]
 function Tools:GetCharacter(userId)
 	local Player
 	
-	Player = self:GetPlayer(userId)
+	Player = Tools.GetPlayer(userId)
 
 	return Player.Character or Player.CharacterAdded:Wait()
 end
 
---[[LockPlayer[client]
+--[[LockPlayer:
 Lock the current player in place, disabling reset, walkspeed, and jumpheight.
- {client}
 ]]
 function Tools:LockPlayer()
 	local Player = game.Players.LocalPlayer
@@ -198,9 +187,8 @@ function Tools:LockPlayer()
 	 task.wait(0.2) until success
 end
 
---[[UnlockPlayer[client]
+--[[UnlockPlayer:
 Reverse the effects of LockPlayer.
- {client}
 ]]
 function Tools:UnlockPlayer()
 	local Player = game.Players.LocalPlayer
@@ -208,7 +196,7 @@ function Tools:UnlockPlayer()
 	Player.Character.Humanoid.WalkSpeed = game.StarterPlayer.CharacterWalkSpeed
 end
 
---[[CreateRemote
+--[[CreateRemote:
 Create a remote parented to the given object, or replicated storage by default.
 
 @param {string} name - Name of the remote.
@@ -227,9 +215,8 @@ function Tools:CreateRemote(name, Parent)
 	return Remote
 end
 
---[[CreateRemoteFunction
+--[[CreateRemoteFunction:
 Create a remote function
- {server}
 @param {string} name - Name of the remote function
 @param {object} Parent - Optional parent of the remote
 @return {object} RemoteFunction - Constructed remote function object.
@@ -245,7 +232,7 @@ function Tools:CreateRemoteFunction(name, Parent)
 	return remoteFunction
 end
 
---[[WaitForEvent
+--[[WaitForEvent:
 Wait for a remote event to occur. This could also be done with remote functions, but it works.
 May be replaced in the future.
  {client}
@@ -269,10 +256,9 @@ function Tools:WaitForEvent(Remote, key)
 	return
 end
 
---[[CSVToArray
+--[[CSVToArray:
 Convert a comma-separated value string to an array. The operation is simple but difficult
 to remember.
-
 @param {string} stringCSV - String to separate.
 @return {array} array - Resultant array.
 ]]
@@ -281,8 +267,20 @@ function Tools:CSVToArray(stringCSV)
 	return array
 end
 
---[[GetCenterOfMass
+--[[InstanceTableToCSV:
+Return the names of all instances in a table as a comma-separated list.
+@param {table} Table - Table of instances
+@return {string} stringCSV - String of CSV
+]]
+function Tools:InstanceTableToCSV()
+	local stringCSV = ""
+	for i, instance in pairs(table) do
+		stringCSV ..= instance.Name .. ","
+	end
+	return stringCSV
+end
 
+--[[GetCenterOfMass:
 @param {object} Parts - Parts to get center of mass of.
 ]]
 function Tools:GetCenterOfMass(Parts)
@@ -298,9 +296,8 @@ function Tools:GetCenterOfMass(Parts)
 	return SumOfMasses/TotalMass, TotalMass
 end
 
---[[GetAnimatorFromPlayer
+--[[GetAnimatorFromPlayer:
 Grabs the current animator from a given player.
-
 @param {instance} Player - Player to grab the animator from
 @return {instance} Animator - Target animator
 ]]
@@ -319,7 +316,7 @@ function Tools:GetAnimatorFromPlayer(Player)
 	return Animator
 end
 
---[[WeldToM6D
+--[[WeldToM6D:
 Convert a weld object to a Motor6D object. This function assumes the goal of this is for humanoid
 animation.
 @param {instance} weld - The target weld of the operation
@@ -353,9 +350,8 @@ function Tools:WeldToM6D(weld, preserveWeld)
 	return motor
 end
 
---[[GetDictLength
+--[[GetDictLength:
 Get length of a dictionary, as roblox doesn't support any way to do this currently.
-
 @param {table} dict - "dictionary" table to get length of
 @return {number} length - the length of the dictionary
 ]]
@@ -368,9 +364,8 @@ function Tools:GetDictLength(dict)
 	return length
 end
 
---[[GetKey
+--[[GetKey:
 Get key of a value in a dictionary
-
 @param {table} Table - Table to search
 @param {any} Value - Value to match with key
 @return {any} Key - Key of the value

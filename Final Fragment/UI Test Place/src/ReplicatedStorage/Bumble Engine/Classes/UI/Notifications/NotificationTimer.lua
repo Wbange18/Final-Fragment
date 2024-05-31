@@ -75,8 +75,8 @@ function NotificationTimer.new(notification)
 	
 	--Set the transparency to the timerVisible parameter in the notification object.
 	--Must be flipped since transparency is backwards
-	newTimer.Instance.TextTransparency = EngineTools:Flip(
-		EngineTools:BoolToNumber(
+	newTimer.Instance.TextTransparency = EngineTools.Flip(
+		EngineTools.BoolToNumber(
 			newTimer.Notification.timerVisible
 		)
 	)

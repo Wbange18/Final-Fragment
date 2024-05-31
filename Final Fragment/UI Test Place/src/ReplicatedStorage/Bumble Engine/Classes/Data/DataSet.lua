@@ -53,6 +53,20 @@ function DataSet:MatchData(dataValue)
 	return false
 end
 
+--[[WipeSet:
+Wipe all data in the set
+@return {bool} Success - Operation success
+]]
+function DataSet:WipeSet()
+	--Set all internal values to nil rather than obscuring reference for GC
+	for i, value in ipairs(self.Data) do
+		value = nil
+	end
+	
+	--Reset to an empty array so the prior array is GC'ed
+	self.Data = {}
+end
+
 --CONSTRUCTORS========================================================
 
 --[[new

@@ -75,9 +75,49 @@ function DataService:RemovePlayerData(PlayerData)
 	PlayerData = nil
 end
 
---[[AddToSet
-Add data to a set.
+--[[SoftWipePlayerData:
+Reset a player's game data, excluding settings.
+@param {object} PlayerData - Playerdata to wipe
+]]
+function DataService:SoftWipePlayerData(Player)
+	--TODO: COMPLETE THIS Check, 5/31/24; I think its done? Same as below.
+	if RunService:IsClient() then
+		return self.RemoteFunction:InvokeServer("SoftWipe")
+	end
+	local result = (
+		self.PlayerDataPacks[Player.UserId]:WipeSet("Collectibles") and
+		self.PlayerDataPacks[Player.UserId]:WipeSet("GameFlags") and
+		self.PlayerDataPacks[Player.UserId]:WipeSet("Swords")
+	)
+	if result == true then
+		self.DataRemote:FireClient(Player)
+	end
+	return result
+end
 
+--[[HardWipePlayerData:
+Completely reset a player's data.
+@param {object} PlayerData - Playerdata to wipe
+]]
+function DataService:HardWipePlayerData(Player)
+	--TODO: COMPLETE THIS
+	if RunService:IsClient() then
+		return self.RemoteFunction:InvokeServer("HardWipe")
+	end
+	local result = false
+	for i, setName in ipairs(DataStructureList) do
+			
+		--Fire the function and compare it to existing result
+		result = self.PlayerDataPacks[Player.UserId]:WipeSet(setName) and result
+	end
+	if result == true then
+		self.DataRemote:FireClient(Player)
+	end
+	return result
+end
+
+--[[AddToSet:
+Add data to a set.
 ]]
 function DataService:AddToSet(dataName, dataValue, Player)
 	if RunService:IsClient() then
@@ -85,29 +125,30 @@ function DataService:AddToSet(dataName, dataValue, Player)
 	end
 	local result = self.PlayerDataPacks[Player.UserId]:AddToSet(dataName, dataValue)
 	if result == true then
+		--Fire data remote for significant changes to data
 		self.DataRemote:FireClient(Player)
 	end
 	return result
 end
 
---[[RemoveFromSet
+--[[RemoveFromSet:
 Remove data from a set.
-
 ]]
 function DataService:RemoveFromSet(dataName, dataValue, Player)
 	if RunService:IsClient() then
+
 		return self.RemoteFunction:InvokeServer("RemoveFromSet", dataName, dataValue)
 	end
 	local result = self.PlayerDataPacks[Player.UserId]:RemoveFromSet(dataName, dataValue)
 	if result == true then
+		--Fire data remote for significant changes to data
 		self.DataRemote:FireClient(Player)
 	end
 	return result
 end
 
---[[MatchFromSet
+--[[MatchFromSet:
 Match data from a set.
-
 ]]
 function DataService:MatchFromSet(dataName, dataValue, Player)
 	if RunService:IsClient() then
@@ -125,15 +166,16 @@ Iterate through data sets and determine leader stats.
 --SERVER===============================================================
 
 if RunService:IsServer() then
-	DataService.DataRemote = EngineTools:CreateRemote("DataEvent")
+	DataService.DataRemote = EngineTools.CreateRemote("DataEvent")
 	
 	for _, dataSetName in ipairs(DataStructureList) do
 		DataService.DataStores[dataSetName] = DataStoreService:GetDataStore(dataSetName)
 	end
 
-	DataService.RemoteFunction = EngineTools:CreateRemoteFunction("DataRemoteFunction")
+	DataService.RemoteFunction = EngineTools.CreateRemoteFunction("DataRemoteFunction")
 
-	--Define a function directory to reduce per-event workload
+	--Define a function directory for functions called by the remove function handler.
+	--Note: parameter order is arbitrary: dataName, dataValue, Player
 	local directory = {
 		["AddToSet"] = function(dataName, dataValue, Player)
 			return DataService:AddToSet(
@@ -149,6 +191,12 @@ if RunService:IsServer() then
 			return DataService:MatchFromSet(
 				dataName, dataValue, Player
 			)
+		end,
+		["SoftWipe"] = function(_,_,Player)
+			return DataService:SoftWipePlayerData(Player)
+		end,
+		["HardWipe"] = function(_,_,Player)
+			return DataService:HardWipePlayerData(Player)
 		end
 	}
 

@@ -50,7 +50,7 @@ function NotificationFrame:Scroll(name, state, magnitude)
 	self:UpdateBars()
 	self:TopFocus()
 	
-	EngineTools:QuickTween(self.Instance, 1/12, 
+	EngineTools.QuickTween(self.Instance, 1/12, 
 		{
 		CanvasPosition = Vector2.new(0,
 			(
@@ -88,6 +88,7 @@ function NotificationFrame:ChangeFocus(focusNotification)
 		end
 
 		notification:Resize("Small")
+		
 	end
 end
 
@@ -160,7 +161,6 @@ function NotificationFrame:RemoveNotification(notification)
 	
 	if self.Notifications:GetKey(notification) == (self.ScrollFactor + 1) and self.ScrollFactor + 1 ~= 1 then
 		--This is meant to occur when you kill the top element. lets try it!
-		print("Top removed ;3")
 		self:Scroll(nil, nil, -1)
 	end
 
@@ -219,7 +219,7 @@ function NotificationFrame.new()
 	newNotificationFrame.ScrollPosition = 1
 	newNotificationFrame.Updating = false
 	newNotificationFrame.Connections = {}
-	newNotificationFrame.Notifications = OrderedList.new("Ascending", "LayoutPriority")
+	newNotificationFrame.Notifications = OrderedList.new("Ascending")
 
 	newNotificationFrame.TopBar = FrameBar.new(newNotificationFrame.Instance.Parent["Top Indicator"])
 	newNotificationFrame.BottomBar = FrameBar.new(newNotificationFrame.Instance.Parent["Bottom Indicator"])

@@ -42,7 +42,7 @@ function Music:Play()
 			}
 			local returnFactor
 			steppedConnection = RunService.Stepped:Connect(function()
-				returnFactor = EngineTools:Flip(EngineTools:BoolToNumber(self.Instance.Playing))
+				returnFactor = EngineTools.Flip(EngineTools.BoolToNumber(self.Instance.Playing))
 				--If Playing is true, returnFactor = 0 and the loop continues
 				--If Playing is false, returnFactor = 1 and the sign is forced to be 1
 				steppedDirectory[math.sign((self.Instance.TimePosition + (5000 * returnFactor)) - 
@@ -66,10 +66,10 @@ Fade the music track.
 ]]
 function Music:Fade(direction, fadeTime)
 	if direction == "In" then
-		EngineTools:QuickTween(self.Instance, fadeTime, {Volume = self.Volume}, "Linear")
+		EngineTools.QuickTween(self.Instance, fadeTime, {Volume = self.Volume}, Enum.EasingStyle.Linear)
 	end
 	if direction == "Out" then
-		EngineTools:QuickTween(self.Instance, fadeTime, {Volume = 0}, "Linear")
+		EngineTools.QuickTween(self.Instance, fadeTime, {Volume = 0}, Enum.EasingStyle.Linear)
 	end
 end
 

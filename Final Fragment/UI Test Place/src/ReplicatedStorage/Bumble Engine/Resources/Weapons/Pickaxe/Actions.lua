@@ -163,11 +163,11 @@ Actions["Form"] = function()
 	Actions.Class.State = "Forming"
 	PlayAnimation("FormSwing")
 	
-	EngineTools:QuickTween(Actions.Class.Instance.Handle, .25, {Transparency = 0})
-	EngineTools:QuickTween(Actions.Class.Instance.Handle.Binding, .25, {Transparency = 0})
-	EngineTools:QuickTween(Actions.Class.Instance.Handle.Blade, .25, {Transparency = 0})
-	EngineTools:QuickTween(Actions.Class.Instance.Handle.Nut, .25, {Transparency = 0})
-	EngineTools:QuickTween(Actions.Class.Instance.Handle.Rod, .25, {Transparency = 0})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle, .25, {Transparency = 0})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle.Binding, .25, {Transparency = 0})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle.Blade, .25, {Transparency = 0})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle.Nut, .25, {Transparency = 0})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle.Rod, .25, {Transparency = 0})
 	
 	return
 end
@@ -179,11 +179,11 @@ Actions["Deform"] = function()
 	Actions.Class.State = "Deforming"
 	PlayAnimation("Deform")
 
-	EngineTools:QuickTween(Actions.Class.Instance.Handle, .25, {Transparency = 1})
-	EngineTools:QuickTween(Actions.Class.Instance.Handle.Binding, .25, {Transparency = 1})
-	EngineTools:QuickTween(Actions.Class.Instance.Handle.Blade, .25, {Transparency = 1})
-	EngineTools:QuickTween(Actions.Class.Instance.Handle.Nut, .25, {Transparency = 1})
-	EngineTools:QuickTween(Actions.Class.Instance.Handle.Rod, .25, {Transparency = 1})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle, .25, {Transparency = 1})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle.Binding, .25, {Transparency = 1})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle.Blade, .25, {Transparency = 1})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle.Nut, .25, {Transparency = 1})
+	EngineTools.QuickTween(Actions.Class.Instance.Handle.Rod, .25, {Transparency = 1})
 
 	task.wait(Actions.Class.waitTimes["DeformationTime"])
 	if Actions.Class.State == "Deforming" then
@@ -224,7 +224,7 @@ function PlayAnimation(AnimationName)
 	
 	local AnimationTimes = Actions.Class.Animations:GetAttributes()
 	
-	local PositionArray = EngineTools:CSVToArray(AnimationTimes[AnimationName])
+	local PositionArray = EngineTools.CSVToArray(AnimationTimes[AnimationName])
 	
 	local startPosition = PositionArray[1]
 	

@@ -99,5 +99,3 @@ end
 		self:TopFocus()
 	end)
 ]]
-
-

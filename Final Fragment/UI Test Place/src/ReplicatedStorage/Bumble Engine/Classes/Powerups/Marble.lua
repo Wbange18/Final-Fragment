@@ -24,10 +24,10 @@ function Marble:Run()
 
 	self.Player.Character.HumanoidRootPart.Running.Volume = 0
 	self.Player.Character.Humanoid.WalkSpeed = 0
-	self.Animation = EngineTools:QuickAnimation(self.Handle.Animation)
+	self.Animation = EngineTools.QuickAnimation(self.Handle.Animation)
 	self.Animation:AdjustSpeed(0)
-	EngineTools:QuickTween(self.Handle, .5, {Size = self.Size})
-	EngineTools:QuickTween(self.Detail, .5, {Size = self.DetailSize, Transparency = 1})
+	EngineTools.QuickTween(self.Handle, .5, {Size = self.Size})
+	EngineTools.QuickTween(self.Detail, .5, {Size = self.DetailSize, Transparency = 1})
 	local steppedConnection
 	local steppedOperations = {
 		[true] = function()
@@ -56,8 +56,8 @@ function Marble:Yield()
 	self.Animation:Stop()
 	
 	self.Handle.CanCollide = false
-	EngineTools:QuickTween(self.Detail, .5, {Size = Vector3.new(.1,.1,.1), Transparency = 0})
-	EngineTools:QuickTween(self.Handle, .5, {Size = Vector3.new(.1,.1,.1)}).Completed:Wait()
+	EngineTools.QuickTween(self.Detail, .5, {Size = Vector3.new(.1,.1,.1), Transparency = 0})
+	EngineTools.QuickTween(self.Handle, .5, {Size = Vector3.new(.1,.1,.1)}).Completed:Wait()
 	
 	self.Accessory:Destroy()
 	workspace.CurrentCamera.CameraSubject = self.Player.Character.Head
@@ -69,7 +69,7 @@ function Marble.new()
 	local newMarble = {}
 	setmetatable(newMarble, Marble)
 	
-	newMarble.Player = EngineTools:GetPlayer()
+	newMarble.Player = EngineTools.GetPlayer()
 	
 	local MarbleAccessory = Engine:GetResource("Marble")
 	
@@ -81,7 +81,7 @@ function Marble.new()
 		end
 	end
 	
-	local CenterOfMass = EngineTools:GetCenterOfMass(Parts)
+	local CenterOfMass = EngineTools.GetCenterOfMass(Parts)
 	
 	MarbleAccessory.Handle.RootAttachment.Position = 
 		newMarble.Player.Character.HumanoidRootPart.Position - CenterOfMass
