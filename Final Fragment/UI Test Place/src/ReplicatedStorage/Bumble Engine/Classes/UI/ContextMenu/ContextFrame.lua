@@ -10,7 +10,6 @@ local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFData
 local MusicService = require(ReplicatedStorage["Bumble Engine"].Services.MusicService)
 
 local Player = game.Players.LocalPlayer
-
 local uiMaxSize = .75
 local uiMinSize = .5
 
