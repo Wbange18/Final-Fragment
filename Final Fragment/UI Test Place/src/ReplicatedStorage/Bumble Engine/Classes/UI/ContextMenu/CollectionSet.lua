@@ -1,4 +1,3 @@
-local AnimationFromVideoCreatorService = game:GetService("AnimationFromVideoCreatorService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.OrderedList)
@@ -71,6 +70,7 @@ function CollectionSet:Hide()
    
    for i, relic in ipairs(self.Relics:GetList()) do
       
+      --Disconnect all the mouse hover events.
       if relic.connection ~= nil then
          relic.connection:Disconnect()
       end
@@ -89,8 +89,6 @@ function CollectionSet:Hide()
          relic:Destroy()
       end)()
    end
-   
-   
    
    --Remove the preview
    EngineTools.QuickTween(self.Instance.Preview, .25, {ImageTransparency = 1}, nil, Enum.EasingDirection.In)
@@ -203,6 +201,8 @@ function CollectionSet.new(CollectionSetFolder)
    
    newCollectionSet.Instance = CollectionSetFolder
    newCollectionSet.Shards = newCollectionSet.Folder.Contents:GetAttribute("Shards")
+   
+   newCollectionSet.Instance.Image = newCollectionSet.Folder
    
    newCollectionSet.Relics = OrderedList.new("Ascending")
    

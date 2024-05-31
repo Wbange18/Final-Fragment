@@ -80,7 +80,7 @@ Reset a player's game data, excluding settings.
 @param {object} PlayerData - Playerdata to wipe
 ]]
 function DataService:SoftWipePlayerData(Player)
-	--TODO: COMPLETE THIS
+	--TODO: COMPLETE THIS Check, 5/31/24; I think its done? Same as below.
 	if RunService:IsClient() then
 		return self.RemoteFunction:InvokeServer("SoftWipe")
 	end

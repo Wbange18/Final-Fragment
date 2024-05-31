@@ -5,7 +5,7 @@ local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.En
 local CollectionSet = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.CollectionSet)
 local Spinner = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.Spinner)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
-local CollectibleDataList = require(ReplicatedStorage["Bumble Engine"].Resources.Lists.CollectibleDataList)
+
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
 local MusicService = require(ReplicatedStorage["Bumble Engine"].Services.MusicService)
 
@@ -363,6 +363,10 @@ function ContextFrame.new()
    @listener
    @button Frame.OpenButton
    ]]
+   newContextFrame.Instance.OpenButton.MouseButton1Click:Connect(function()
+      newContextFrame:ExpandMenu()
+      return
+   end)
    
    --[[CloseButton:
    Listen to the CloseButton which shrinks the UI state
@@ -370,7 +374,8 @@ function ContextFrame.new()
    @button Frame.CloseButton
    ]]
    newContextFrame.Instance.CloseButton.MouseButton1Click:Connect(function()
-
+      newContextFrame:RetractMenu()
+      return
    end)
    
    --[[LeftButton:
@@ -378,12 +383,20 @@ function ContextFrame.new()
    @listener
    @button Frame.LeftButton
    ]]
+   newContextFrame.Instance.LeftButton.MouseButton1Click:Connect(function()
+      newContextFrame:MoveBackwards()
+      return
+   end)
    
    --[[RightButton:
    Listen to the RightButton which moves to the next collection set
    @listener
    @button Frame.RightButton
    ]]
+   newContextFrame.Instance.RightButton.MouseButton1Click:Connect(function()
+      newContextFrame:MoveForwards()
+      return
+   end)
    
    --[[DataRemoteFunction:
    Listen to FFDataService's event for data changes

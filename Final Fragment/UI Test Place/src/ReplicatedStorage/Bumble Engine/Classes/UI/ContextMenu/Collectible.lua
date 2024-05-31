@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
-
+local CollectibleData = require(ReplicatedStorage["Bumble Engine"].Resources["Data Resources"].CollectibleData)
 --[[Collectible: Single collectible with functionality parented to a CollectionSet class of the ContextFrame class.]]
 
 local Collectible = {}
@@ -135,6 +135,8 @@ function Collectible.new(Data: string, Parent: Folder)
    newCollectible.Instance.Parent = Parent
    
    newCollectible.Value = Data
+   
+   newCollectible.Instance.Imagevalue = CollectibleData.Data.ImageAsset
    
    --Initial setup
    newCollectible.Instance.Position = newCollectible.centerPosition
