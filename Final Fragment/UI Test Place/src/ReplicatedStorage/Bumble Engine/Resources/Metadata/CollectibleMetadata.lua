@@ -9,15 +9,23 @@ local CollectibleMetadata = {}
 
 --Allow nil requests, throwing a warning when this occurs.
 CollectibleMetadata.__index = function(table, key)
-   
-   --Index the value as a blank table with the Collectible metatable. In other words, every member found from CDL will be an empty table of metatable Collectible.
+   if rawget(table, key) == nil then
+      --Initialize the collectible with an empty table and Metadata metatable.
+      rawset(table, key, setmetatable({}, Metadata))
+   end
    rawset(table, key, setmetatable({}, Metadata))
    
    return rawget(table, key)
 end
 
+CollectibleMetadata.__newindex = function(table, key, value)
+   rawset(table, key, value)
+end
+
 --Shorthand the list and module
 CM = CollectibleMetadata
+
+setmetatable(CM, CollectibleMetadata)
 
 --Assign all special collectibles below-----------------------------------------
 
@@ -51,6 +59,7 @@ CM.R3.levelName = "Shattered Settlement"
 CM.R4.levelName = "Cave In! -Deprecated"
 CM.R5.levelName = ""
 CM.R1.imageAsset = "http:/whatever.fortnite"
+
 --SHARDS------------------------------------------------------------
 
 
