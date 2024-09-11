@@ -5,6 +5,7 @@ ReplicatedStorage:WaitForChild("Bumble Engine")
 
 --Get Bumble Engine Module
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
+local ContextFrame = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.ContextFrame)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 
 
@@ -71,3 +72,5 @@ print(FFDataService:MatchFromSet("Collectibles", "R56"))
 FFDataService:RemoveFromSet("Collectibles", "R56")
 
 print(FFDataService:MatchFromSet("Collectibles", "R56"))
+
+ContextFrame.new()
