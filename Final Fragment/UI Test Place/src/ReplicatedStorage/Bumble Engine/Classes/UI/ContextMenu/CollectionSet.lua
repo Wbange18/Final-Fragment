@@ -59,7 +59,7 @@ function CollectionSet:Show()
    end
    
    --Add the preview
-   EngineTools.QuickTween(self.Instance.Preview, .25, {ImageTransparency = 0}, nil, Enum.EasingDirection.Out)
+   EngineTools:QuickTween(self.Instance.Preview, .25, {ImageTransparency = 0}, nil, Enum.EasingDirection.Out)
    return
 end
 
@@ -91,7 +91,7 @@ function CollectionSet:Hide()
    end
    
    --Remove the preview
-   EngineTools.QuickTween(self.Instance.Preview, .25, {ImageTransparency = 1}, nil, Enum.EasingDirection.In)
+   EngineTools:QuickTween(self.Instance.Preview, .25, {ImageTransparency = 1}, nil, Enum.EasingDirection.In)
    
    return
 end
@@ -101,9 +101,9 @@ Update the set in case anything changed, checking if hidden relics are found, an
 obtained relics.
 ]]
 function CollectionSet:Update()
-   local RelicValues = EngineTools.CSVToArray(self.Folder.Contents:GetAttribute("Relics"))
+   local RelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Relics"))
    
-   local HiddenRelicValues = EngineTools.CSVToArray(self.Folder.Contents:GetAttribute("HiddenRelics"))
+   local HiddenRelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("HiddenRelics"))
    
    for i, relic in ipairs(RelicValues) do
       
@@ -162,7 +162,7 @@ function CollectionSet:Update()
       
    then
       --Quick tween the fragment in
-      EngineTools.QuickTween(self.Folder.Fragment, 0.2, {ImageColor = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+      EngineTools:QuickTween(self.Folder.Fragment, 0.2, {ImageColor = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    end
    
    if
@@ -176,13 +176,13 @@ function CollectionSet:Update()
       self.Folder.Fragment.ImageColor == Color3.new(255,255,255)
       
    then
-      EngineTools.QuickTween(self.Folder.Fragment, 0.2, {ImageColor = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+      EngineTools:QuickTween(self.Folder.Fragment, 0.2, {ImageColor = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    end
    
    warn("Don't forget to set the attribute Fragments to Fragment")
    
    --Create an array that stores the shard values
-   self.Shards = EngineTools.CSVToArray(self.Folder.Contents:GetAttribute("Shards"))
+   self.Shards = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Shards"))
    
    self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", self.Folder.Contents:GetAttribute("Shards"))
    

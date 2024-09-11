@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
---[[EngineTools. Common blocks of code to be quickly accessed by all scripts.]]
+--[[EngineTools: Common blocks of code to be quickly accessed by all scripts.]]
 
 local Tools = {}
 --Tool variables
@@ -161,7 +161,7 @@ Get the character of the local player, or by a userId.
 function Tools:GetCharacter(userId)
 	local Player
 	
-	Player = Tools.GetPlayer(userId)
+	Player = Tools:GetPlayer(userId)
 
 	return Player.Character or Player.CharacterAdded:Wait()
 end
