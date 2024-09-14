@@ -48,10 +48,12 @@ function Spinner.new()
    local angleForwards = 0
    local angleBackwards = 0
    
+   newSpinner.extraSpeed = 0
+   
    --Connect to the step after simulation, least impactful
    newSpinner.Connection = RunService.PostSimulation:Connect(function()
       --Get the velocity of the player's rootpart
-      playerSpeed = Player.Character.HumanoidRootPart.assemblylinearvelocity.magnitude
+      playerSpeed = Player.Character.HumanoidRootPart.AssemblyLinearVelocity.magnitude
       
       --Create a proper factor for the ring speed. Can be adjusted with external values
       --[[Current Logic:
@@ -59,7 +61,7 @@ function Spinner.new()
       Extra speed additive is zero for now
       Manual additive is 1 for now
       ]]
-      speedAdditive = 1 + (playerSpeed/60) + newSpinner.extraSpeed
+      speedAdditive = .3 + (playerSpeed/60) + newSpinner.extraSpeed
       
       --Calculate the forward and backward angles using the modulus of the maximum angle
       angleForwards = (angleForwards + speedAdditive) % 180
