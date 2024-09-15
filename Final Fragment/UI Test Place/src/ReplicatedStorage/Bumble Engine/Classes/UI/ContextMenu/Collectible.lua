@@ -1,8 +1,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
+local CollectibleMetadata = require(ReplicatedStorage["Bumble Engine"].Configuration.CollectibleMetadata)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
-local CollectibleMetadata = require(ReplicatedStorage["Bumble Engine"].Resources.Metadata.CollectibleMetadata)
 
 --[[Collectible: Single collectible with functionality parented to a CollectionSet class of the ContextFrame class.]]
 

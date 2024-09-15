@@ -6,7 +6,7 @@ local RunService = game:GetService("RunService")
 local DataSet = require(ReplicatedStorage["Bumble Engine"].Classes.Data.DataSet)
 local PlayerData = require(ReplicatedStorage["Bumble Engine"].Classes.Data.PlayerData)
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
-local DataStructureList = require(ReplicatedStorage["Bumble Engine"].Resources.Lists.DataStructure)
+local DataStructureList = require(ReplicatedStorage["Bumble Engine"].Configuration.DataStructure)
 
 local DataService = {}
 DataService.__index = DataService

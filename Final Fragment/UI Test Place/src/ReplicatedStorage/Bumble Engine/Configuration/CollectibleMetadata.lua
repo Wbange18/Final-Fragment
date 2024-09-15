@@ -1,6 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local CM = require(ReplicatedStorage["Bumble Engine"].Resources.Metadata.IndexDefinition)
+local CM = require(ReplicatedStorage["Bumble Engine"].Configuration["Configuration Backend"].IndexDefinition)
 
 --Assign all special collectibles below-----------------------------------------
 

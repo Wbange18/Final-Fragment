@@ -1,5 +1,3 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
 -- Define defaults for each type of collectible.
 local FragmentDefaults = {
    specialType = "",

@@ -3,8 +3,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 --Get Services and Classes
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
+local MechanicTags = require(ReplicatedStorage["Bumble Engine"].Configuration.MechanicTags)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
-local MechanicTags = require(ReplicatedStorage["Bumble Engine"].Resources.Lists.MechanicTags)
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
 
 --Get Resources

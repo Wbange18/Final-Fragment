@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local PowerupDescriptions = require(ReplicatedStorage["Bumble Engine"].Configuration.PowerupDescriptions)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
-local PowerupDescriptions = require(ReplicatedStorage["Bumble Engine"].Resources.Lists.PowerupDescriptions)
 local FFNotificationService = require(ReplicatedStorage["Bumble Engine"].Services.FFNotificationService)
 
 local PowerupService = {}
