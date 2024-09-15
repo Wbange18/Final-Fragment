@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local DataSet = require(ReplicatedStorage["Bumble Engine"].Classes.Data.DataSet)
-local DataStructure = require(ReplicatedStorage["Bumble Engine"].Resources.Lists.DataStructure)
+local DataStructure = require(ReplicatedStorage["Bumble Engine"].Configuration.DataStructure)
 
 PlayerData = {}
 
