@@ -3,7 +3,12 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.OrderedList)
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local Collectible = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.Collectible)
+local WorldContexts = require(ReplicatedStorage["Bumble Engine"].Configuration.WorldContexts)
+local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
+
+--Get Resources
+local ReferenceSet = Engine:GetResource("Reference Set")
 
 --[[CollectionSet: Set of Collectible classes and data used to organize data for the ContextFrame class.]]
 
@@ -179,7 +184,7 @@ function CollectionSet:Update()
       EngineTools:QuickTween(self.Folder.Fragment, 0.2, {ImageColor = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    end
    
-   warn("Don't forget to set the attribute Fragments to Fragment")
+   warn("Don't forget to set the attribute Fragments to Fragment;; SCRATCH THAT gotta fix a lot of stuff with fragment specifically. Maybe we should rename it to special")
    
    --Create an array that stores the shard values
    self.Shards = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Shards"))
@@ -193,24 +198,24 @@ end
 
 --[[new:
 Create a new collection set from an existing defined folder
-@param{Folder} CollectionSetFolder - Folder of the set
+@param{Folder} ID - Identifier for the world context set
 ]]
-function CollectionSet.new(CollectionSetFolder)
+function CollectionSet.new(ID)
    local newCollectionSet = {}
    setmetatable(newCollectionSet, CollectionSet)
    
+   newCollectionSet.Instance = ReferenceSet:Clone()
    
-   --TODO: THESE LINES DONT MAKE SENSE! THIS IS 100% WHERE I LEFT OFF!!
+   newCollectionSet.Instance.Preview.Image = WorldContexts[ID].Preview
    
-   newCollectionSet.Instance = CollectionSetFolder
-   newCollectionSet.Shards = newCollectionSet.Folder.Contents:GetAttribute("Shards")
-   
-   newCollectionSet.Instance.Image = newCollectionSet.Folder
+   newCollectionSet.Instance.TextLabel.Text = WorldContexts[ID].Name
    
    newCollectionSet.Relics = OrderedList.new("Ascending")
    
-   newCollectionSet.Collectibles = {}
-
+   --TODO: CONTINUE FROM HERE
+   --NOTES ON SEP 15 AT 6 PM: Collectibles seem to be done along with the frame. Just need to iterate and boot things up here! The end!
+   
+   
    return newCollectionSet
 end
 

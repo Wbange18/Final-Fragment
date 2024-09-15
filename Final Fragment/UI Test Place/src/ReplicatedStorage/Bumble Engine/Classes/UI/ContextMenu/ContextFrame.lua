@@ -4,6 +4,7 @@ local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.Orde
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local CollectionSet = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.CollectionSet)
 local Spinner = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.Spinner)
+local WorldContexts = require(ReplicatedStorage["Bumble Engine"].Configuration.WorldContexts)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
@@ -333,11 +334,18 @@ function ContextFrame.new()
    
    newContextFrame.Hidden = true
    
-   --Compile list of CollectionSets available
-   for i, collectionSet in ipairs(newContextFrame.Instance.CollectionSets:GetChildren()) do
-      if FFDataService:MatchFromSet("GameFlags", collectionSet:GetAttribute("GameFlag")) == true then
-         newContextFrame.CollectionSets:AddItem(collectionSet:GetAttribute("WorldID"), CollectionSet.new(collectionSet))
+   for ID, context in WorldContexts do
+      
+      --If player does not have the gameflag for visiting the world
+      if FFDataService:MatchFromSet("GameFlags", context.GameFlag) == false then
+         return
       end
+      
+      --The player does have the flag, create and add the new set
+      newContextFrame.CollectionSets:AddItem(ID, CollectionSet.new(ID))
+      
+      --The class has no reference to the parent, so set the parent here instead
+      newContextFrame.CollectionSets:GetItem(ID).Instance.Parent = newContextFrame.Instance.CollectionSets
    end
    
    newContextFrame.Spinner = Spinner.new()

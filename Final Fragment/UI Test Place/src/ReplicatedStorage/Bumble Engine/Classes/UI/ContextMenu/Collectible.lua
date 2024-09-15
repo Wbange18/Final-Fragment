@@ -4,6 +4,9 @@ local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.En
 local CollectibleMetadata = require(ReplicatedStorage["Bumble Engine"].Configuration.CollectibleMetadata)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 
+--Get Resources
+local ReferenceRelic = Engine:GetResource("Reference Relic")
+
 --[[Collectible: Single collectible with functionality parented to a CollectionSet class of the ContextFrame class.]]
 
 local Collectible = {}
@@ -126,10 +129,11 @@ function Collectible.new(Data: string, Parent: Folder)
    
    newCollectible.Focused = false
    newCollectible.centerPosition = UDim2.new(0.5,0,0.5,0)
-   newCollectible.Instance = Engine:GetResource("Reference Relic"):Clone()
+   newCollectible.Instance = ReferenceRelic:Clone()
    
    --Assumed by index, but here for syntax reference
    newCollectible.connection = nil
+   --I DO NOT REMEMBER WHAT THIS DOES> But it reeks.
    
    newCollectible.Instance.Name = Data
    
