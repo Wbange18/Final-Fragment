@@ -139,8 +139,11 @@ Create a new ordered list.
 @param {string} order - Order to sort by ["Ascending", "Descending"]
 ]]
 function OrderedList.new(order)
+	
 	local newOrderedList = {}
+	
 	setmetatable(newOrderedList, OrderedList)
+	
 	newOrderedList.Contents = {}
 	newOrderedList.SortOrder = {}
 	newOrderedList.OrderedContents = {}

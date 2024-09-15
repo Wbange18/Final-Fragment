@@ -199,6 +199,9 @@ function CollectionSet.new(CollectionSetFolder)
    local newCollectionSet = {}
    setmetatable(newCollectionSet, CollectionSet)
    
+   
+   --TODO: THESE LINES DONT MAKE SENSE! THIS IS 100% WHERE I LEFT OFF!!
+   
    newCollectionSet.Instance = CollectionSetFolder
    newCollectionSet.Shards = newCollectionSet.Folder.Contents:GetAttribute("Shards")
    
