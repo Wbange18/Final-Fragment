@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local OrderedList = require(ReplicatedStorage["Bumble Engine"].Classes.Data.OrderedList)
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local Collectible = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.Collectible)
+local CollectibleMetadata = require(ReplicatedStorage["Bumble Engine"].Configuration.CollectibleMetadata)
 local WorldContexts = require(ReplicatedStorage["Bumble Engine"].Configuration.WorldContexts)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
@@ -106,19 +107,21 @@ Update the set in case anything changed, checking if hidden relics are found, an
 obtained relics.
 ]]
 function CollectionSet:Update()
-   local RelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Relics"))
+   --local RelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Relics"))
+   local RelicValues = EngineTools:CSVToArray(WorldContexts[self.WorldID].Relics)
    
-   local HiddenRelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("HiddenRelics"))
+   --local HiddenRelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("HiddenRelics"))
+   local HiddenRelicValues = EngineTools:CSVToArray(WorldContexts[self.WorldID].HiddenRelics)
    
    for i, relic in ipairs(RelicValues) do
       
       --Check if the relic exists in the ordered list
-      if self.Relics:GetItemByValue(tonumber(relic)) == nil then
+      if self.Relics:GetItemByValue(string.match(relic, "%d+")) == nil then
          
          --Create the new collectible and add it to ordered list by relic number
-         local newRelic = Collectible.new(relic, self.Folder)
+         local newRelic = Collectible.new(relic, self.Instance)
          
-         self.Relics:AddItem(tonumber(relic), newRelic)
+         self.Relics:AddItem(string.match(relic, "%d+"), newRelic)
          
          if FFDataService:MatchFromSet("Collectibles", relic) then
             newRelic:Obtain()
@@ -129,7 +132,7 @@ function CollectionSet:Update()
          continue
       end
       
-      local existingRelic = self.Relics:GetItemByValue(tonumber(relic))
+      local existingRelic = self.Relics:GetItemByValue(string.match(relic, "%d+"))
       
       if FFDataService:MatchFromSet("Collectibles", relic) then
          existingRelic:Obtain()
@@ -140,10 +143,10 @@ function CollectionSet:Update()
    end
    
    for i, hiddenrelic in ipairs(HiddenRelicValues) do
-      local hiddenRelicObject = self.Relics:GetItemByValue(tonumber(hiddenrelic))
+      local hiddenRelicObject = self.Relics:GetItemByValue(string.match(hiddenrelic, "%d+"))
       if hiddenRelicObject == nil and FFDataService:MatchFromSet("Collectibles", hiddenrelic) then
-            local newHiddenRelic = Collectible.new(hiddenrelic, self.Folder)
-            self.Relics:AddItem(tonumber(hiddenrelic), newHiddenRelic)
+            local newHiddenRelic = Collectible.new(hiddenrelic, self.Instance)
+            self.Relics:AddItem(string.match(hiddenrelic, "%d+"), newHiddenRelic)
             newHiddenRelic:Obtain()
             continue
       end
@@ -156,40 +159,37 @@ function CollectionSet:Update()
    end
    
    if 
-   --Fragment is owned by player
+   --Primary is owned by player
       FFDataService:MatchFromSet(
-         "Collectibles", self.Folder.Contents:GetAttribute("Fragment")
+         "Collectibles", self.Primary
       )
       
       and
-      --Fragment not visually obtained
-      self.Folder.Fragment.ImageColor == Color3.new(0,0,0)
+      --Primary not visually obtained
+      self.Instance.Primary.ImageColor == Color3.new(0,0,0)
       
    then
-      --Quick tween the fragment in
-      EngineTools:QuickTween(self.Folder.Fragment, 0.2, {ImageColor = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+      --Quick tween the Primary in
+      EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    end
    
    if
-   --Fragment is not owned by player
+   --Primary is not owned by player
       FFDataService:MatchFromSet(
-         "Collectibles", self.Folder.Contents:GetAttribute("Fragment")
+         "Collectibles", self.Primary
       ) ~= true
       
       and
-      --Fragment is visually obtained
-      self.Folder.Fragment.ImageColor == Color3.new(255,255,255)
+      --Primary is visually obtained
+      self.Instance.Primary.ImageColor3 == Color3.new(255,255,255)
       
    then
-      EngineTools:QuickTween(self.Folder.Fragment, 0.2, {ImageColor = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+      EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
    end
    
-   warn("Don't forget to set the attribute Fragments to Fragment;; SCRATCH THAT gotta fix a lot of stuff with fragment specifically. Maybe we should rename it to special")
+   --self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", self.Folder.Contents:GetAttribute("Shards"))
    
-   --Create an array that stores the shard values
-   self.Shards = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Shards"))
-   
-   self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", self.Folder.Contents:GetAttribute("Shards"))
+   self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", WorldContexts[self.WorldID].Shards)
    
    return
 end
@@ -198,23 +198,37 @@ end
 
 --[[new:
 Create a new collection set from an existing defined folder
-@param{Folder} ID - Identifier for the world context set
+@param{number} ID - Identifier for the world context set
 ]]
 function CollectionSet.new(ID)
    local newCollectionSet = {}
    setmetatable(newCollectionSet, CollectionSet)
    
+   newCollectionSet.WorldID = ID
+   
    newCollectionSet.Instance = ReferenceSet:Clone()
    
    newCollectionSet.Instance.Preview.Image = WorldContexts[ID].Preview
-   
-   newCollectionSet.Instance.TextLabel.Text = WorldContexts[ID].Name
+
+   --Handled by context frame
+   --newCollectionSet.Instance.TextLabel.Text = WorldContexts[ID].Name
    
    newCollectionSet.Relics = OrderedList.new("Ascending")
    
+   newCollectionSet.Shards = EngineTools:CSVToArray(WorldContexts[ID].Shards)
+   
+   newCollectionSet.Primary = WorldContexts[ID].Primary
+   
+   --If there is a primary, set the image
+   if newCollectionSet.Primary ~= "" then
+      newCollectionSet.Instance.Primary.Image
+       = CollectibleMetadata[newCollectionSet.Primary].imageAsset
+   end
+   
+   newCollectionSet:Update()
+   
    --TODO: CONTINUE FROM HERE
    --NOTES ON SEP 15 AT 6 PM: Collectibles seem to be done along with the frame. Just need to iterate and boot things up here! The end!
-   
    
    return newCollectionSet
 end

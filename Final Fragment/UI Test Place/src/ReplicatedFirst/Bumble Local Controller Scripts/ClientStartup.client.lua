@@ -73,6 +73,12 @@ FFDataService:RemoveFromSet("Collectibles", "R56")
 
 print(FFDataService:MatchFromSet("Collectibles", "R56"))
 
-FFDataService:AddToSet("GameFlags", "CC")
+FFDataService:AddToSet("GameFlags", "WELCOME")
+
+FFDataService:AddToSet("GameFlags", "EMBARK")
+
+FFDataService:AddToSet("GameFlags", "DESOLATION")
+
+FFDataService:AddToSet("GameFlags", "BURNING")
 
 ContextFrame.new()

@@ -345,6 +345,9 @@ function ContextFrame.new()
       newContextFrame.CollectionSets:AddItem(ID, CollectionSet.new(ID))
       
       --The class has no reference to the parent, so set the parent here instead
+      
+      --TODO: THIS IS BROKEY!!! Why?
+      --Im not sure actually. try breakpoint watching the values in the set, something is weird for sure
       newContextFrame.CollectionSets:GetItem(ID).Instance.Parent = newContextFrame.Instance.CollectionSets
    end
    

@@ -32,6 +32,7 @@ CM.R1.levelName = "Error Terror"
 CM.R2.levelName = "Sunken Tracks"
 CM.R3.levelName = "Shattered Settlement"
 CM.R4.levelName = "Cave In! -Deprecated"
+CM.R4.imageAsset = "GEAR"
 CM.R5.levelName = ""
 CM.R1.imageAsset = "http:/whatever.fortnite"
 
