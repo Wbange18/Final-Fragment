@@ -23,7 +23,6 @@ CM.F7.imageAsset = "rbxassetid://6343674604"
 CM.F8.imageAsset = "rbxassetid://6343674539"
 CM.F9.imageAsset = "rbxassetid://6343674485"
 
-
 --Note: F10 doesn't need an image, as this won't be revealed.
 
 --RELICS-------------------------------------------------------------

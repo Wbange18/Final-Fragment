@@ -338,17 +338,15 @@ function ContextFrame.new()
       
       --If player does not have the gameflag for visiting the world
       if FFDataService:MatchFromSet("GameFlags", context.GameFlag) == false then
-         return
+         continue
       end
       
+      local newSet = CollectionSet.new(ID)
+      
       --The player does have the flag, create and add the new set
-      newContextFrame.CollectionSets:AddItem(ID, CollectionSet.new(ID))
+      newContextFrame.CollectionSets:AddItem(ID, newSet)
       
-      --The class has no reference to the parent, so set the parent here instead
-      
-      --TODO: THIS IS BROKEY!!! Why?
-      --Im not sure actually. try breakpoint watching the values in the set, something is weird for sure
-      newContextFrame.CollectionSets:GetItem(ID).Instance.Parent = newContextFrame.Instance.CollectionSets
+      newSet.Instance.Parent = newContextFrame.Instance.WorldContexts
    end
    
    newContextFrame.Spinner = Spinner.new()

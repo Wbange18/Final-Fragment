@@ -1,6 +1,6 @@
 local WorldContexts = {}
 
-WorldContexts["0"] = {
+WorldContexts["1"] = {
    Name = "Hub",
    Preview = "",
    GameFlag = "WELCOME",
@@ -10,27 +10,27 @@ WorldContexts["0"] = {
    Shards = ""
 }
 
-WorldContexts["1"] = {
+WorldContexts["2"] = {
    Name = "Crystal Caverns",
    Preview = "rbxassetid://11331640008",
    GameFlag = "EMBARK",
    Primary = "F1",
    Relics = "R1,R2,R3,R4,R5,R6",
    HiddenRelics = "",
-   Shards = "S1,S2,S3,S4,S5,S6,S7,S8,"
+   Shards = "S1,S2,S3,S4,S5,S6,S7,S8"
 }
 
-WorldContexts["2"] = {
+WorldContexts["3"] = {
    Name = "Rumbling Ruins",
    Preview = "",
    GameFlag = "BURNING",
    Primary = "F2",
    Relics = "R7,R8,R9,R10,R11,R12",
    HiddenRelics = "",
-   Shards = "S9,S10,S11,S12,S13,S14,S15,S16,"
+   Shards = "S9,S10,S11,S12,S13,S14,S15,S16"
 }
 
-WorldContexts["3"] = {
+WorldContexts["4"] = {
    Name = "Stygian Grove",
    Preview = "",
    GameFlag = "EXPERIMENTAL",
@@ -40,7 +40,7 @@ WorldContexts["3"] = {
    Shards = ""
 }
 
-WorldContexts["4"] = {
+WorldContexts["5"] = {
    Name = "Polar Vortex",
    Preview = "",
    GameFlag = "FREEZING",
@@ -50,7 +50,7 @@ WorldContexts["4"] = {
    Shards = ""
 }
 
-WorldContexts["5"] = {
+WorldContexts["6"] = {
    Name = "Fickle Future",
    Preview = "",
    GameFlag = "EVERYWHERE",
@@ -60,7 +60,7 @@ WorldContexts["5"] = {
    Shards = ""
 }
 
-WorldContexts["6"] = {
+WorldContexts["7"] = {
    Name = "Arcadia",
    GameFlag = "HOME",
    Primary = "F6",
@@ -69,7 +69,7 @@ WorldContexts["6"] = {
    Shards = ""
 }
 
-WorldContexts["7"] = {
+WorldContexts["8"] = {
    Name = "Celestial Cogworks",
    Preview = "",
    GameFlag = "DEJAVU",
@@ -79,7 +79,7 @@ WorldContexts["7"] = {
    Shards = ""
 }
 
-WorldContexts["8"] = {
+WorldContexts["9"] = {
    Name = "Weeping Peaks",
    Preview = "",
    GameFlag = "SOMEWHERE",
@@ -89,7 +89,7 @@ WorldContexts["8"] = {
    Shards = ""
 }
 
-WorldContexts["9"] = {
+WorldContexts["10"] = {
    Name = "The Tower",
    Preview = "",
    GameFlag = "ASCENSION",
@@ -99,7 +99,7 @@ WorldContexts["9"] = {
    Shards = ""
 }
 
-WorldContexts["10"] = {
+WorldContexts["11"] = {
    Name = "Ancient Laboratory",
    Preview = "",
    GameFlag = "EXECUTE",
@@ -109,7 +109,7 @@ WorldContexts["10"] = {
    Shards = ""
 }
 
-WorldContexts["11"] = {
+WorldContexts["12"] = {
    Name = "Icy Depths",
    Preview = "",
    GameFlag = "THREAT",
@@ -119,7 +119,7 @@ WorldContexts["11"] = {
    Shards = ""
 }
 
-WorldContexts["12"] = {
+WorldContexts["13"] = {
    Name = "Lonely Sands",
    Preview = "",
    GameFlag = "DESOLATE",
@@ -129,7 +129,7 @@ WorldContexts["12"] = {
    Shards = ""
 }
 
-WorldContexts["13"] = {
+WorldContexts["14"] = {
    Name = "Corax Temple",
    Preview = "",
    GameFlag = "HIDDEN",
@@ -139,7 +139,7 @@ WorldContexts["13"] = {
    Shards = ""
 }
 
-WorldContexts["14"] = {
+WorldContexts["15"] = {
    Name = "Spaces Between",
    Preview = "",
    GameFlag = "NOWHERE",

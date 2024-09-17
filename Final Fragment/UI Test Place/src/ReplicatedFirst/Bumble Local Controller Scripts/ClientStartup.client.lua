@@ -54,6 +54,9 @@ wait(1)
 FFNotificationService:CreateNotification(
 	"1", "", 20, true, true, "Gung ho", "First"
 )
+
+FFNotificationService:CreateNotification("Bitch", "", 10, false, false, "you have 40 seconds to cum before you die", "First", Color3.new(0.647059, 0.788235, 0.317647))
+
 FFNotificationService:CreateNotification(
 	"3", "", 10, true, true, "Gung ho", "Next"
 )

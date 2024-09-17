@@ -264,6 +264,11 @@ to remember.
 ]]
 function Tools:CSVToArray(stringCSV)
 	local array = string.split(stringCSV, ",")
+	
+	if array[1] == "" then
+		array = {}
+	end
+	
 	return array
 end
 

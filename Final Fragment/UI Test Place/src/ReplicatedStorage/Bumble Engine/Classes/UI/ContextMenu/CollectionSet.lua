@@ -113,13 +113,19 @@ function CollectionSet:Update()
    --local HiddenRelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("HiddenRelics"))
    local HiddenRelicValues = EngineTools:CSVToArray(WorldContexts[self.WorldID].HiddenRelics)
    
-   for i, relic in ipairs(RelicValues) do
+   for i, relic in RelicValues do
+      
+      --This doesnt make sense. why get the key if im matching value>?
+      --if self.Relics:GetItemByValue(string.match(relic, "%d+")) == nil then
+         
       
       --Check if the relic exists in the ordered list
-      if self.Relics:GetItemByValue(string.match(relic, "%d+")) == nil then
+      if self.Relics:GetItemByValue(relic) == nil then
          
          --Create the new collectible and add it to ordered list by relic number
-         local newRelic = Collectible.new(relic, self.Instance)
+         local newRelic = Collectible.new(relic)
+         
+         newRelic.Parent = self.Instance.Relics
          
          self.Relics:AddItem(string.match(relic, "%d+"), newRelic)
          
@@ -145,7 +151,8 @@ function CollectionSet:Update()
    for i, hiddenrelic in ipairs(HiddenRelicValues) do
       local hiddenRelicObject = self.Relics:GetItemByValue(string.match(hiddenrelic, "%d+"))
       if hiddenRelicObject == nil and FFDataService:MatchFromSet("Collectibles", hiddenrelic) then
-            local newHiddenRelic = Collectible.new(hiddenrelic, self.Instance)
+            local newHiddenRelic = Collectible.new(hiddenrelic)
+            newHiddenRelic.Instace.Parent = self.Instance.Relics
             self.Relics:AddItem(string.match(hiddenrelic, "%d+"), newHiddenRelic)
             newHiddenRelic:Obtain()
             continue
@@ -225,6 +232,7 @@ function CollectionSet.new(ID)
        = CollectibleMetadata[newCollectionSet.Primary].imageAsset
    end
    
+   --This causes weird issue so I temporarily kill :O
    newCollectionSet:Update()
    
    --TODO: CONTINUE FROM HERE

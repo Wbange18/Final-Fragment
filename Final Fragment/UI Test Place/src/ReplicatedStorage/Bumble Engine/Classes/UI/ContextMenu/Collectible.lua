@@ -121,9 +121,8 @@ end
 --[[new:
 Create a new collectible
 @param {string} Data - The data of the collectible, I.E. "R32"
-@param {Folder} Parent - Parent folder of the collectible
 ]]
-function Collectible.new(Data: string, Parent: Folder)
+function Collectible.new(Data)
    local newCollectible = {}
    setmetatable(newCollectible, Collectible)
    
@@ -136,8 +135,6 @@ function Collectible.new(Data: string, Parent: Folder)
    --I DO NOT REMEMBER WHAT THIS DOES> But it reeks.
    
    newCollectible.Instance.Name = Data
-   
-   newCollectible.Instance.Parent = Parent
    
    newCollectible.Value = Data
    
