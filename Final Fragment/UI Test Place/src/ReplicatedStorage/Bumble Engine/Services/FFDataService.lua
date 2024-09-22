@@ -158,6 +158,23 @@ function DataService:MatchFromSet(dataName, dataValue, Player)
 	return result
 end
 
+--[[MatchDataTable:
+Match a table of data from the client
+@param {table} DataTable - Table of data to check
+@param {string} Set - Set of data to check
+@return {table} MatchedDataTable - Table of successfully matched data
+]]
+function DataService:MatchDataTable(Set, DataTable)
+	local MatchedDataTable = {}
+	for i, value in DataTable do
+		if DataService:MatchFromSet(Set, value) == true then
+			table.insert(MatchedDataTable, value)
+		end
+	end
+	
+	return MatchedDataTable
+end
+
 --[[LeaderStats
 Iterate through data sets and determine leader stats.
 

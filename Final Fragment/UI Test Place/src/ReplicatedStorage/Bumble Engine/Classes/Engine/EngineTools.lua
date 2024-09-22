@@ -196,6 +196,20 @@ function Tools:UnlockPlayer()
 	Player.Character.Humanoid.WalkSpeed = game.StarterPlayer.CharacterWalkSpeed
 end
 
+--[[CreateEvent:
+Create a simple bindable event parented to the given object, or replicated storage by default.
+@param {string} name - Name of the event.
+@param {object} Parent - Parent of the event if not ReplicatedService.
+@return {object} Event - Constructed event object.
+]]
+function Tools:CreateEvent(name, Parent)
+	Parent = Parent or ReplicatedStorage
+	local Event = Instance.new("BindableEvent")
+	Event.Name = name
+	Event.Parent = Parent
+	return Event
+end
+
 --[[CreateRemote:
 Create a remote parented to the given object, or replicated storage by default.
 
@@ -383,6 +397,5 @@ function Tools:GetKey(Table, Value)
 	end
 	return
 end
-
 
 return Tools

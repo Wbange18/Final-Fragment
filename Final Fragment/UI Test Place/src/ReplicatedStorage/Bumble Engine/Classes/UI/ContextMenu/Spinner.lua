@@ -17,7 +17,6 @@ Change the spinner's speed
 @param {number} smoothing - Time to smooth the speed over.
 ]]
 function Spinner:ChangeSpeed(speed, smoothing)
-   self.extraSpeed = speed
    if smoothing ~= nil and smoothing ~= 0 then
       coroutine.wrap(function()
          repeat
@@ -25,7 +24,9 @@ function Spinner:ChangeSpeed(speed, smoothing)
             task.wait(.1)
          until self.extraSpeed >= speed
       end)()
+      return
    end
+   self.extraSpeed = speed
    return
 end
 

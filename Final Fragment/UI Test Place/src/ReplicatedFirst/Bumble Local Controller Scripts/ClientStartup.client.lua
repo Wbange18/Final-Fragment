@@ -40,6 +40,33 @@ WeaponService:GiveWeapon(Pickaxe)
 
 --MusicService:Play(script.Parent.FirstTrack.Value)
 
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+
+
+FFDataService:AddToSet("Collectibles", "S6")
+FFDataService:AddToSet("Collectibles", "S7")
+FFDataService:AddToSet("Collectibles", "S8")
+FFDataService:AddToSet("Collectibles", "S16")
+
+print(FFDataService:MatchFromSet("Collectibles", "R56"))
+
+FFDataService:RemoveFromSet("Collectibles", "R56")
+
+print(FFDataService:MatchFromSet("Collectibles", "R56"))
+
+FFDataService:AddToSet("GameFlags", "WELCOME")
+
+FFDataService:AddToSet("GameFlags", "EMBARK")
+
+FFDataService:AddToSet("GameFlags", "DESOLATION")
+
+FFDataService:AddToSet("GameFlags", "BURNING")
+
+ContextFrame.new()
+
 FFNotificationService:CreateNotification(
 	"2", "", 12, true, true, "Gung ho", "First", Color3.new(0.807843, 0.384314, 0.384314)
 )
@@ -64,24 +91,3 @@ FFNotificationService:CreateNotification(
 	"6", "", 5, true, true, "Gung ho", "Last"
 )
 
-FFDataService:AddToSet("Collectibles", "R56")
-FFDataService:AddToSet("Collectibles", "R56")
-FFDataService:AddToSet("Collectibles", "R56")
-FFDataService:AddToSet("Collectibles", "R56")
-
-
-print(FFDataService:MatchFromSet("Collectibles", "R56"))
-
-FFDataService:RemoveFromSet("Collectibles", "R56")
-
-print(FFDataService:MatchFromSet("Collectibles", "R56"))
-
-FFDataService:AddToSet("GameFlags", "WELCOME")
-
-FFDataService:AddToSet("GameFlags", "EMBARK")
-
-FFDataService:AddToSet("GameFlags", "DESOLATION")
-
-FFDataService:AddToSet("GameFlags", "BURNING")
-
-ContextFrame.new()

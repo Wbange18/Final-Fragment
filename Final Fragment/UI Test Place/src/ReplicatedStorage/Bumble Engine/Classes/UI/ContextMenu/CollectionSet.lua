@@ -26,13 +26,15 @@ function CollectionSet:Show()
    
    local angleSubdivision, relicAngle, relicX, relicY, relicPosition
    
-   for i, relic in ipairs(self.Relics:GetList()) do
-      
+   for i, relic in self.Relics:GetList() do
+      print(self.Relics:GetList())
+      print(relic)
       --Get the angle between each piece
       angleSubdivision = (90 - 20) / self.Relics:GetLength()
       
-      --Multiply the subdivision by the ordered key of the relic.
-      relicAngle = angleSubdivision * self.Relics:GetKey(relic.Value)
+      --Multiply the subdivision by the ordered key of the relic. BUT the list is already ordered.
+      --relicAngle = angleSubdivision * self.Relics:GetKey(relic.Value)
+      relicAngle = angleSubdivision * i
       
       --Convert polar to x and y, adding the padding to the angle
       relicX = 0.58 * math.cos(math.rad(relicAngle + 10))
@@ -43,7 +45,7 @@ function CollectionSet:Show()
       relicPosition = UDim2.new(relicX, 0, relicY, 0)
       
       relic:Move(relicPosition)
-      relic:UnHide()
+      relic:Show()
       
       --Recursive function which waits for the mouse to leave, then waits for the mouse to enter.
       local function MouseEnter()
@@ -60,7 +62,7 @@ function CollectionSet:Show()
       end
       
       --Run MouseEnter once when the mouse enters the frame.
-      relic.EnterConnection = relic.Instance.MouseEnter:Once(MouseEnter)
+      relic.EnterConnection = relic.Instance.Group.MouseEnter:Once(MouseEnter)
       
    end
    
@@ -196,7 +198,11 @@ function CollectionSet:Update()
    
    --self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", self.Folder.Contents:GetAttribute("Shards"))
    
-   self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", WorldContexts[self.WorldID].Shards)
+   --self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", WorldContexts[self.WorldID].Shards)
+   
+   self.ObtainedShards = FFDataService:MatchDataTable("Collectibles", EngineTools:CSVToArray(WorldContexts[self.WorldID].Shards))
+   
+   print(self.ObtainedShards)
    
    return
 end

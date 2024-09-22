@@ -5,7 +5,6 @@ local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.En
 local CollectionSet = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.CollectionSet)
 local Spinner = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.Spinner)
 local WorldContexts = require(ReplicatedStorage["Bumble Engine"].Configuration.WorldContexts)
-local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 
 local FFDataService = require(ReplicatedStorage["Bumble Engine"].Services.FFDataService)
 local MusicService = require(ReplicatedStorage["Bumble Engine"].Services.MusicService)
@@ -27,68 +26,72 @@ Update data in the current set
 ]]
 function ContextFrame:UpdateData()
    
-   self.Instance.Frame["Shards Count"].Content.Text = (
+   self.Instance["Shards Count"].Content.Text = (
       "Shards: " .. 
       #self.CurrentSet.ObtainedShards .. "/" .. 
       #self.CurrentSet.Shards
    )
-   self.Instance.Frame["Shards Count"].Header.Text = self.CurrentSet.Instance.Name
+   self.Instance["Shards Count"].Header.Text = self.CurrentSet.Instance.Name
    
-   if self.CurrentLocation + 1 >= self.CollectionSets:GetLength() then
-      --Fade out the right button
-      EngineTools:QuickTween(
-         self.Instance.RightButton,
-         .25,
-         {
-            ImageTransparency = 1,
-            Visible = false,
-            Active = false
-         }, 
-         Enum.EasingStyle.Sine,
-         Enum.EasingDirection.In
-      )
-   else
-      --Fade in the right button
-      EngineTools:QuickTween(
-         self.Instance.RightButton,
-         .25,
-         {
-            ImageTransparency = 0,
-            Visible = true,
-            Active = true
-         }, 
-         Enum.EasingStyle.Sine,
-         Enum.EasingDirection.Out
-      )      
+   if self.Hidden ~= true then
+      if self.CurrentLocation + 1 >= self.CollectionSets:GetLength() then
+         --Fade out the right button
+         EngineTools:QuickTween(
+            self.Instance.RightButton,
+            .25,
+            {
+               ImageTransparency = 1,
+               Visible = false,
+               Active = false
+            }, 
+            Enum.EasingStyle.Sine,
+            Enum.EasingDirection.In
+         )
+      else
+         --Fade in the right button
+         EngineTools:QuickTween(
+            self.Instance.RightButton,
+            .25,
+            {
+               ImageTransparency = 0,
+               Visible = true,
+               Active = true
+            }, 
+            Enum.EasingStyle.Sine,
+            Enum.EasingDirection.Out
+         )      
+      end
+      
+      if self.CurrentLocation - 1 <= 0 then
+         --Fade out the left button
+         EngineTools:QuickTween(
+            self.Instance.LeftButton,
+            .25,
+            {
+               ImageTransparency = 1,
+               Visible = false,
+               Active = false
+            },
+            Enum.EasingStyle.Sine,
+            Enum.EasingDirection.In
+         )
+      else
+         --Fade in the left button
+         EngineTools:QuickTween(
+            self.Instance.LeftButton,
+            .25,
+            {
+               ImageTransparency = 0,
+               Visible = true,
+               Active = true
+            },
+            Enum.EasingStyle.Sine,
+            Enum.EasingDirection.Out
+         )
+      end
    end
    
-   if self.CurrentLocation - 1 <= 0 then
-      --Fade out the left button
-      EngineTools:QuickTween(
-         self.Instance.LeftButton,
-         .25,
-         {
-            ImageTransparency = 1,
-            Visible = false,
-            Active = false
-         },
-         Enum.EasingStyle.Sine,
-         Enum.EasingDirection.In
-      )
-   else
-      --Fade in the left button
-      EngineTools:QuickTween(
-         self.Instance.LeftButton,
-         .25,
-         {
-            ImageTransparency = 0,
-            Visible = true,
-            Active = true
-         },
-         Enum.EasingStyle.Sine,
-         Enum.EasingDirection.Out
-      )
-   end
+
    return
 end
 
@@ -101,11 +104,13 @@ function ContextFrame:MoveForwards()
    
    local newSet = nil
    
+
+   
    self.CurrentLocation = self.CurrentLocation or self.CollectionSets:GetKey(
       self.CurrentSet.Instance:GetAttribute("WorldID")
    )
    
-   if self.CurrentLocation <= 0 or self.Hidden == true then
+   if self.CurrentLocation >= self.CollectionSets:GetLength() or self.Hidden == true then
       return success
    end
    
@@ -136,9 +141,11 @@ function ContextFrame:MoveBackwards()
       self.CurrentSet.Instance:GetAttribute("World ID")
    )
    
-   if self.CurrentLocation >= self.CollectionSets:GetLength() or self.Hidden == true then
+   
+   if self.CurrentLocation <= 1 or self.Hidden == true then
       return success
    end
+
    
    newSet = self.CollectionSets:GetItem(self.CurrentLocation - 1)
    
@@ -224,9 +231,15 @@ function ContextFrame:ExpandMenu()
       Enum.EasingDirection.In
    )
    
-   self.Spinner:ChangeSpeed(self.SpinnerSpeed)
+   self.Spinner:ChangeSpeed(self.SpinnerSpeed, .2)
+   coroutine.wrap(function()
+      task.wait(.2)
+      self.Spinner:ChangeSpeed(0 - self.SpinnerSpeed, .2)
+   end)()
    
    self.CurrentSet:Show()
+   
+   self.Hidden = false
    
    self:UpdateData()
    
@@ -285,9 +298,15 @@ function ContextFrame:RetractMenu()
       Enum.EasingDirection.In
    )
    
-   self.Spinner:ChangeSpeed(self.SpinnerSpeed)
+   self.Spinner:ChangeSpeed(self.SpinnerSpeed, .2)
+   coroutine.wrap(function()
+      task.wait(.2)
+      self.Spinner:ChangeSpeed(0 - self.SpinnerSpeed, .2)
+   end)()
    
    self.CurrentSet:Hide()
+   
+   self.Hidden = true
    
    self:UpdateData()
    
@@ -351,16 +370,23 @@ function ContextFrame.new()
    
    newContextFrame.Spinner = Spinner.new()
    
-   newContextFrame.SpinnerSpeed = 10
+   newContextFrame.SpinnerSpeed = .65
    
    --Change to the world default set
-   newContextFrame.CurrentSet = newContextFrame.CollectionSets:GetItemByValue(
-      ReplicatedStorage["Bumble Engine"]:GetAttribute("World")
-   )
+   --newContextFrame.CurrentSet = newContextFrame.CollectionSets:GetItemByValue(
+   --   ReplicatedStorage["Bumble Engine"]:GetAttribute("World")
+   --)
    
-   newContextFrame.CurrentLocation = newContextFrame.CollectionSets:GetKey(
-      ReplicatedStorage["Bumble Engine"]:GetAttribute("World")
-   )
+   newContextFrame.CurrentSet = newContextFrame.CollectionSets.Contents[
+      tostring(ReplicatedStorage["Bumble Engine"]:GetAttribute("World"))
+   ]
+   
+   --newContextFrame.CurrentLocation = newContextFrame.CollectionSets:GetKey(
+   --   ReplicatedStorage["Bumble Engine"]:GetAttribute("World")
+   --)
+   
+   --Why would it not be the world lol
+   newContextFrame.CurrentLocation = ReplicatedStorage["Bumble Engine"]:GetAttribute("World")
    
    newContextFrame.CurrentSet:Hide()
    
@@ -411,7 +437,8 @@ function ContextFrame.new()
    @listener
    @event DataRemoteFunction
    ]]
-   Engine:GetResource("DataRemoteFunction").Event:Connect(function()
+   
+   FFDataService.DataRemote.OnClientEvent:Connect(function()
       newContextFrame.CurrentSet:Update()
       newContextFrame:UpdateData()
    end)
@@ -421,7 +448,7 @@ function ContextFrame.new()
    @listener
    @event TrackChange
    ]]
-   Engine:GetResource("TrackChange").Event:Connect(function()
+   ReplicatedStorage["TrackChange"].Event:Connect(function()
       newContextFrame:AssignNowPlaying()
    end)
    
