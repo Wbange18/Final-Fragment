@@ -44,9 +44,10 @@ end
 Focus the collectible
 ]]
 function Collectible:Focus()
-   EngineTools:QuickTween(self.Instance.Group, .15, {Size = UDim2.new(0.8, 0,0.125, 0)}, Enum.EasingDirection.In)
-   EngineTools:QuickTween(self.Instance.Group.TextLabel, .15, {TextTransparency = 0}, Enum.EasingDirection.In)
-   EngineTools:QuickTween(self.Instance.Group, .15, {BackgroundTransparency = 0}, nil, Enum.EasingDirection.In)
+   EngineTools:QuickTween(self.Instance.Group, .15, {Size = UDim2.new(0.8, 0,0.125, 0)}, nil, Enum.EasingDirection.In)
+   EngineTools:QuickTween(self.Instance.Group.TextLabel, .15, {TextTransparency = 0}, nil, Enum.EasingDirection.In)
+   --TODO: WRONG! THIS IS BAD
+   EngineTools:QuickTween(self.Instance.Group, .15, {GroupTransparency = 0}, nil, Enum.EasingDirection.In)
    self.Focused = true
    return
 end
@@ -57,7 +58,8 @@ Unfocus the collectible
 function Collectible:UnFocus()
    EngineTools:QuickTween(self.Instance.Group, .15, {Size = UDim2.new(0.62, 0,0.1, 0)}, nil, Enum.EasingDirection.Out)
    EngineTools:QuickTween(self.Instance.Group.TextLabel, .15, {TextTransparency = 1}, nil, Enum.EasingDirection.Out)
-   EngineTools:QuickTween(self.Instance.Group, .15, {BackgroundTransparency = 1}, nil, Enum.EasingDirection.Out)
+   --TODO: WRONG! THIS IS BAD
+   EngineTools:QuickTween(self.Instance.Group, .15, {GroupTransparency = 1}, nil, Enum.EasingDirection.Out)
    self.Focused = false
    return
 end
@@ -79,7 +81,7 @@ function Collectible:UnFade()
 end
 
 --[[Hide:
-Completely hide the collectible, tweening to UI center
+Completely hide the collectible
 ]]
 function Collectible:Hide()
    EngineTools:QuickTween(self.Instance.Group, .25, {GroupTransparency = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.In)
@@ -87,7 +89,7 @@ function Collectible:Hide()
 end
 
 --[[Show:
-Completely show the collectible, tweening to designated UI position
+Completely show the collectible
 ]]
 function Collectible:Show()
    EngineTools:QuickTween(self.Instance.Group, .25, {GroupTransparency = 0}, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
@@ -99,7 +101,11 @@ Move the UI element
 @param {UDim2} PositionGoal - PositionGoal to move the UI element to
 ]]
 function Collectible:Move(PositionGoal, easingDirection)
-   PositionGoal = PositionGoal or self.CenterPosition
+   if PositionGoal == nil then
+      PositionGoal = self.centerPosition
+      print("this happened")
+  end
+  print(PositionGoal)
   local  direction = easingDirection or Enum.EasingDirection.Out
    EngineTools:QuickTween(self.Instance.Group, .25, {Position = PositionGoal}, Enum.EasingStyle.Back, direction)
    return

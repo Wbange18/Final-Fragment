@@ -9,8 +9,8 @@ local FragmentDefaults = {
 local RelicDefaults = {
    specialType = "",
    specialName = "",
-   levelName = "",
-   imageAsset = "N/A"
+   levelName = "UNKNOWN",
+   imageAsset = "rbxassetid://12358680051"
 }
 
 local ShardDefaults = {

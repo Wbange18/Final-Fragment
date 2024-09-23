@@ -34,7 +34,7 @@ function ContextFrame:UpdateData()
    self.Instance["Shards Count"].Header.Text = self.CurrentSet.Instance.Name
    
    if self.Hidden ~= true then
-      if self.CurrentLocation + 1 >= self.CollectionSets:GetLength() then
+      if self.CurrentLocation + 1 > self.CollectionSets:GetLength() then
          --Fade out the right button
          EngineTools:QuickTween(
             self.Instance.RightButton,
@@ -104,8 +104,6 @@ function ContextFrame:MoveForwards()
    
    local newSet = nil
    
-
-   
    self.CurrentLocation = self.CurrentLocation or self.CollectionSets:GetKey(
       self.CurrentSet.Instance:GetAttribute("WorldID")
    )
@@ -168,7 +166,7 @@ function ContextFrame:ChangeSet(newSet)
    local oldSet = self.CurrentSet
    
    if oldSet ~= nil then
-      oldSet:Hide()
+      self.CurrentSet:Hide()
    end
    
    newSet:Show()
@@ -355,6 +353,8 @@ function ContextFrame.new()
       end
       
       local newSet = CollectionSet.new(ID)
+      
+      newSet.Instance.Name = WorldContexts[ID].Name
       
       --The player does have the flag, create and add the new set
       newContextFrame.CollectionSets:AddItem(ID, newSet)

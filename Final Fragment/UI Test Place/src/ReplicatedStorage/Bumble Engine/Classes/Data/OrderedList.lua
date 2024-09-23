@@ -119,6 +119,15 @@ function OrderedList:Sort()
 	
 end
 
+--[[Wipe
+Wipe an ordered list of its contents.
+]]
+function OrderedList:Wipe()
+	self.Contents = {}
+	self.SortOrder = {}
+	self.OrderedContents = {}
+end
+
 --[[Destroy
 Remove an ordered list and all of its elements.
 

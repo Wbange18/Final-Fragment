@@ -27,8 +27,7 @@ function CollectionSet:Show()
    local angleSubdivision, relicAngle, relicX, relicY, relicPosition
    
    for i, relic in self.Relics:GetList() do
-      print(self.Relics:GetList())
-      print(relic)
+      print(self.Relics:GetLength())
       --Get the angle between each piece
       angleSubdivision = (90 - 20) / self.Relics:GetLength()
       
@@ -42,7 +41,9 @@ function CollectionSet:Show()
       --Y axis is flipped because roblox is cool
       relicY = -0.58 * math.sin(math.rad(relicAngle + 10))
       
-      relicPosition = UDim2.new(relicX, 0, relicY, 0)
+      relicPosition = UDim2.new(0.5 + relicX, 0,0.5 + relicY, 0)
+      
+      print(relicAngle, angleSubdivision)
       
       relic:Move(relicPosition)
       relic:Show()
@@ -50,19 +51,19 @@ function CollectionSet:Show()
       --Recursive function which waits for the mouse to leave, then waits for the mouse to enter.
       local function MouseEnter()
          
-         relic.Focus()
+         relic:Focus()
          
-         relic.Instance.MouseLeave:Once(function()
+         relic.Instance.Group.Hitbox.MouseLeave:Once(function()
             
-            relic.UnFocus()
+            relic:UnFocus()
             
             --Recurse the function, assigning the connection value.
-            relic.connection = relic.Instance.MouseEnter:Once(MouseEnter)
+            relic.connection = relic.Instance.Group.Hitbox.MouseEnter:Once(MouseEnter)
          end)
       end
       
       --Run MouseEnter once when the mouse enters the frame.
-      relic.EnterConnection = relic.Instance.Group.MouseEnter:Once(MouseEnter)
+      relic.EnterConnection = relic.Instance.Group.Hitbox.MouseEnter:Once(MouseEnter)
       
    end
    
@@ -77,7 +78,7 @@ Hide the collection set
 function CollectionSet:Hide()
    
    for i, relic in ipairs(self.Relics:GetList()) do
-      
+      print(relic)
       --Disconnect all the mouse hover events.
       if relic.connection ~= nil then
          relic.connection:Disconnect()
@@ -87,15 +88,19 @@ function CollectionSet:Hide()
       relic:Move(nil, Enum.EasingDirection.In)
       relic:Hide()
       
+      --I tried to keep the lines below, but it detatches all references and breaks stuff
+      
+      --self.Relics:Wipe()
+      
       --Multithread to avoid delay
-      coroutine.wrap(function()
+      --coroutine.wrap(function()
          
          --Time the prior two functions take to complete.
-         task.wait(0.25)
+         --task.wait(0.25)
          
          --Since self:Update() can create relics, we can destroy them to save memory.
-         relic:Destroy()
-      end)()
+         --relic:Destroy()
+      --end)()
    end
    
    --Remove the preview
@@ -127,7 +132,7 @@ function CollectionSet:Update()
          --Create the new collectible and add it to ordered list by relic number
          local newRelic = Collectible.new(relic)
          
-         newRelic.Parent = self.Instance.Relics
+         newRelic.Instance.Parent = self.Instance.Relics
          
          self.Relics:AddItem(string.match(relic, "%d+"), newRelic)
          
