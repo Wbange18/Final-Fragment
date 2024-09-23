@@ -45,6 +45,16 @@ function PlayerData:WipeSet(dataName)
 	return result
 end
 
+--[[PolishData
+Remove all duplicates of any data entries.
+]]
+function PlayerData:PolishData()
+	for _, dataSet in self.DataSets do
+		dataSet:PolishData()
+	end
+end
+
+
 
 --CONSTRUCTORS========================================================
 

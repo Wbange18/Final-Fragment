@@ -30,6 +30,24 @@ function Spinner:ChangeSpeed(speed, smoothing)
    return
 end
 
+--[[ShiftSpeed
+Shift the spinner's speed for a short time. Will not respond if a shift is currently occurring
+@param {number} speed - Speed to shift to
+@param {number} time - Time of the shift
+]]
+function Spinner:ShiftSpeed(speed, time)
+   if self.Shifting then
+      return
+   end
+   self.Shifting = true
+   self:ChangeSpeed(speed, time)
+   coroutine.wrap(function()
+      task.wait(time)
+      self:ChangeSpeed(0 - speed, time)
+      self.Shifting = false
+   end)()
+end
+
 --CONSTRUCTOR
 
 --[[new
@@ -50,6 +68,7 @@ function Spinner.new()
    local angleBackwards = 0
    
    newSpinner.extraSpeed = 0
+   newSpinner.Shifting = false
    
    --Connect to the step after simulation, least impactful
    newSpinner.Connection = RunService.PostSimulation:Connect(function()

@@ -1,3 +1,6 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local DataSet = {}
 
 DataSet.__index = DataSet
@@ -67,15 +70,24 @@ function DataSet:WipeSet()
 	self.Data = {}
 end
 
+--[[PolishData:
+Clean the data in the set, removing duplicates.
+]]
+function DataSet:PolishData()
+	
+	local DirtyData = self.Data
+	local CleanData = EngineTools:RemoveDuplicates(DirtyData)
+	self.Data = CleanData
+end
+
 --CONSTRUCTORS========================================================
 
 --[[new
-Create a new Data Set for a given player
+Create a new Data Set
 
-@param {object} Player - The player the data set is for
 @param {string} dataName - Name for the data set
 ]]
-function DataSet.new(Player, dataName)
+function DataSet.new(dataName)
 	local newDataSet = {}
 	setmetatable(newDataSet, DataSet)
 	

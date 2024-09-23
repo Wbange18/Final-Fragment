@@ -120,7 +120,7 @@ function ContextFrame:MoveForwards()
    
    self:ChangeSet(newSet)
    
-   self.Spinner:ChangeSpeed(self.SpinnerSpeed)
+   self.Spinner:ShiftSpeed(self.SpinnerSpeed - 0.1, .2)
    
    success = true
    
@@ -153,7 +153,7 @@ function ContextFrame:MoveBackwards()
    
    self:ChangeSet(newSet)
    
-   self.Spinner:ChangeSpeed(self.SpinnerSpeed)
+   self.Spinner:ShiftSpeed(self.SpinnerSpeed - 0.1, .2)
    
    success = true
    
@@ -172,6 +172,8 @@ function ContextFrame:ChangeSet(newSet)
    end
    
    newSet:Show()
+   
+   self.CurrentSet = newSet
    
    self:UpdateData()
    
@@ -231,11 +233,7 @@ function ContextFrame:ExpandMenu()
       Enum.EasingDirection.In
    )
    
-   self.Spinner:ChangeSpeed(self.SpinnerSpeed, .2)
-   coroutine.wrap(function()
-      task.wait(.2)
-      self.Spinner:ChangeSpeed(0 - self.SpinnerSpeed, .2)
-   end)()
+   self.Spinner:ShiftSpeed(self.SpinnerSpeed, .2)
    
    self.CurrentSet:Show()
    
@@ -298,11 +296,7 @@ function ContextFrame:RetractMenu()
       Enum.EasingDirection.In
    )
    
-   self.Spinner:ChangeSpeed(self.SpinnerSpeed, .2)
-   coroutine.wrap(function()
-      task.wait(.2)
-      self.Spinner:ChangeSpeed(0 - self.SpinnerSpeed, .2)
-   end)()
+   self.Spinner:ShiftSpeed(self.SpinnerSpeed, .2)
    
    self.CurrentSet:Hide()
    

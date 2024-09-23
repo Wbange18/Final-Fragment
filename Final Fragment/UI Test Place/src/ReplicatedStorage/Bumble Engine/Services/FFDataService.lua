@@ -3,7 +3,6 @@ local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
-local DataSet = require(ReplicatedStorage["Bumble Engine"].Classes.Data.DataSet)
 local PlayerData = require(ReplicatedStorage["Bumble Engine"].Classes.Data.PlayerData)
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
 local DataStructureList = require(ReplicatedStorage["Bumble Engine"].Configuration.DataStructure)
@@ -46,13 +45,16 @@ Load data from the datastore, iterating through all data sets or creating new on
 function DataService:LoadData(PlayerData)
 	
 	for _, dataSetName in ipairs(DataStructureList) do
-		PlayerData.DataSets[dataSetName] = 
-			DataSet.new(PlayerData.Player, dataSetName)
+		--PlayerData.DataSets[dataSetName] = 
+		--	DataSet.new(PlayerData.Player, dataSetName)
 		local Data = 
 			DataService.DataStores[dataSetName]:GetAsync(PlayerData.Player.UserId)
 		if Data then
 			local success, errorMessage = pcall(function()
 				Data = HttpService:JSONDecode(Data)
+				if Data == nil then
+					Data = {}
+				end
 			end)
 			if not success then
 				print("CLASSIC DATA DETECTED! Please send this report to Galvarino if this issue persists. In order to fix this issue, your data will be wiped. A record of the purged data will also be reported. Wiping your data... Data = " .. Data .. " ERROR: " .. errorMessage)
@@ -233,17 +235,23 @@ if RunService:IsServer() then
 		--Parent to DataService
 		DataService.PlayerDataPacks[Player.UserId] = newPlayerData
 
-		DataService:LoadData(newPlayerData)
-		DataService:SaveData(newPlayerData)
+		DataService:LoadData(DataService.PlayerDataPacks[Player.UserId])
+		
+		
+		--CLEAN DATA (removes duplicate entries)
+		DataService.PlayerDataPacks[Player.UserId]:PolishData()
+		
+		
+		DataService:SaveData(DataService.PlayerDataPacks[Player.UserId])
 
 		game.Players.PlayerRemoving:Connect(function()
-			DataService:SaveData(newPlayerData)
-			DataService:RemovePlayerData(newPlayerData)
+			DataService:SaveData(DataService.PlayerDataPacks[Player.UserId])
+			DataService:RemovePlayerData(DataService.PlayerDataPacks[Player.UserId])
 		end)
 
 		game:BindToClose(function()
-			DataService:SaveData(newPlayerData)
-			DataService:RemovePlayerData(newPlayerData)
+			DataService:SaveData(DataService.PlayerDataPacks[Player.UserId])
+			DataService:RemovePlayerData(DataService.PlayerDataPacks[Player.UserId])
 		end)
 	end)
 end

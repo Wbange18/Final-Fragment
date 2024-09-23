@@ -98,10 +98,10 @@ end
 Move the UI element
 @param {UDim2} PositionGoal - PositionGoal to move the UI element to
 ]]
-function Collectible:Move(PositionGoal, easingStyle: UDim2)
+function Collectible:Move(PositionGoal, easingDirection)
    PositionGoal = PositionGoal or self.CenterPosition
-  local  style = easingStyle or Enum.EasingDirection.Out
-   EngineTools:QuickTween(self.Instance.Group, .25, {Position = PositionGoal}, Enum.EasingStyle.Back, style)
+  local  direction = easingDirection or Enum.EasingDirection.Out
+   EngineTools:QuickTween(self.Instance.Group, .25, {Position = PositionGoal}, Enum.EasingStyle.Back, direction)
    return
 end
 

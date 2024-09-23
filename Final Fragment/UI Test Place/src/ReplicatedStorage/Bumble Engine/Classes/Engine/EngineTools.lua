@@ -398,4 +398,23 @@ function Tools:GetKey(Table, Value)
 	return
 end
 
+--[[RemoveDuplicates:
+Remove all duplicate entries in a table
+@param {table} DirtyTable - Table to be cleaned
+@return {table} CleanTable - Resulting table
+]]
+function Tools:RemoveDuplicates(DirtyTable)
+	local CleanTable = {}
+	local UniqueValues = {}
+	
+	for _, value in ipairs(DirtyTable) do
+		if not UniqueValues[value] then
+			UniqueValues[value] = true
+			table.insert(CleanTable, value)
+		end
+	end
+  
+	return CleanTable
+end
+
 return Tools

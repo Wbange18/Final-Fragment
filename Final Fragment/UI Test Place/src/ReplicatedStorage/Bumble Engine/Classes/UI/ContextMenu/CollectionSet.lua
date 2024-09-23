@@ -84,7 +84,7 @@ function CollectionSet:Hide()
       end
       
       --If first parameter is blank, this uses internal centerposition value
-      relic:Move(nil, "In")
+      relic:Move(nil, Enum.EasingDirection.In)
       relic:Hide()
       
       --Multithread to avoid delay
