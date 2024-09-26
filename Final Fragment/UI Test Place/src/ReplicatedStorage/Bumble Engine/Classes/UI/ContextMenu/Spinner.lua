@@ -23,6 +23,7 @@ function Spinner:ChangeSpeed(speed, smoothing)
             self.extraSpeed += speed/smoothing
             task.wait(.1)
          until self.extraSpeed >= speed
+         return
       end)()
       return
    end
@@ -45,6 +46,7 @@ function Spinner:ShiftSpeed(speed, time)
       task.wait(time)
       self:ChangeSpeed(0 - speed, time)
       self.Shifting = false
+      return
    end)()
 end
 

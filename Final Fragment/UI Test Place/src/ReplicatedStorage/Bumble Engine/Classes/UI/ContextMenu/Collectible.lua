@@ -135,6 +135,7 @@ function Collectible.new(Data)
    newCollectible.Focused = false
    newCollectible.centerPosition = UDim2.new(0.5,0,0.5,0)
    newCollectible.Instance = ReferenceRelic:Clone()
+   newCollectible.EnterConnection = false
    
    --Assumed by index, but here for syntax reference
    newCollectible.connection = nil

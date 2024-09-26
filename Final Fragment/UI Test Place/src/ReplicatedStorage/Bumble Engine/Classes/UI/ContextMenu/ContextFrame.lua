@@ -26,13 +26,32 @@ Update data in the current set
 ]]
 function ContextFrame:UpdateData()
    
-   self.Instance["Shards Count"].Content.Text = (
-      "Shards: " .. 
-      #self.CurrentSet.ObtainedShards .. "/" .. 
-      #self.CurrentSet.Shards
-   )
-   self.Instance["Shards Count"].Header.Text = self.CurrentSet.Instance.Name
+   self.CurrentSet:Update()
    
+   coroutine.wrap(function()
+      
+      --Name of the world
+      self.Instance["Shards Count"].Header.Text = self.CurrentSet.Instance.Name
+      
+      --Previously known shard count
+      self.Instance["Shards Count"].Content.Text = (
+         "Shards: " .. 
+         #self.CurrentSet.ObtainedShards .. "/" .. 
+         #self.CurrentSet.Shards
+      )
+      
+      --Call server for real shard count
+      self.CurrentSet.ObtainedShards = FFDataService:MatchDataTable("Collectibles", EngineTools:CSVToArray(WorldContexts[self.CurrentSet.WorldID].Shards))
+   
+      --Update shard count again
+      self.Instance["Shards Count"].Content.Text = (
+         "Shards: " .. 
+         #self.CurrentSet.ObtainedShards .. "/" .. 
+         #self.CurrentSet.Shards
+      )
+      
+   end)()
+
    if self.Hidden ~= true then
       if self.CurrentLocation + 1 > self.CollectionSets:GetLength() then
          --Fade out the right button
@@ -90,8 +109,6 @@ function ContextFrame:UpdateData()
          )
       end
    end
-   
-
    return
 end
 
@@ -120,9 +137,9 @@ function ContextFrame:MoveForwards()
    
    self.CurrentLocation += 1
    
-   self:ChangeSet(newSet)
-   
    self.Spinner:ShiftSpeed(self.SpinnerSpeed - 0.1, .2)
+   
+   self:ChangeSet(newSet)
    
    success = true
    
@@ -158,9 +175,9 @@ function ContextFrame:MoveBackwards()
    
    self.CurrentLocation -= 1
    
-   self:ChangeSet(newSet)
-   
    self.Spinner:ShiftSpeed(self.SpinnerSpeed - 0.1, .2)
+   
+   self:ChangeSet(newSet)
    
    success = true
    self.Debounce = false
@@ -178,7 +195,7 @@ function ContextFrame:ChangeSet(newSet)
       self.CurrentSet:Hide()
    end
    
-   newSet:Update()
+   --newSet:Update()
    
    newSet:Show()
    
@@ -446,7 +463,7 @@ function ContextFrame.new()
    ]]
    
    FFDataService.DataRemote.OnClientEvent:Connect(function()
-      newContextFrame.CurrentSet:Update()
+      --newContextFrame.CurrentSet:Update()
       newContextFrame:UpdateData()
    end)
    
