@@ -10,7 +10,6 @@ MusicService.PlayingTracks = {}
 MusicService.CurrentTrack = nil
 
 MusicService.TrackChange = EngineTools:CreateEvent("TrackChange")
-print("Remote should exist!!")
 
 --METHODS=====================================================================
 

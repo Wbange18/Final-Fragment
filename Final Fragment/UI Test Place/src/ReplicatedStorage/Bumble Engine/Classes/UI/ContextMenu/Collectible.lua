@@ -46,6 +46,7 @@ Focus the collectible
 function Collectible:Focus()
    EngineTools:QuickTween(self.Instance.Group, .15, {Size = UDim2.new(0.8, 0,0.125, 0)}, nil, Enum.EasingDirection.In)
    EngineTools:QuickTween(self.Instance.Group.TextLabel, .15, {TextTransparency = 0}, nil, Enum.EasingDirection.In)
+   EngineTools:QuickTween(self.Instance.Group.Frame, .15,{BackgroundTransparency = 0}, nil, Enum.EasingDirection.In)
    --TODO: WRONG! THIS IS BAD
    EngineTools:QuickTween(self.Instance.Group, .15, {GroupTransparency = 0}, nil, Enum.EasingDirection.In)
    self.Focused = true
@@ -58,8 +59,9 @@ Unfocus the collectible
 function Collectible:UnFocus()
    EngineTools:QuickTween(self.Instance.Group, .15, {Size = UDim2.new(0.62, 0,0.1, 0)}, nil, Enum.EasingDirection.Out)
    EngineTools:QuickTween(self.Instance.Group.TextLabel, .15, {TextTransparency = 1}, nil, Enum.EasingDirection.Out)
+   EngineTools:QuickTween(self.Instance.Group.Frame, .15,{BackgroundTransparency = 1}, nil, Enum.EasingDirection.In)
    --TODO: WRONG! THIS IS BAD
-   EngineTools:QuickTween(self.Instance.Group, .15, {GroupTransparency = 1}, nil, Enum.EasingDirection.Out)
+   --EngineTools:QuickTween(self.Instance.Group, .15, {GroupTransparency = 0}, nil, Enum.EasingDirection.Out)
    self.Focused = false
    return
 end
@@ -103,9 +105,7 @@ Move the UI element
 function Collectible:Move(PositionGoal, easingDirection)
    if PositionGoal == nil then
       PositionGoal = self.centerPosition
-      print("this happened")
   end
-  print(PositionGoal)
   local  direction = easingDirection or Enum.EasingDirection.Out
    EngineTools:QuickTween(self.Instance.Group, .25, {Position = PositionGoal}, Enum.EasingStyle.Back, direction)
    return
@@ -144,7 +144,9 @@ function Collectible.new(Data)
    
    newCollectible.Value = Data
    
-   newCollectible.Instance.Group.Relic.Image = CollectibleMetadata[Data].ImageAsset
+   newCollectible.Instance.Group.Relic.Image = CollectibleMetadata[Data].imageAsset
+   
+   newCollectible.Instance.Group.TextLabel.Text = CollectibleMetadata[Data].levelName
    
    --Initial setup
    newCollectible.Instance.Group.Position = newCollectible.centerPosition

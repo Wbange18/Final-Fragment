@@ -27,7 +27,6 @@ function CollectionSet:Show()
    local angleSubdivision, relicAngle, relicX, relicY, relicPosition
    
    for i, relic in self.Relics:GetList() do
-      print(self.Relics:GetLength())
       --Get the angle between each piece
       angleSubdivision = (90 - 20) / self.Relics:GetLength()
       
@@ -42,8 +41,6 @@ function CollectionSet:Show()
       relicY = -0.58 * math.sin(math.rad(relicAngle + 10))
       
       relicPosition = UDim2.new(0.5 + relicX, 0,0.5 + relicY, 0)
-      
-      print(relicAngle, angleSubdivision)
       
       relic:Move(relicPosition)
       relic:Show()
@@ -65,6 +62,10 @@ function CollectionSet:Show()
       --Run MouseEnter once when the mouse enters the frame.
       relic.EnterConnection = relic.Instance.Group.Hitbox.MouseEnter:Once(MouseEnter)
       
+      --THIS MIGHT BE A BAD IDEA BUT IT ALSO
+      --MIGHT LOOK REALLY COOL
+      task.wait()
+      
    end
    
    --Add the preview
@@ -78,7 +79,6 @@ Hide the collection set
 function CollectionSet:Hide()
    
    for i, relic in ipairs(self.Relics:GetList()) do
-      print(relic)
       --Disconnect all the mouse hover events.
       if relic.connection ~= nil then
          relic.connection:Disconnect()
@@ -89,6 +89,7 @@ function CollectionSet:Hide()
       relic:Hide()
       
       --I tried to keep the lines below, but it detatches all references and breaks stuff
+      --This seems to actually severely impact performance. Turns out deleting and cloning 16 objects is kind of a problem. big surprise.
       
       --self.Relics:Wipe()
       
@@ -101,6 +102,10 @@ function CollectionSet:Hide()
          --Since self:Update() can create relics, we can destroy them to save memory.
          --relic:Destroy()
       --end)()
+      
+      --THIS MIGHT BE A BAD IDEA BUT IT ALSO
+      --MIGHT LOOK REALLY COOL
+      task.wait()
    end
    
    --Remove the preview
@@ -109,106 +114,132 @@ function CollectionSet:Hide()
    return
 end
 
+
 --[[Update:
 Update the set in case anything changed, checking if hidden relics are found, and unfading
 obtained relics.
 ]]
 function CollectionSet:Update()
-   --local RelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("Relics"))
-   local RelicValues = EngineTools:CSVToArray(WorldContexts[self.WorldID].Relics)
    
-   --local HiddenRelicValues = EngineTools:CSVToArray(self.Folder.Contents:GetAttribute("HiddenRelics"))
-   local HiddenRelicValues = EngineTools:CSVToArray(WorldContexts[self.WorldID].HiddenRelics)
-   
-   for i, relic in RelicValues do
+   --Coroutines which request data calls from the server. Check these first
+
+   --Check Primary collectible
+   coroutine.wrap(function()
+      if 
+      --Primary is owned by player
+         FFDataService:MatchFromSet(
+            "Collectibles", self.Primary
+         )
+         
+         and
+         --Primary not visually obtained
+         self.Instance.Primary.ImageColor == Color3.new(0,0,0)
       
-      --This doesnt make sense. why get the key if im matching value>?
-      --if self.Relics:GetItemByValue(string.match(relic, "%d+")) == nil then
-         
-      
-      --Check if the relic exists in the ordered list
-      if self.Relics:GetItemByValue(relic) == nil then
-         
-         --Create the new collectible and add it to ordered list by relic number
-         local newRelic = Collectible.new(relic)
-         
-         newRelic.Instance.Parent = self.Instance.Relics
-         
-         self.Relics:AddItem(string.match(relic, "%d+"), newRelic)
-         
-         if FFDataService:MatchFromSet("Collectibles", relic) then
-            newRelic:Obtain()
-            continue
-         end
-         
-         newRelic:UnObtain()
-         continue
+      then
+         --Quick tween the Primary in
+         EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
       end
       
+      if
+      --Primary is not owned by player
+         FFDataService:MatchFromSet(
+            "Collectibles", self.Primary
+         ) ~= true
+         
+         and
+         --Primary is visually obtained
+         self.Instance.Primary.ImageColor3 == Color3.new(255,255,255)
+         
+      then
+         EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+      end
+   end)()
+   
+   --Check Shards
+   coroutine.wrap(function()
+      self.ObtainedShards = FFDataService:MatchDataTable("Collectibles", EngineTools:CSVToArray(WorldContexts[self.WorldID].Shards))
+   end)()
+   
+   local function NewHide(relic)
+      local newRelic = Collectible.new(relic)
+      newRelic.Instance.Parent = self.Instance.Relics
+      self.Relics:AddItem(string.match(relic, "%d+"), newRelic)
+      newRelic:UnObtain()
+      return
+   end
+   
+   local function NewShow(relic)
+      local newRelic = Collectible.new(relic)
+      newRelic.Instance.Parent = self.Instance.Relics
+      self.Relics:AddItem(string.match(relic, "%d+"), newRelic)
+      newRelic:Obtain()
+      return
+   end
+   
+   local function ExistingHide(relic)
       local existingRelic = self.Relics:GetItemByValue(string.match(relic, "%d+"))
-      
-      if FFDataService:MatchFromSet("Collectibles", relic) then
-         existingRelic:Obtain()
-         continue
-      end
       existingRelic:UnObtain()
-      continue
+      return
    end
    
-   for i, hiddenrelic in ipairs(HiddenRelicValues) do
-      local hiddenRelicObject = self.Relics:GetItemByValue(string.match(hiddenrelic, "%d+"))
-      if hiddenRelicObject == nil and FFDataService:MatchFromSet("Collectibles", hiddenrelic) then
-            local newHiddenRelic = Collectible.new(hiddenrelic)
-            newHiddenRelic.Instace.Parent = self.Instance.Relics
-            self.Relics:AddItem(string.match(hiddenrelic, "%d+"), newHiddenRelic)
-            newHiddenRelic:Obtain()
-            continue
-      end
-      
-      --If exists, destroy and UnObtain
-      if hiddenRelicObject ~= nil then
-         hiddenRelicObject:UnObtain()
-         hiddenRelicObject:Destroy()
-      end
+   local function ExistingShow(relic)
+      local existingRelic = self.Relics:GetItemByValue(string.match(relic, "%d+"))
+      existingRelic:Obtain()
+      return
    end
    
-   if 
-   --Primary is owned by player
-      FFDataService:MatchFromSet(
-         "Collectibles", self.Primary
-      )
-      
-      and
-      --Primary not visually obtained
-      self.Instance.Primary.ImageColor == Color3.new(0,0,0)
-      
-   then
-      --Quick tween the Primary in
-      EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+   local function Remove(relic)
+      local hiddenRelicObject = self.Relics:GetItemByValue(string.match(relic, "%d+"))
+      hiddenRelicObject:UnObtain()
+      hiddenRelicObject:Destroy()
+      return
+   end
+
+   local function DoNothing(relic)
+      return
    end
    
-   if
-   --Primary is not owned by player
-      FFDataService:MatchFromSet(
-         "Collectibles", self.Primary
-      ) ~= true
-      
-      and
-      --Primary is visually obtained
-      self.Instance.Primary.ImageColor3 == Color3.new(255,255,255)
-      
-   then
-      EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+   --First state: If exists, second state: if obtained
+   local UpdatesTable = {
+      [0] = {
+         [0] = NewHide,
+         [1] = NewShow
+      },
+      [1] = {
+         [0] = ExistingHide,
+         [1] = ExistingShow
+      }
+   }
+
+   --First state: If exists, second state: if obtained
+   local HiddenUpdatesTable = {
+      [0] = {
+         [0] = DoNothing,
+         [1] = NewShow
+      },
+      [1] = {
+         [0] = Remove,
+         [1] = DoNothing
+      }
+   }
+   
+   --Cases where a relic is present do not give us a value of true
+   
+   for i, relic in self.RelicValues do
+      UpdatesTable[
+         EngineTools:BoolToNumber(not not self.Relics:GetItemByValue(relic))
+      ][
+         EngineTools:BoolToNumber(FFDataService:MatchFromSet("Collectibles", relic))
+      ](relic)
    end
    
-   --self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", self.Folder.Contents:GetAttribute("Shards"))
-   
-   --self.ObtainedShards = FFDataService:MatchFromSet("Collectibles", WorldContexts[self.WorldID].Shards)
-   
-   self.ObtainedShards = FFDataService:MatchDataTable("Collectibles", EngineTools:CSVToArray(WorldContexts[self.WorldID].Shards))
-   
-   print(self.ObtainedShards)
-   
+   for i, relic in self.HiddenRelicValues do
+      HiddenUpdatesTable[
+         EngineTools:BoolToNumber(not not self.Relics:GetItemByValue(relic))
+      ][
+         EngineTools:BoolToNumber(FFDataService:MatchFromSet("Collectibles", relic))
+      ](relic)
+   end
    return
 end
 
@@ -232,6 +263,9 @@ function CollectionSet.new(ID)
    --newCollectionSet.Instance.TextLabel.Text = WorldContexts[ID].Name
    
    newCollectionSet.Relics = OrderedList.new("Ascending")
+   
+   newCollectionSet.RelicValues = EngineTools:CSVToArray(WorldContexts[newCollectionSet.WorldID].Relics)
+   newCollectionSet.HiddenRelicValues = EngineTools:CSVToArray(WorldContexts[newCollectionSet.WorldID].HiddenRelics)
    
    newCollectionSet.Shards = EngineTools:CSVToArray(WorldContexts[ID].Shards)
    

@@ -100,6 +100,9 @@ Move to the next collection set, if there is one
 @return {bool} Success - If the frame was able to move
 ]]
 function ContextFrame:MoveForwards()
+   if self.Debounce == true then
+      return
+   end
    local success = false
    
    local newSet = nil
@@ -111,6 +114,7 @@ function ContextFrame:MoveForwards()
    if self.CurrentLocation >= self.CollectionSets:GetLength() or self.Hidden == true then
       return success
    end
+   self.Debounce = true
    
    newSet = self.CollectionSets:GetItem(self.CurrentLocation + 1)
    
@@ -122,6 +126,7 @@ function ContextFrame:MoveForwards()
    
    success = true
    
+   self.Debounce = false
    return success
 end
 
@@ -131,6 +136,9 @@ Move to the previous collection set, if there is one
 ]]
 
 function ContextFrame:MoveBackwards()
+   if self.Debounce == true then
+      return
+   end
    local success = false
    
    local newSet = nil
@@ -143,6 +151,7 @@ function ContextFrame:MoveBackwards()
    if self.CurrentLocation <= 1 or self.Hidden == true then
       return success
    end
+   self.Debounce = true
 
    
    newSet = self.CollectionSets:GetItem(self.CurrentLocation - 1)
@@ -154,7 +163,7 @@ function ContextFrame:MoveBackwards()
    self.Spinner:ShiftSpeed(self.SpinnerSpeed - 0.1, .2)
    
    success = true
-   
+   self.Debounce = false
    return success
 end
 
@@ -168,6 +177,8 @@ function ContextFrame:ChangeSet(newSet)
    if oldSet ~= nil then
       self.CurrentSet:Hide()
    end
+   
+   newSet:Update()
    
    newSet:Show()
    
@@ -333,6 +344,8 @@ function ContextFrame.new()
    
    --For executing methods of the current set
    newContextFrame.CurrentSet = nil
+   
+   newContextFrame.Debounce = false
    
    newContextFrame.CurrentLocation = nil
    
