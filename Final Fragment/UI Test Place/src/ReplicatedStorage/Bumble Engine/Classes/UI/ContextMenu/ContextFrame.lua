@@ -191,9 +191,7 @@ Change the current collection set, when menu is open
 function ContextFrame:ChangeSet(newSet)
    local oldSet = self.CurrentSet
    
-   if oldSet ~= nil then
-      self.CurrentSet:Hide()
-   end
+   self.CurrentSet:Hide()
    
    --newSet:Update()
    

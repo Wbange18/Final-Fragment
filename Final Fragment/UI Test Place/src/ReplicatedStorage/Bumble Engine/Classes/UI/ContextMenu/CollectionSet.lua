@@ -53,7 +53,9 @@ local function Remove(relic, set)
    hiddenRelicObject:UnObtain()
    hiddenRelicObject:Destroy()
    set.Relics:RemoveItem(string.match(relic, "%d+"))
-   set:Show()
+   if set.Hidden == false then
+      set:Show()
+   end
    return
 end
 
@@ -62,7 +64,9 @@ local function NewHidden(relic, set)
    newRelic.Instance.Parent = set.Instance.Relics
    set.Relics:AddItem(string.match(relic, "%d+"), newRelic)
    newRelic:Obtain()
-   set:Show()
+   if set.Hidden == false then
+      set:Show()
+   end
    return
 end
 
@@ -136,9 +140,7 @@ function CollectionSet:Show()
          end
          
          --Avoid connection leak if called on existing set
-         if relic.EnterConnection == false then
-            relic.EnterConnection = relic.Instance.Group.Hitbox.MouseEnter:Once(MouseEnter)
-         end
+         relic.EnterConnection = relic.Instance.Group.Hitbox.MouseEnter:Once(MouseEnter)
          
          --Run MouseEnter once when the mouse enters the frame.
 
@@ -152,6 +154,7 @@ function CollectionSet:Show()
 
    --Add the preview
    EngineTools:QuickTween(self.Instance.Preview, .25, {ImageTransparency = 0}, nil, Enum.EasingDirection.Out)
+   self.Hidden = false
    return
 end
 
@@ -163,8 +166,8 @@ function CollectionSet:Hide()
    coroutine.wrap(function()
       for i, relic in ipairs(self.Relics:GetList()) do
          --Disconnect all the mouse hover events.
-         if relic.connection ~= nil then
-            relic.connection:Disconnect()
+         if relic.EnterConnection ~= nil then
+            relic.EnterConnection:Disconnect()
          end
          
          --If first parameter is blank, this uses internal centerposition value
@@ -181,6 +184,7 @@ function CollectionSet:Hide()
    --Remove the preview
    EngineTools:QuickTween(self.Instance.Preview, .25, {ImageTransparency = 1}, nil, Enum.EasingDirection.In)
    
+   self.Hidden = true
    return
 end
 
@@ -264,6 +268,8 @@ function CollectionSet.new(ID)
    newCollectionSet.Instance.Preview.Image = WorldContexts[ID].Preview
    
    newCollectionSet.ObtainedShards = {}
+   
+   newCollectionSet.Hidden = true
 
    --Handled by context frame
    --newCollectionSet.Instance.TextLabel.Text = WorldContexts[ID].Name
