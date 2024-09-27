@@ -189,7 +189,6 @@ Change the current collection set, when menu is open
 @param {object} newSet - the new collection set
 ]]
 function ContextFrame:ChangeSet(newSet)
-   local oldSet = self.CurrentSet
    
    self.CurrentSet:Hide()
    
@@ -239,7 +238,8 @@ function ContextFrame:ExpandMenu()
       0.25,
       {
          GroupTransparency = 1, 
-         Position = self.Instance["Now Playing"].Position + UDim2.new(.15, 0, 0, 0)
+         --Position = self.Instance["Now Playing"].Position + UDim2.new(.15, 0, 0, 0)
+         Position = self.HidePosition
       },
       Enum.EasingStyle.Sine,
       Enum.EasingDirection.Out
@@ -251,7 +251,8 @@ function ContextFrame:ExpandMenu()
       0.25,
       {
          GroupTransparency = 0, 
-         Position = self.Instance["Shards Count"].Position - UDim2.new(.15, 0, 0, 0)
+         --Position = self.Instance["Shards Count"].Position - UDim2.new(.15, 0, 0, 0)
+         Position = self.ShowPosition
       },
       Enum.EasingStyle.Sine,
       Enum.EasingDirection.In
@@ -302,7 +303,8 @@ function ContextFrame:RetractMenu()
       0.25,
       {
          GroupTransparency = 0, 
-         Position = self.Instance["Now Playing"].Position - UDim2.new(.15, 0, 0, 0)
+         --Position = self.Instance["Now Playing"].Position - UDim2.new(.15, 0, 0, 0)
+         Position = self.ShowPosition
       },
       Enum.EasingStyle.Sine,
       Enum.EasingDirection.Out
@@ -314,7 +316,8 @@ function ContextFrame:RetractMenu()
       0.25,
       {
          GroupTransparency = 1, 
-         Position = self.Instance["Shards Count"].Position + UDim2.new(.15, 0, 0, 0)
+         --Position = self.Instance["Shards Count"].Position + UDim2.new(.15, 0, 0, 0)
+         Position = self.HidePosition
       },
       Enum.EasingStyle.Sine,
       Enum.EasingDirection.In
@@ -365,6 +368,9 @@ function ContextFrame.new()
    newContextFrame.CurrentLocation = nil
    
    newContextFrame.Instance = Player.PlayerGui["In-Game UI"].ContextMenu.Frame
+   
+   newContextFrame.ShowPosition = newContextFrame.Instance["Now Playing"].Position
+   newContextFrame.HidePosition = newContextFrame.Instance["Now Playing"].Position + UDim2.new(.15,0,0,0)
    
    --For indexing the set relative to the current frame
    newContextFrame.CurrentLocation = 0

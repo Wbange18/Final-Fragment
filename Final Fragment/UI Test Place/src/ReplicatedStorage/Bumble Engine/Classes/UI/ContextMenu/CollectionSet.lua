@@ -129,18 +129,46 @@ function CollectionSet:Show()
          local function MouseEnter()
             
             relic:Focus()
+            self.FocusedRelic = relic
+            for i, otherRelic in self.Relics:GetList() do
+               --dont act upon the focused relic
+               if otherRelic == relic then
+                   continue
+               end
+               
+               --if a different relic is focused, unfocus it
+               if otherRelic.Focused == true then
+                   otherRelic:UnFocus()
+               end
+               
+               --fade the other relic
+               otherRelic:Fade()
+           end
             
             relic.Instance.Group.Hitbox.MouseLeave:Once(function()
                
-               relic:UnFocus()
+               if self.FocusedRelic ~= relic then
+                  relic.connection = relic.Instance.Group.Hitbox.MouseEnter:Once(MouseEnter)
+                  return
+              end
+      
+              for i, otherRelic in self.Relics:GetList() do
+                  if otherRelic == relic then
+                      continue
+                  end
+                  otherRelic:UnFade()
+              end
                
+              relic:UnFocus()
+              self.FocusedRelic = nil
+              
                --Recurse the function, assigning the connection value.
                relic.connection = relic.Instance.Group.Hitbox.MouseEnter:Once(MouseEnter)
             end)
          end
          
          --Avoid connection leak if called on existing set
-         relic.EnterConnection = relic.Instance.Group.Hitbox.MouseEnter:Once(MouseEnter)
+         relic.connection = relic.Instance.Group.Hitbox.MouseEnter:Once(MouseEnter)
          
          --Run MouseEnter once when the mouse enters the frame.
 
@@ -164,15 +192,18 @@ Hide the collection set
 function CollectionSet:Hide()
    
    coroutine.wrap(function()
-      for i, relic in ipairs(self.Relics:GetList()) do
-         --Disconnect all the mouse hover events.
-         if relic.EnterConnection ~= nil then
-            relic.EnterConnection:Disconnect()
-         end
-         
+      for i, relic in ipairs(self.Relics:GetList()) do         
          --If first parameter is blank, this uses internal centerposition value
          relic:Move(nil, Enum.EasingDirection.In)
          relic:Hide()
+         
+         --Disconnect all the mouse hover events.
+         --if relic.EnterConnection ~= nil then
+            --relic.EnterConnection:Disconnect()
+         --end
+         
+         --This is a bad assumption but it might fix the issue of continuous connections
+         relic.connection:Disconnect()
          
          --THIS MIGHT BE A BAD IDEA BUT IT ALSO
          --MIGHT LOOK REALLY COOL
@@ -270,6 +301,8 @@ function CollectionSet.new(ID)
    newCollectionSet.ObtainedShards = {}
    
    newCollectionSet.Hidden = true
+   
+   newCollectionSet.FocusedRelic = nil
 
    --Handled by context frame
    --newCollectionSet.Instance.TextLabel.Text = WorldContexts[ID].Name

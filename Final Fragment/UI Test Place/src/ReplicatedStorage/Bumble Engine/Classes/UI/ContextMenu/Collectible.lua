@@ -44,12 +44,11 @@ end
 Focus the collectible
 ]]
 function Collectible:Focus()
+   self.Focused = true
    EngineTools:QuickTween(self.Instance.Group, .15, {Size = UDim2.new(0.8, 0,0.125, 0)}, nil, Enum.EasingDirection.In)
    EngineTools:QuickTween(self.Instance.Group.TextLabel, .15, {TextTransparency = 0}, nil, Enum.EasingDirection.In)
    EngineTools:QuickTween(self.Instance.Group.Frame, .15,{BackgroundTransparency = 0}, nil, Enum.EasingDirection.In)
-   --TODO: WRONG! THIS IS BAD
    EngineTools:QuickTween(self.Instance.Group, .15, {GroupTransparency = 0}, nil, Enum.EasingDirection.In)
-   self.Focused = true
    return
 end
 
@@ -57,12 +56,10 @@ end
 Unfocus the collectible
 ]]
 function Collectible:UnFocus()
+   self.Focused = false
    EngineTools:QuickTween(self.Instance.Group, .15, {Size = UDim2.new(0.62, 0,0.1, 0)}, nil, Enum.EasingDirection.Out)
    EngineTools:QuickTween(self.Instance.Group.TextLabel, .15, {TextTransparency = 1}, nil, Enum.EasingDirection.Out)
    EngineTools:QuickTween(self.Instance.Group.Frame, .15,{BackgroundTransparency = 1}, nil, Enum.EasingDirection.In)
-   --TODO: WRONG! THIS IS BAD
-   --EngineTools:QuickTween(self.Instance.Group, .15, {GroupTransparency = 0}, nil, Enum.EasingDirection.Out)
-   self.Focused = false
    return
 end
 
@@ -70,6 +67,7 @@ end
 Fade the collectible, when another is hovered
 ]]
 function Collectible:Fade()
+   self.Faded = true
    EngineTools:QuickTween(self.Instance.Group, 0.1, {GroupTransparency = .8}, nil, Enum.EasingDirection.In)
    return
 end
@@ -78,6 +76,7 @@ end
 Unfade the collectible, when none others are hovered
 ]]
 function Collectible:UnFade()
+   self.Faded = false
    EngineTools:QuickTween(self.Instance.Group, 0.1, {GroupTransparency = 0}, nil, Enum.EasingDirection.In)
    return
 end
@@ -133,11 +132,12 @@ function Collectible.new(Data)
    setmetatable(newCollectible, Collectible)
    
    newCollectible.Focused = false
+   newCollectible.Faded = false
    newCollectible.centerPosition = UDim2.new(0.5,0,0.5,0)
    newCollectible.Instance = ReferenceRelic:Clone()
    
    --Assumed by index, but here for syntax reference
-   newCollectible.EnterConnection = nil
+   newCollectible.connection = nil
    
    newCollectible.Instance.Name = Data
    
