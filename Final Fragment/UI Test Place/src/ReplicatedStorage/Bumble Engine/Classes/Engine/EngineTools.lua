@@ -73,6 +73,7 @@ function Tools:FadeTween(
 	item1, item2, duration, item1Properties, item2Properties, easingStyle, easingDirection1, easingDirection2
 )
 	--Optional Arguments
+	--TODO: THESE DO NOT WORK AS OPTIONAL!
 	item1Properties = item1Properties or {ImageTransparency = 0, Visible = true}
 	item2Properties = item2Properties or {ImageTransparency = 1, Visible = false}
 	easingStyle = easingStyle or Enum.EasingStyle.Sine

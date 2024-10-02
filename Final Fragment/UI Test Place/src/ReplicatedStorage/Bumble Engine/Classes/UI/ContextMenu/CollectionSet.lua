@@ -236,13 +236,13 @@ function CollectionSet:Update()
             "Collectibles", self.Primary
          )
          
-         and
+         --and
          --Primary not visually obtained
-         self.Instance.Primary.ImageColor == Color3.new(0,0,0)
+         --self.Instance.Primary.ImageColor3 == Color3.new(0,0,0)
       
       then
          --Quick tween the Primary in
-         EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+         EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor3 = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
       end
       
       if
@@ -251,12 +251,12 @@ function CollectionSet:Update()
             "Collectibles", self.Primary
          ) ~= true
          
-         and
+         --and
          --Primary is visually obtained
-         self.Instance.Primary.ImageColor3 == Color3.new(255,255,255)
+         --self.Instance.Primary.ImageColor3 == Color3.new(255,255,255)
          
       then
-         EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+         EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor3 = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
       end
       return
    end)()
@@ -297,6 +297,10 @@ function CollectionSet.new(ID)
    newCollectionSet.Instance = ReferenceSet:Clone()
    
    newCollectionSet.Instance.Preview.Image = WorldContexts[ID].Preview
+   
+   newCollectionSet.Instance.Primary.Image = CollectibleMetadata[
+      WorldContexts[ID].Primary
+      ].imageAsset
    
    newCollectionSet.ObtainedShards = {}
    

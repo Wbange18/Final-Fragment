@@ -192,6 +192,14 @@ function ContextFrame:ChangeSet(newSet)
    
    self.CurrentSet:Hide()
    
+   local oldSet = self.CurrentSet
+   
+   --EngineTools:FadeTween(oldSet.Instance.Primary, newSet.Instance.Primary, .25, {ImageTransparency = 1}, {ImageTransparency = .5})
+   
+   EngineTools:QuickTween(oldSet.Instance.Primary, .25, {ImageTransparency = 1})
+   
+   EngineTools:QuickTween(newSet.Instance.Primary, .25, {ImageTransparency = .5})
+   
    --newSet:Update()
    
    newSet:Show()
@@ -417,6 +425,10 @@ function ContextFrame.new()
    newContextFrame.CurrentLocation = ReplicatedStorage["Bumble Engine"]:GetAttribute("World")
    
    newContextFrame.CurrentSet:Hide()
+   
+   EngineTools:QuickTween(newContextFrame.CurrentSet.Instance.Primary, .25, {ImageTransparency = .5})
+   
+   
    
    newContextFrame:UpdateData()
    

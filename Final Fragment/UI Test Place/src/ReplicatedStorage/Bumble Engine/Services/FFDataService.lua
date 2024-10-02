@@ -123,7 +123,12 @@ Add data to a set.
 ]]
 function DataService:AddToSet(dataName, dataValue, Player)
 	if RunService:IsClient() then
-		return self.RemoteFunction:InvokeServer("AddToSet", dataName, dataValue)
+		
+		--Not looking for data failures, which is problematic. Faster though.
+		coroutine.wrap(function()
+			self.RemoteFunction:InvokeServer("AddToSet", dataName, dataValue)
+		end)
+		return
 	end
 	local result = self.PlayerDataPacks[Player.UserId]:AddToSet(dataName, dataValue)
 	if result == true then
@@ -138,8 +143,11 @@ Remove data from a set.
 ]]
 function DataService:RemoveFromSet(dataName, dataValue, Player)
 	if RunService:IsClient() then
-
-		return self.RemoteFunction:InvokeServer("RemoveFromSet", dataName, dataValue)
+		--Not looking for data failures, which is problematic. Faster though.
+		coroutine.wrap(function()
+			self.RemoteFunction:InvokeServer("RemoveFromSet", dataName, dataValue)
+		end)
+		return
 	end
 	local result = self.PlayerDataPacks[Player.UserId]:RemoveFromSet(dataName, dataValue)
 	if result == true then
