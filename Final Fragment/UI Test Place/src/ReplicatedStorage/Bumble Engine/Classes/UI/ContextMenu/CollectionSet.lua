@@ -227,36 +227,23 @@ obtained relics.
 function CollectionSet:Update()
    
    --Coroutines which request data calls from the server. Check these first
-
+   print("Set updating..." .. self.Primary)
+   print(FFDataService:MatchFromSet("Collectibles", self.Primary))
    --Check Primary collectible
    coroutine.wrap(function()
       if 
       --Primary is owned by player
-         FFDataService:MatchFromSet(
-            "Collectibles", self.Primary
-         )
-         
-         --and
-         --Primary not visually obtained
-         --self.Instance.Primary.ImageColor3 == Color3.new(0,0,0)
-      
+         FFDataService:MatchFromSet("Collectibles", self.Primary)
       then
          --Quick tween the Primary in
-         EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor3 = Color3.new(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+         EngineTools:QuickTween(self.Instance.Primary, .6, {ImageColor3 = Color3.fromRGB(255,255,255)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
       end
       
       if
       --Primary is not owned by player
-         FFDataService:MatchFromSet(
-            "Collectibles", self.Primary
-         ) ~= true
-         
-         --and
-         --Primary is visually obtained
-         --self.Instance.Primary.ImageColor3 == Color3.new(255,255,255)
-         
+         FFDataService:MatchFromSet("Collectibles", self.Primary) ~= true
       then
-         EngineTools:QuickTween(self.Instance.Primary, 0.2, {ImageColor3 = Color3.new(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+         EngineTools:QuickTween(self.Instance.Primary, .6, {ImageColor3 = Color3.fromRGB(0,0,0)}, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
       end
       return
    end)()

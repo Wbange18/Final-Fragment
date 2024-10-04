@@ -38,7 +38,7 @@ function KillBrick.new(model)
 	setmetatable(newKillBrick, KillBrick)
 	
 	newKillBrick.Instance = model
-	newKillBrick.Instance.CollisionGroupId = 4
+	newKillBrick.Instance.CollisionGroup = "TouchParts"
 	
 	newKillBrick.Player = game.Players.LocalPlayer
 	

@@ -25,10 +25,10 @@ function Music:Play()
 	end
 	coroutine.wrap(function()
 		while self.Instance.Playing do
-			local steppedConnection
+			--local steppedConnection
 			
 			local function TimeUp()
-				steppedConnection:Disconnect()
+				--steppedConnection:Disconnect()
 				if self.Instance.Playing == false then
 					return
 				end
@@ -36,18 +36,39 @@ function Music:Play()
 			end
 			
 			local steppedDirectory = {
-				[-1] = function() return end,
-				[0] = TimeUp(),
-				[1] = TimeUp()
+				[-1] = function()
+						return
+					end,
+				[0] = TimeUp,
+				[1] = TimeUp
 			}
 			local returnFactor
-			steppedConnection = RunService.Stepped:Connect(function()
-				returnFactor = EngineTools:Flip(EngineTools:BoolToNumber(self.Instance.Playing))
+			--First approach the loop point slowly
+			while self.BTime - self.Instance.TimePosition > 10 do
+				if self.Instance.Playing ~= true then
+					return
+				end
+				task.wait(1)
+			end
+			
+			--Closer to the loop point, start the faster loop and use efficient functions
+			while self.BTime - self.Instance.TimePosition > 0 do
+				if self.Instance.Playing ~= true then
+					return
+				end
+				task.wait()
+			end
+			
+			self.Instance.TimePosition = self.ATime
+			
+			--This was causing weird stuffs
+			--steppedConnection = RunService.PostSimulation:Connect(function()
+			--	returnFactor = EngineTools:Flip(EngineTools:BoolToNumber(self.Instance.--Playing))
 				--If Playing is true, returnFactor = 0 and the loop continues
 				--If Playing is false, returnFactor = 1 and the sign is forced to be 1
-				steppedDirectory[math.sign((self.Instance.TimePosition + (5000 * returnFactor)) - 
-					self.BTime)]()
-			end)
+			--	steppedDirectory[math.sign((self.Instance.TimePosition + (5000 * returnFactor)) - 
+			--		self.BTime)]()
+			--end)
 		end
 	end)()
 end

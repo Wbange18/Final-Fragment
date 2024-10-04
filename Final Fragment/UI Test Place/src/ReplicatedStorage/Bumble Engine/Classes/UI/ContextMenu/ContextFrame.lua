@@ -26,6 +26,8 @@ Update data in the current set
 ]]
 function ContextFrame:UpdateData()
    
+   print("Change in data detected")
+   
    self.CurrentSet:Update()
    
    coroutine.wrap(function()
@@ -198,7 +200,7 @@ function ContextFrame:ChangeSet(newSet)
    
    EngineTools:QuickTween(oldSet.Instance.Primary, .25, {ImageTransparency = 1})
    
-   EngineTools:QuickTween(newSet.Instance.Primary, .25, {ImageTransparency = .5})
+   EngineTools:QuickTween(newSet.Instance.Primary, .25, {ImageTransparency = .3})
    
    --newSet:Update()
    
@@ -349,12 +351,12 @@ function ContextFrame:AssignNowPlaying()
    local newText = nil
    
    if MusicService.CurrentTrack == nil then
-      newText = "Now Playing: None"
+      newText = "None"
    end
    
-   newText = "Now Playing: " .. MusicService.CurrentTrack.Name
+   newText = MusicService.CurrentTrack.Name
    
-   self.Instance.Frame["Now Playing"].Content.Text = newText
+   self.Instance["Now Playing"].Content.Text = newText
    return
 end
 

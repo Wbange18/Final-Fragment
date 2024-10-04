@@ -19,13 +19,22 @@ MusicService.TrackChange = EngineTools:CreateEvent("TrackChange")
 ]]
 function MusicService:Play(Track, fadeTime)
 	local TrackObject = Music.Tracks[Track.Name] or Music.new(Track)
+
+	
+	if TrackObject.Name == "None" then
+		MusicService:FadeOthers(TrackObject, TrackObject.FadeTime)
+		MusicService.CurrentTrack = TrackObject
+		MusicService.TrackChange:Fire()
+		return
+	end
+	
 	MusicService.PlayingTracks[Track.Name] = TrackObject
 	TrackObject:Play()
 	TrackObject:Fade("In", TrackObject.FadeTime)
 	MusicService:FadeOthers(TrackObject, TrackObject.FadeTime)
-	
 	MusicService.CurrentTrack = TrackObject
-	
+	MusicService.TrackChange:Fire()
+	return
 end
 
 --[[FadeOthers
@@ -34,7 +43,7 @@ Fade all other tracks to put in a new one or stop all.
 @param {number} fadeTime - Time to fade all other tracks
 ]]
 function MusicService:FadeOthers(Track, fadeTime)
-	for _, playingTrack in ipairs(MusicService.PlayingTracks) do
+	for name, playingTrack in MusicService.PlayingTracks do
 		if playingTrack.Name ~= Track.Name then
 			coroutine.wrap(function()
 				MusicService.PlayingTracks[playingTrack.Name] = nil

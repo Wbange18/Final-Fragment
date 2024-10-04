@@ -127,7 +127,7 @@ function DataService:AddToSet(dataName, dataValue, Player)
 		--Not looking for data failures, which is problematic. Faster though.
 		coroutine.wrap(function()
 			self.RemoteFunction:InvokeServer("AddToSet", dataName, dataValue)
-		end)
+		end)()
 		return
 	end
 	local result = self.PlayerDataPacks[Player.UserId]:AddToSet(dataName, dataValue)
@@ -146,7 +146,7 @@ function DataService:RemoveFromSet(dataName, dataValue, Player)
 		--Not looking for data failures, which is problematic. Faster though.
 		coroutine.wrap(function()
 			self.RemoteFunction:InvokeServer("RemoveFromSet", dataName, dataValue)
-		end)
+		end)()
 		return
 	end
 	local result = self.PlayerDataPacks[Player.UserId]:RemoveFromSet(dataName, dataValue)
