@@ -1,0 +1,156 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
+local CollectibleMetadata = require(ReplicatedStorage["Bumble Engine"].Configuration.CollectibleMetadata)
+local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
+
+--Get Resources
+local ReferenceRelic = Engine:GetResource("Reference Relic")
+
+--[[Collectible: Single collectible with functionality parented to a CollectionSet class of the ContextFrame class.]]
+
+local Collectible = {}
+
+Collectible.__index = Collectible
+
+--METHODS
+
+--[[Obtain:
+Show the collectible
+]]
+function Collectible:Obtain()
+   
+   EngineTools:QuickTween(
+      self.Instance.Group.Relic, 0.5, {ImageColor3 = Color3.new(255,255,255)},
+      Enum.EasingStyle.Sine, Enum.EasingDirection.Out
+   )
+   return
+end
+
+--[[UnObtain:
+Hide the collectible
+]]
+function Collectible:UnObtain()
+   
+   EngineTools:QuickTween(
+      self.Instance.Group.Relic, 0.5, {ImageColor3 = Color3.new(0,0,0)},
+      Enum.EasingStyle.Sine, Enum.EasingDirection.Out
+   )
+   
+   return
+end
+
+--[[Focus:
+Focus the collectible
+]]
+function Collectible:Focus()
+   self.Focused = true
+   EngineTools:QuickTween(self.Instance.Group, .15, {Size = UDim2.new(0.8, 0,0.125, 0)}, nil, Enum.EasingDirection.In)
+   EngineTools:QuickTween(self.Instance.Group.TextLabel, .15, {TextTransparency = 0}, nil, Enum.EasingDirection.In)
+   EngineTools:QuickTween(self.Instance.Group.Frame, .15,{BackgroundTransparency = 0}, nil, Enum.EasingDirection.In)
+   EngineTools:QuickTween(self.Instance.Group, .15, {GroupTransparency = 0}, nil, Enum.EasingDirection.In)
+   return
+end
+
+--[[UnFocus:
+Unfocus the collectible
+]]
+function Collectible:UnFocus()
+   self.Focused = false
+   EngineTools:QuickTween(self.Instance.Group, .15, {Size = UDim2.new(0.62, 0,0.1, 0)}, nil, Enum.EasingDirection.Out)
+   EngineTools:QuickTween(self.Instance.Group.TextLabel, .15, {TextTransparency = 1}, nil, Enum.EasingDirection.Out)
+   EngineTools:QuickTween(self.Instance.Group.Frame, .15,{BackgroundTransparency = 1}, nil, Enum.EasingDirection.In)
+   return
+end
+
+--[[Fade:
+Fade the collectible, when another is hovered
+]]
+function Collectible:Fade()
+   self.Faded = true
+   EngineTools:QuickTween(self.Instance.Group, 0.1, {GroupTransparency = .8}, nil, Enum.EasingDirection.In)
+   return
+end
+
+--[[UnFade:
+Unfade the collectible, when none others are hovered
+]]
+function Collectible:UnFade()
+   self.Faded = false
+   EngineTools:QuickTween(self.Instance.Group, 0.1, {GroupTransparency = 0}, nil, Enum.EasingDirection.In)
+   return
+end
+
+--[[Hide:
+Completely hide the collectible
+]]
+function Collectible:Hide()
+   EngineTools:QuickTween(self.Instance.Group, .25, {GroupTransparency = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.In)
+   return
+end
+
+--[[Show:
+Completely show the collectible
+]]
+function Collectible:Show()
+   EngineTools:QuickTween(self.Instance.Group, .25, {GroupTransparency = 0}, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+   return
+end
+
+--[[Move:
+Move the UI element
+@param {UDim2} PositionGoal - PositionGoal to move the UI element to
+]]
+function Collectible:Move(PositionGoal, easingDirection)
+   if PositionGoal == nil then
+      PositionGoal = self.centerPosition
+  end
+  local  direction = easingDirection or Enum.EasingDirection.Out
+   EngineTools:QuickTween(self.Instance.Group, .25, {Position = PositionGoal}, Enum.EasingStyle.Back, direction)
+   return
+end
+
+--[[Destroy:
+Destroy the collectible object
+]]
+function Collectible:Destroy()
+   self.Instance:Destroy()
+	self.Value = nil
+	self.centerPosition = nil
+	self = nil
+   return
+end
+
+--CONSTRUCTORS
+
+--[[new:
+Create a new collectible
+@param {string} Data - The data of the collectible, I.E. "R32"
+]]
+function Collectible.new(Data)
+   local newCollectible = {}
+   setmetatable(newCollectible, Collectible)
+   
+   newCollectible.Focused = false
+   newCollectible.Faded = false
+   newCollectible.centerPosition = UDim2.new(0.5,0,0.5,0)
+   newCollectible.Instance = ReferenceRelic:Clone()
+   
+   --Assumed by index, but here for syntax reference
+   newCollectible.connection = nil
+   
+   newCollectible.Instance.Name = Data
+   
+   newCollectible.Value = Data
+   
+   newCollectible.Instance.Group.Relic.Image = CollectibleMetadata[Data].imageAsset
+   
+   newCollectible.Instance.Group.TextLabel.Text = CollectibleMetadata[Data].levelName
+   
+   --Initial setup
+   newCollectible.Instance.Group.Position = newCollectible.centerPosition
+   
+   return newCollectible
+end
+
+return Collectible

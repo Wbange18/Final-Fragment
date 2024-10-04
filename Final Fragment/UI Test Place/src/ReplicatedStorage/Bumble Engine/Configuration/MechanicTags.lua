@@ -2,7 +2,8 @@ local MechanicTags = {
 	"JumpPad",
 	"KillBrick",
 	"Powerup",
-	"AncientBeamer"
+	"AncientBeamer",
+	"MusicTrigger"
 }
 
 return MechanicTags

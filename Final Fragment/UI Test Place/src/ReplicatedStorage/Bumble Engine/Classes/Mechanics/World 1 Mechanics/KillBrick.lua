@@ -1,15 +1,16 @@
 local KillBrick = {}
 
 KillBrick.__index = KillBrick
-setmetatable(KillBrick, KillBrick)
 
 KillBrick.Running = false
+
 
 function KillBrick:Run()
 	if self.Running == true then
 		return
 	end
 	self.Running = true
+	
 	self.Connection = self.Instance.Touched:Connect(function(Part)
 		if Part:IsA("BasePart") and Part:FindFirstAncestorWhichIsA("Accessory") == nil and
 			Part:FindFirstAncestorWhichIsA("Model").name == self.Player.name
@@ -22,6 +23,7 @@ function KillBrick:Run()
 	end)
 end
 
+
 function KillBrick:Yield()
 	if self.Running == false then
 		return
@@ -30,12 +32,13 @@ function KillBrick:Yield()
 	self.Running = false
 end
 
+
 function KillBrick.new(model)
 	local newKillBrick = {}
 	setmetatable(newKillBrick, KillBrick)
 	
 	newKillBrick.Instance = model
-	newKillBrick.Instance.CollisionGroupId = 4
+	newKillBrick.Instance.CollisionGroup = "TouchParts"
 	
 	newKillBrick.Player = game.Players.LocalPlayer
 	

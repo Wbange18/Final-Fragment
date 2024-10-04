@@ -5,6 +5,7 @@ ReplicatedStorage:WaitForChild("Bumble Engine")
 
 --Get Bumble Engine Module
 local EngineTools = require(ReplicatedStorage["Bumble Engine"].Classes.Engine.EngineTools)
+local ContextFrame = require(ReplicatedStorage["Bumble Engine"].Classes.UI.ContextMenu.ContextFrame)
 local Engine = require(ReplicatedStorage["Bumble Engine"].Engine)
 
 
@@ -39,9 +40,31 @@ WeaponService:GiveWeapon(Pickaxe)
 
 --MusicService:Play(script.Parent.FirstTrack.Value)
 
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+FFDataService:AddToSet("Collectibles", "R56")
+
+
+FFDataService:AddToSet("Collectibles", "S6")
+FFDataService:AddToSet("Collectibles", "S7")
+FFDataService:AddToSet("Collectibles", "S8")
+FFDataService:AddToSet("Collectibles", "S16")
+
+FFDataService:RemoveFromSet("Collectibles", "R56")
+
+FFDataService:AddToSet("GameFlags", "WELCOME")
+
+FFDataService:AddToSet("GameFlags", "EMBARK")
+
+FFDataService:AddToSet("GameFlags", "DESOLATION")
+
+FFDataService:AddToSet("GameFlags", "BURNING")
+
+ContextFrame.new()
 
 FFNotificationService:CreateNotification(
-	"2", "", 12, true, true, "Gung ho", "First", Color3.new(0.9803921568627451, 0.3058823529411765, 0.3058823529411765)
+	"2", "", 12, true, true, "Gung ho", "First", Color3.new(0.807843, 0.384314, 0.384314)
 )
 
 FFNotificationService:CreateNotification(
@@ -54,6 +77,7 @@ wait(1)
 FFNotificationService:CreateNotification(
 	"1", "", 20, true, true, "Gung ho", "First"
 )
+
 FFNotificationService:CreateNotification(
 	"3", "", 10, true, true, "Gung ho", "Next"
 )
@@ -61,14 +85,3 @@ FFNotificationService:CreateNotification(
 	"6", "", 5, true, true, "Gung ho", "Last"
 )
 
-FFDataService:AddToSet("Collectibles", "P56")
-FFDataService:AddToSet("Collectibles", "P56")
-FFDataService:AddToSet("Collectibles", "P56")
-FFDataService:AddToSet("Collectibles", "P56")
-
-
-print(FFDataService:MatchFromSet("Collectibles", "P56"))
-
-FFDataService:RemoveFromSet("Collectibles", "P56")
-
-print(FFDataService:MatchFromSet("Collectibles", "P56"))

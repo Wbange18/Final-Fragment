@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local DataSet = require(ReplicatedStorage["Bumble Engine"].Classes.Data.DataSet)
-local DataStructure = require(ReplicatedStorage["Bumble Engine"].Resources.Lists.DataStructure)
+local DataStructure = require(ReplicatedStorage["Bumble Engine"].Configuration.DataStructure)
 
 PlayerData = {}
 
@@ -35,6 +35,26 @@ function PlayerData:MatchFromSet(dataName, dataValue)
 	local result = self.DataSets[dataName]:MatchData(dataValue)
 	return result
 end
+
+--[[WipeSet:
+Wipe data from a set.
+@param {string} dataName - name of the set to wipe
+]]
+function PlayerData:WipeSet(dataName)
+	local result = self.DataSets[dataName]:WipeSet()
+	return result
+end
+
+--[[PolishData
+Remove all duplicates of any data entries.
+]]
+function PlayerData:PolishData()
+	for _, dataSet in self.DataSets do
+		dataSet:PolishData()
+	end
+end
+
+
 
 --CONSTRUCTORS========================================================
 
